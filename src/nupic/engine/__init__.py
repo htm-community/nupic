@@ -603,8 +603,8 @@ class Network(engine_internal.Network):
         assert isinstance(prop, property)
         setattr(Network, obj, property(prop.fget, prop.fset, prop.fdel,
                                        docString))
-      else:
-        obj.im_func.__doc__ = docString
+      #else:
+      #FIXME  obj.im_func.__doc__ = docString ## err __doc__ not writable
 
   def _getRegions(self):
     """Get the collection of regions in a network
