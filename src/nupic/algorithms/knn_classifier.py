@@ -23,7 +23,7 @@
 
 import numpy
 
-from nupic.bindings.math import (NearestNeighbor, min_score_per_category)
+from nupic.bindings.math import (min_score_per_category)
 
 from nupic.serializable import Serializable
 

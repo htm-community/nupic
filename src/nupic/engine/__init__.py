@@ -32,13 +32,7 @@ basicTypes = ['Byte',
               'Handle',
               'Bool']
 
-arrayTypes = ['ByteArray',
-              'Int16Array', 'UInt16Array',
-              'Int32Array', 'UInt32Array',
-              'Int64Array', 'UInt64Array',
-              'Real32Array', 'Real64Array',
-              # No 'HandleArray'
-              'BoolArray']
+arrayTypes = [ ]
 
 pyRegions = (
     ("nupic.bindings.regions.TestNode", "TestNode"),
