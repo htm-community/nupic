@@ -85,9 +85,9 @@ class VectorFileSensorTest(unittest.TestCase):
     """Run all the tests in our suite, catching any exceptions that might be
     thrown.
     """
-    print 'VectorFileSensorTest parameters:'
-    print 'PYTHONPATH: %s' % os.environ.get('PYTHONPATH', 'NOT SET')
-    print 'filename: %s' % self.filename
+    print('VectorFileSensorTest parameters:')
+    print('PYTHONPATH: %s' % os.environ.get('PYTHONPATH', 'NOT SET'))
+    print('filename: %s' % self.filename)
 
     self._testRunWithoutFile()
     self._testNetLoad()

@@ -618,7 +618,7 @@ class HTMPredictionModel(Model):
     classification = classificationDist.argmax()
     probabilities = classifier.getOutputData('categoryProbabilitiesOut')
     numCategories = classifier.getParameter('activeOutputCount')
-    classConfidences = dict(zip(xrange(numCategories), probabilities))
+    classConfidences = dict(list(zip(list(range(numCategories)), probabilities)))
 
     inference[InferenceElement.classification] = classification
     inference[InferenceElement.classConfidences] = {0: classConfidences}
@@ -882,7 +882,7 @@ class HTMPredictionModel(Model):
 
       # calculate likelihood for each bucket
       bucketLikelihood = {}
-      for k in likelihoodsDict.keys():
+      for k in list(likelihoodsDict.keys()):
         bucketLikelihood[self._classifierInputEncoder.getBucketIndices(k)[0]] = (
                                                                 likelihoodsDict[k])
 
@@ -904,7 +904,7 @@ class HTMPredictionModel(Model):
         # an offset from the current absolute value
         sumDelta = sum(predHistory)
         offsetDict = dict()
-        for (k, v) in likelihoodsDict.iteritems():
+        for (k, v) in likelihoodsDict.items():
           if k is not None:
             # Reconstruct the absolute value based on the current actual value,
             # the best predicted values from the previous iterations,
@@ -913,7 +913,7 @@ class HTMPredictionModel(Model):
 
         # calculate likelihood for each bucket
         bucketLikelihoodOffset = {}
-        for k in offsetDict.keys():
+        for k in list(offsetDict.keys()):
           bucketLikelihoodOffset[self._classifierInputEncoder.getBucketIndices(k)[0]] = (
                                                                             offsetDict[k])
 
@@ -964,7 +964,7 @@ class HTMPredictionModel(Model):
     minLikelihoodThreshold, but don't leave an empty dict.
     """
     maxVal = (None, None)
-    for (k, v) in likelihoodsDict.items():
+    for (k, v) in list(likelihoodsDict.items()):
       if len(likelihoodsDict) <= 1:
         break
       if maxVal[0] is None or v >= maxVal[1]:
@@ -974,7 +974,7 @@ class HTMPredictionModel(Model):
       elif v < minLikelihoodThreshold:
         del likelihoodsDict[k]
     # Limit the number of predictions to include.
-    likelihoodsDict = dict(sorted(likelihoodsDict.iteritems(),
+    likelihoodsDict = dict(sorted(iter(likelihoodsDict.items()),
                                   key=itemgetter(1),
                                   reverse=True)[:maxPredictionsPerStep])
     return likelihoodsDict
@@ -1017,10 +1017,10 @@ class HTMPredictionModel(Model):
       fieldNames = list(fieldNames) + addFieldNames
       fieldTypes = list(fieldTypes) + addFieldTypes
 
-    fieldMetaList = map(FieldMetaInfo._make,
-                        zip(fieldNames,
+    fieldMetaList = list(map(FieldMetaInfo._make,
+                        list(zip(fieldNames,
                             fieldTypes,
-                            itertools.repeat(FieldMetaSpecial.none)))
+                            itertools.repeat(FieldMetaSpecial.none)))))
 
     return tuple(fieldMetaList)
 
@@ -1111,7 +1111,7 @@ class HTMPredictionModel(Model):
     sensor = n.regions['sensor'].getSelf()
 
     enabledEncoders = copy.deepcopy(sensorParams['encoders'])
-    for name, params in enabledEncoders.items():
+    for name, params in list(enabledEncoders.items()):
       if params is not None:
         classifierOnly = params.pop('classifierOnly', False)
         if classifierOnly:
@@ -1121,7 +1121,7 @@ class HTMPredictionModel(Model):
     # SP or TM Regions. This is to handle the case where the predicted field
     # is not fed through the SP/TM. We typically just have one of these now.
     disabledEncoders = copy.deepcopy(sensorParams['encoders'])
-    for name, params in disabledEncoders.items():
+    for name, params in list(disabledEncoders.items()):
       if params is None:
         disabledEncoders.pop(name)
       else:

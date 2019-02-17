@@ -86,7 +86,7 @@ class AdaptiveScalarTest(unittest.TestCase):
       (fieldsDict, _) = decoded
       self.assertEqual(len(fieldsDict), 1)
 
-      (ranges, _) = fieldsDict.values()[0]
+      (ranges, _) = list(fieldsDict.values())[0]
       self.assertEqual(len(ranges), 1)
 
       (rangeMin, rangeMax) = ranges[0]
@@ -115,14 +115,14 @@ class AdaptiveScalarTest(unittest.TestCase):
     (fieldsDict, _) = decoded
     self.assertEqual(len(fieldsDict), 1)
 
-    (ranges, _) = fieldsDict.values()[0]
+    (ranges, _) = list(fieldsDict.values())[0]
     self.assertEqual(len(ranges), 1)
     self.assertSequenceEqual(ranges[0], [10, 10])
 
     decoded = l.decode(numpy.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 1]))
     (fieldsDict, _) = decoded
     self.assertEqual(len(fieldsDict), 1)
-    (ranges, _) = fieldsDict.values()[0]
+    (ranges, _) = list(fieldsDict.values())[0]
     self.assertEqual(len(ranges), 1)
     self.assertSequenceEqual(ranges[0], [10, 10])
 

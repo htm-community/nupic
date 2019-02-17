@@ -28,7 +28,7 @@ from nupic import encoders
 from nupic.data import field_meta
 from nupic.frameworks.opf import model
 from nupic.frameworks.opf import opf_utils
-from opf_utils import InferenceType
+from .opf_utils import InferenceType
 
 try:
   import capnp
@@ -60,7 +60,7 @@ class TwoGramModel(model.Model):
     self._encoder = encoders.MultiEncoder(encoderParams)
     self._fieldNames = self._encoder.getScalarNames()
     self._prevValues = [] * len(self._fieldNames)
-    self._twoGramDicts = [dict() for _ in xrange(len(self._fieldNames))]
+    self._twoGramDicts = [dict() for _ in range(len(self._fieldNames))]
 
   def run(self, inputRecord):
     results = super(TwoGramModel, self).run(inputRecord)
@@ -77,11 +77,11 @@ class TwoGramModel(model.Model):
 
     # Keep track of the last value associated with each encoded value for that
     # predictions can be returned in the original value format.
-    for value, bucket in itertools.izip(values, inputBuckets):
+    for value, bucket in zip(values, inputBuckets):
       self._hashToValueDict[bucket] = value
 
     # Update the two-gram dict if learning is enabled.
-    for bucket, prevValue, twoGramDict in itertools.izip(
+    for bucket, prevValue, twoGramDict in zip(
         inputBuckets, self._prevValues, self._twoGramDicts):
       if self._learningEnabled and not self._reset:
         if prevValue not in twoGramDict:
@@ -93,10 +93,10 @@ class TwoGramModel(model.Model):
     predictions = []
     encodedPredictions = []
     for bucket, twoGramDict, default, fieldName in (
-        itertools.izip(inputBuckets, self._twoGramDicts, defaults,
+        zip(inputBuckets, self._twoGramDicts, defaults,
                        self._fieldNames)):
       if bucket in twoGramDict:
-        probabilities = twoGramDict[bucket].items()
+        probabilities = list(twoGramDict[bucket].items())
         prediction = self._hashToValueDict[
             max(probabilities, key=lambda x: x[1])[0]]
         predictions.append(prediction)
@@ -128,7 +128,7 @@ class TwoGramModel(model.Model):
     assert len(self._fieldNames) == len(fieldTypes)
 
     return tuple(field_meta.FieldMetaInfo(*args) for args in
-                 itertools.izip(
+                 zip(
                      self._fieldNames, fieldTypes,
                      itertools.repeat(field_meta.FieldMetaSpecial.none)))
 
@@ -165,7 +165,7 @@ class TwoGramModel(model.Model):
     instance._encoder = encoders.MultiEncoder.read(proto.encoder)
     instance._fieldNames = instance._encoder.getScalarNames()
     instance._prevValues = list(proto.prevValues)
-    instance._twoGramDicts = [dict() for _ in xrange(len(proto.twoGramDicts))]
+    instance._twoGramDicts = [dict() for _ in range(len(proto.twoGramDicts))]
     for idx, field in enumerate(proto.twoGramDicts):
       for entry in field:
         prev = None if entry.value == -1 else entry.value
@@ -187,14 +187,14 @@ class TwoGramModel(model.Model):
     proto.prevValues = self._prevValues
     self._encoder.write(proto.encoder)
     proto.hashToValueDict = [{"hash": h, "value": v}
-                             for h, v in self._hashToValueDict.items()]
+                             for h, v in list(self._hashToValueDict.items())]
 
     twoGramDicts = []
     for items in self._twoGramDicts:
       twoGramArr = []
-      for prev, values in items.iteritems():
+      for prev, values in items.items():
         buckets = [{"index": index, "count": count}
-                   for index, count in values.iteritems()]
+                   for index, count in values.items()]
         if prev is None:
           prev = -1
         twoGramArr.append({"value": prev, "buckets": buckets})

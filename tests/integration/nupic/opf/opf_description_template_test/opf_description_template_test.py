@@ -279,8 +279,8 @@ def _executeExternalCmdAndReapOutputs(args):
 def _debugOut(msg):
   if g_debug:
     callerTraceback = whoisCallersCaller()
-    print "OPF TestDescriptionTemplate (f=%s;line=%s): %s" % \
-            (callerTraceback.function, callerTraceback.lineno, msg,)
+    print("OPF TestDescriptionTemplate (f=%s;line=%s): %s" % \
+            (callerTraceback.function, callerTraceback.lineno, msg,))
     sys.stdout.flush()
 
 

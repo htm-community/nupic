@@ -21,7 +21,7 @@
 
 """Tests for the C++ implementation of the temporal memory."""
 
-import cPickle as pickle
+import pickle as pickle
 import numpy
 import unittest2 as unittest
 from nupic.bindings.math import Random
@@ -76,7 +76,7 @@ class BacktrackingTMCPP2Test(unittest.TestCase):
     self.assertTrue(fdrutils.tmDiff2(tm, tm2, VERBOSITY, checkStates=False))
 
     # Learn
-    for i in xrange(5):
+    for i in range(5):
       x = numpy.zeros(tm.numberOfCols, dtype='uint32')
       _RGEN.initializeUInt32Array(x, 2)
       tm.learn(x)
@@ -90,10 +90,10 @@ class BacktrackingTMCPP2Test(unittest.TestCase):
 
     ## Infer
     patterns = numpy.zeros((4, tm.numberOfCols), dtype='uint32')
-    for i in xrange(4):
+    for i in range(4):
       _RGEN.initializeUInt32Array(patterns[i], 2)
 
-    for i in xrange(10):
+    for i in range(10):
       x = numpy.zeros(tm.numberOfCols, dtype='uint32')
       _RGEN.initializeUInt32Array(x, 2)
       tm.infer(x)
@@ -135,8 +135,8 @@ class BacktrackingTMCPP2Test(unittest.TestCase):
     sequence = fdrutils.generateCoincMatrix(nCoinc=numPatterns,
                                             length=tm.numberOfCols,
                                             activity=activity)
-    for r in xrange(numRepetitions):
-      for i in xrange(sequence.nRows()):
+    for r in range(numRepetitions):
+      for i in range(sequence.nRows()):
 
         #if i > 11:
         #  setVerbosity(6, tm, tmPy)
@@ -146,8 +146,8 @@ class BacktrackingTMCPP2Test(unittest.TestCase):
           tmPy.reset()
 
         if verbosity >= 2:
-          print "\n\n    ===================================\nPattern:",
-          print i, "Round:", r, "input:", sequence.getRow(i)
+          print("\n\n    ===================================\nPattern:", end=' ')
+          print(i, "Round:", r, "input:", sequence.getRow(i))
 
         y1 = tm.learn(sequence.getRow(i))
         y2 = tmPy.learn(sequence.getRow(i))
@@ -162,19 +162,19 @@ class BacktrackingTMCPP2Test(unittest.TestCase):
           tmPy.trimSegments()
 
         if verbosity > 2:
-          print "\n   ------  CPP states  ------ ",
+          print("\n   ------  CPP states  ------ ", end=' ')
           tm.printStates()
-          print "\n   ------  PY states  ------ ",
+          print("\n   ------  PY states  ------ ", end=' ')
           tmPy.printStates()
           if verbosity > 6:
-            print "C++ cells: "
+            print("C++ cells: ")
             tm.printCells()
-            print "PY cells: "
+            print("PY cells: ")
             tmPy.printCells()
 
         if verbosity >= 3:
-          print "Num segments in PY and C++", tmPy.getNumSegments(), \
-              tm.getNumSegments()
+          print("Num segments in PY and C++", tmPy.getNumSegments(), \
+              tm.getNumSegments())
 
         # Check if the two TM's are identical or not. This check is slow so
         # we do it every other iteration. Make it every iteration for debugging
@@ -184,7 +184,7 @@ class BacktrackingTMCPP2Test(unittest.TestCase):
         # Check that outputs are identical
         self.assertLess(abs((y1 - y2).sum()), 3)
 
-    print "Learning completed"
+    print("Learning completed")
 
     self.assertTrue(fdrutils.tmDiff2(tm, tmPy, verbosity))
 
@@ -194,24 +194,24 @@ class BacktrackingTMCPP2Test(unittest.TestCase):
     # Remove unconnected synapses and check TM's again
 
     # Test rebuild out synapses
-    print "Rebuilding outSynapses"
+    print("Rebuilding outSynapses")
     tm.cells4.rebuildOutSynapses()
     self.assertTrue(fdrutils.tmDiff2(tm, tmPy, VERBOSITY))
 
-    print "Trimming segments"
+    print("Trimming segments")
     tm.trimSegments()
     tmPy.trimSegments()
     self.assertTrue(fdrutils.tmDiff2(tm, tmPy, VERBOSITY))
 
     # Save and reload after learning
-    print "Pickling and unpickling"
+    print("Pickling and unpickling")
     tm.makeCells4Ephemeral = False
     pickle.dump(tm, open("test_tm_cpp.pkl", "wb"))
     tm2 = pickle.load(open("test_tm_cpp.pkl"))
     self.assertTrue(fdrutils.tmDiff2(tm, tm2, VERBOSITY, checkStates=False))
 
     # Infer
-    print "Testing inference"
+    print("Testing inference")
 
     # Setup for inference
     tm.reset()
@@ -219,7 +219,7 @@ class BacktrackingTMCPP2Test(unittest.TestCase):
     setVerbosity(INFERENCE_VERBOSITY, tm, tmPy)
 
     patterns = numpy.zeros((40, tm.numberOfCols), dtype='uint32')
-    for i in xrange(4):
+    for i in range(4):
       _RGEN.initializeUInt32Array(patterns[i], 2)
 
     for i, x in enumerate(patterns):
@@ -231,16 +231,16 @@ class BacktrackingTMCPP2Test(unittest.TestCase):
 
       self.assertTrue(fdrutils.tmDiff2(tm, tmPy, VERBOSITY, checkLearn=False))
       if abs((y - yPy).sum()) > 0:
-        print "C++ output", y
-        print "Py output", yPy
+        print("C++ output", y)
+        print("Py output", yPy)
         assert False
 
       if i > 0:
         tm._checkPrediction(patterns)
         tmPy._checkPrediction(patterns)
 
-    print "Inference completed"
-    print "===================================="
+    print("Inference completed")
+    print("====================================")
 
     return tm, tmPy
 
@@ -250,12 +250,12 @@ class BacktrackingTMCPP2Test(unittest.TestCase):
     PY versions are identical throughout."""
 
     if short == True:
-      print "Testing short version"
+      print("Testing short version")
     else:
-      print "Testing long version"
+      print("Testing long version")
 
     if short:
-      print "\nTesting with fixed resource CLA - test max segment and synapses"
+      print("\nTesting with fixed resource CLA - test max segment and synapses")
       tm = BacktrackingTMCPP(numberOfCols=30, cellsPerColumn=5,
                              initialPerm=.5, connectedPerm= 0.5,
                              permanenceMax=1,
@@ -271,7 +271,7 @@ class BacktrackingTMCPP2Test(unittest.TestCase):
       self.basicTest2(tm, numPatterns=15, numRepetitions=1)
 
     if not short:
-      print "\nTesting with fixed resource CLA - test max segment and synapses"
+      print("\nTesting with fixed resource CLA - test max segment and synapses")
       tm = BacktrackingTMCPP(numberOfCols=30, cellsPerColumn=5,
                              initialPerm = .5, connectedPerm= 0.5,
                              permanenceMax = 1,
@@ -286,7 +286,7 @@ class BacktrackingTMCPP2Test(unittest.TestCase):
       tm.cells4.setCellSegmentOrder(1)
       self.basicTest2(tm, numPatterns=30, numRepetitions=2)
 
-      print "\nTesting with permanenceInc = 0 and Dec = 0"
+      print("\nTesting with permanenceInc = 0 and Dec = 0")
       tm = BacktrackingTMCPP(numberOfCols=30, cellsPerColumn=5,
                              initialPerm = .5, connectedPerm= 0.5,
                              minThreshold = 3, newSynapseCount = 3,
@@ -299,7 +299,7 @@ class BacktrackingTMCPP2Test(unittest.TestCase):
       tm.printParameters()
       self.basicTest2(tm, numPatterns = 30, numRepetitions = 3)
 
-      print "Testing with permanenceInc = 0 and Dec = 0 and 1 cell per column"
+      print("Testing with permanenceInc = 0 and Dec = 0 and 1 cell per column")
       tm = BacktrackingTMCPP(numberOfCols=30, cellsPerColumn=1,
                              initialPerm = .5, connectedPerm= 0.5,
                              minThreshold = 3, newSynapseCount = 3,
@@ -311,7 +311,7 @@ class BacktrackingTMCPP2Test(unittest.TestCase):
                              checkSynapseConsistency = False)
       self.basicTest2(tm)
 
-      print "Testing with permanenceInc = 0.1 and Dec = .0"
+      print("Testing with permanenceInc = 0.1 and Dec = .0")
       tm = BacktrackingTMCPP(numberOfCols=30, cellsPerColumn=5,
                              initialPerm = .5, connectedPerm= 0.5,
                              minThreshold = 3, newSynapseCount = 3,
@@ -336,7 +336,7 @@ class BacktrackingTMCPP2Test(unittest.TestCase):
                              checkSynapseConsistency = True)
       self.basicTest2(tm, numPatterns=10, numRepetitions=2)
 
-      print "Testing age based global decay"
+      print("Testing age based global decay")
       tm = BacktrackingTMCPP(numberOfCols=30, cellsPerColumn=5,
                              initialPerm = .4, connectedPerm= 0.5,
                              minThreshold = 3, newSynapseCount = 3,
@@ -350,7 +350,7 @@ class BacktrackingTMCPP2Test(unittest.TestCase):
       tm.cells4.setCellSegmentOrder(1)
       self.basicTest2(tm)
 
-      print "\nTesting with fixed size CLA, max segments per cell"
+      print("\nTesting with fixed size CLA, max segments per cell")
       tm = BacktrackingTMCPP(numberOfCols=30, cellsPerColumn=5,
                              initialPerm = .5, connectedPerm= 0.5, permanenceMax = 1,
                              minThreshold = 8, newSynapseCount = 10,

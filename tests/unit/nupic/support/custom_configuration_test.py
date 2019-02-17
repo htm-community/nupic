@@ -22,7 +22,7 @@
 from copy import copy
 import os
 import shutil
-from StringIO import StringIO
+from io import StringIO
 import sys
 import tempfile
 import unittest2 as unittest
@@ -41,7 +41,7 @@ except ImportError:
 import nupic
 import nupic.support.configuration_custom as configuration
 
-import configuration_test
+from . import configuration_test
 
 
 
@@ -219,7 +219,7 @@ class ConfigurationCustomTest(unittest.TestCase):
     environ.get.return_value = None
     findConfigFile.side_effect = self.files.get
     configuration.Configuration.clear()
-    paramNames = configuration.Configuration.dict().keys()
+    paramNames = list(configuration.Configuration.dict().keys())
     customValue = 'NewValue'
     with open(self.files['nupic-custom.xml'], 'w') as fp:
       fp.write('\n'.join((

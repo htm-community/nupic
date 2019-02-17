@@ -65,7 +65,7 @@ def _getSimplePatterns(numOnes, numPatterns):
 
   numCols = numOnes * numPatterns
   p = []
-  for i in xrange(numPatterns):
+  for i in range(numPatterns):
     x = numpy.zeros(numCols, dtype='float32')
     x[i*numOnes:(i+1)*numOnes] = 1
     p.append(x)
@@ -102,7 +102,7 @@ def _createTMs(numCols, cellsPerColumn=4, checkSynapseConsistency=True):
   globalDecay = 0.0
 
   if VERBOSITY > 1:
-    print "Creating BacktrackingTMCPP instance"
+    print("Creating BacktrackingTMCPP instance")
 
   cppTm = BacktrackingTMCPP(numberOfCols=numCols, cellsPerColumn=cellsPerColumn,
                             initialPerm=initialPerm, connectedPerm=connectedPerm,
@@ -115,7 +115,7 @@ def _createTMs(numCols, cellsPerColumn=4, checkSynapseConsistency=True):
                             pamLength=1000)
 
   if VERBOSITY > 1:
-    print "Creating PY TM instance"
+    print("Creating PY TM instance")
 
   pyTm = BacktrackingTM(numberOfCols=numCols, cellsPerColumn=cellsPerColumn,
                         initialPerm=initialPerm, connectedPerm=connectedPerm,
@@ -163,11 +163,11 @@ def _computeTMMetric(tm=None, sequences=None, useResets=True, verbosity=1):
 
     seq = numpy.array(seq, dtype='uint32')
     if verbosity > 2:
-      print "--------------------------------------------------------"
+      print("--------------------------------------------------------")
     for i, inputPattern in enumerate(seq):
       if verbosity > 2:
-        print "sequence %d, element %d," % (seqIdx, i),
-        print "pattern", inputPattern
+        print("sequence %d, element %d," % (seqIdx, i), end=' ')
+        print("pattern", inputPattern)
 
 
       # Feed this input to the TM and get the stats
@@ -176,26 +176,26 @@ def _computeTMMetric(tm=None, sequences=None, useResets=True, verbosity=1):
       if verbosity > 2:
         stats = tm.getStats()
         if stats['curPredictionScore'] > 0:
-          print "   patternConfidence=", stats['curPredictionScore2']
+          print("   patternConfidence=", stats['curPredictionScore2'])
 
 
       # Print some diagnostics for debugging
       if verbosity > 3:
-        print "\n\n"
+        print("\n\n")
         predOut = numpy.sum(tm.predictedState['t'], axis=1)
         actOut  = numpy.sum(tm.activeState['t'], axis=1)
         outout  = numpy.sum(y.reshape(tm.activeState['t'].shape), axis=1)
-        print "Prediction non-zeros: ", predOut.nonzero()
-        print "Activestate non-zero: ", actOut.nonzero()
-        print "input non-zeros:      ", inputPattern.nonzero()
-        print "Output non-zeros:     ", outout.nonzero()
+        print("Prediction non-zeros: ", predOut.nonzero())
+        print("Activestate non-zero: ", actOut.nonzero())
+        print("input non-zeros:      ", inputPattern.nonzero())
+        print("Output non-zeros:     ", outout.nonzero())
 
   # Print and return final stats
   stats = tm.getStats()
   datasetScore = stats['predictionScoreAvg2']
   numPredictions = stats['nPredictions']
-  print "Final results: datasetScore=", datasetScore,
-  print "numPredictions=", numPredictions
+  print("Final results: datasetScore=", datasetScore, end=' ')
+  print("numPredictions=", numPredictions)
 
   return datasetScore, numPredictions
 
@@ -207,7 +207,7 @@ def _createDataset(numSequences, originalSequences, relativeFrequencies):
 
   dataSet = []
   trainingCummulativeFrequencies = numpy.cumsum(relativeFrequencies)
-  for _ in xrange(numSequences):
+  for _ in range(numSequences):
     # Pick a training sequence to present, based on the given training
     # frequencies.
     whichSequence = numpy.searchsorted(trainingCummulativeFrequencies,
@@ -279,9 +279,9 @@ class TMLikelihoodTest(testcasebase.TestCaseBase):
 
     # Learn
     if VERBOSITY > 1:
-      print "============= Learning ================="
+      print("============= Learning =================")
 
-    for r in xrange(nSequencePresentations):
+    for r in range(nSequencePresentations):
 
       # Pick a training sequence to present, based on the given training
       # frequencies.
@@ -290,34 +290,34 @@ class TMLikelihoodTest(testcasebase.TestCaseBase):
       trainingSequence = trainingSequences[whichSequence]
 
       if VERBOSITY > 2:
-        print "=========Presentation #%d Sequence #%d==============" % \
-                                              (r, whichSequence)
+        print("=========Presentation #%d Sequence #%d==============" % \
+                                              (r, whichSequence))
       if doResets:
         tm.reset()
       for t, x in enumerate(trainingSequence):
         if VERBOSITY > 3:
-          print "Time step", t
-          print "Input: ", tm.printInput(x)
+          print("Time step", t)
+          print("Input: ", tm.printInput(x))
         tm.learn(x)
         if VERBOSITY > 4:
           tm.printStates(printPrevious=(VERBOSITY > 4))
-          print
+          print()
       if VERBOSITY > 4:
-        print "Sequence finished. Complete state after sequence"
+        print("Sequence finished. Complete state after sequence")
         tm.printCells()
-        print
+        print()
 
     tm.finishLearning()
     if VERBOSITY > 2:
-      print "Training completed. Complete state:"
+      print("Training completed. Complete state:")
       tm.printCells()
-      print
-      print "TM parameters:"
-      print tm.printParameters()
+      print()
+      print("TM parameters:")
+      print(tm.printParameters())
 
     # Infer
     if VERBOSITY > 1:
-      print "============= Inference ================="
+      print("============= Inference =================")
 
     testSequence = testSequences[0]
     slen = len(testSequence)
@@ -327,11 +327,11 @@ class TMLikelihoodTest(testcasebase.TestCaseBase):
       tm.reset()
     for t, x in enumerate(testSequence):
       if VERBOSITY > 2:
-        print "Time step", t, '\nInput:', tm.printInput(x)
+        print("Time step", t, '\nInput:', tm.printInput(x))
       tm.infer(x)
       if VERBOSITY > 3:
         tm.printStates(printPrevious=(VERBOSITY > 4), printLearnState=False)
-        print
+        print()
 
       # We will exit with the confidence score for the last element
       if t == slen-2:
@@ -339,7 +339,7 @@ class TMLikelihoodTest(testcasebase.TestCaseBase):
         predictionScore2 = tm._checkPrediction(tmNonZeros)[2]
 
     if VERBOSITY > 0:
-      print "predictionScore:", predictionScore2
+      print("predictionScore:", predictionScore2)
 
     # The following test tests that the prediction scores for each pattern
     # are within 10% of the its relative frequency.  Here we check only
@@ -363,8 +363,8 @@ class TMLikelihoodTest(testcasebase.TestCaseBase):
   def _likelihoodTest1(self, numOnes=5, relativeFrequencies=None,
                        checkSynapseConsistency=True):
 
-    print "Sequence Likelihood test 1 with relativeFrequencies=",
-    print relativeFrequencies
+    print("Sequence Likelihood test 1 with relativeFrequencies=", end=' ')
+    print(relativeFrequencies)
 
     trainingSet = _buildLikelihoodTrainingSet(numOnes, relativeFrequencies)
     cppTm, pyTm = _createTMs(numCols=trainingSet[0][0][0].size,
@@ -379,8 +379,8 @@ class TMLikelihoodTest(testcasebase.TestCaseBase):
 
   def _likelihoodTest2(self, numOnes=5, relativeFrequencies=None,
                        checkSynapseConsistency=True):
-    print "Sequence Likelihood test 2 with relativeFrequencies=",
-    print relativeFrequencies
+    print("Sequence Likelihood test 2 with relativeFrequencies=", end=' ')
+    print(relativeFrequencies)
 
     trainingSet = _buildLikelihoodTrainingSet(numOnes, relativeFrequencies)
 

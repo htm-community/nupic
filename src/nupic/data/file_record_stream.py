@@ -182,18 +182,18 @@ class FileRecordStream(RecordStreamIface):
       # Verify all fields are 3-tuple
       assert all(isinstance(f, (tuple, FieldMetaInfo)) and len(f) == 3
                  for f in fields)
-      names, types, specials = zip(*fields)
+      names, types, specials = list(zip(*fields))
       self._writer = csv.writer(self._file)
     else:
       # Read header lines
       self._reader = csv.reader(self._file, dialect="excel")
       try:
-        names = [n.strip() for n in self._reader.next()]
+        names = [n.strip() for n in next(self._reader)]
       except:
         raise Exception('The header line of the file %s contained a NULL byte' \
                         % self._filename)
-      types = [t.strip() for t in self._reader.next()]
-      specials = [s.strip() for s in self._reader.next()]
+      types = [t.strip() for t in next(self._reader)]
+      specials = [s.strip() for s in next(self._reader)]
 
       # If there are no specials, this means there was a blank line
       if len(specials) == 0:
@@ -287,7 +287,7 @@ class FileRecordStream(RecordStreamIface):
       rowsToSkip = 0
 
     while rowsToSkip > 0:
-      self.next()
+      next(self)
       rowsToSkip -= 1
 
 
@@ -332,9 +332,9 @@ class FileRecordStream(RecordStreamIface):
     self._reader = csv.reader(self._file, dialect="excel")
 
     # Skip header rows
-    self._reader.next()
-    self._reader.next()
-    self._reader.next()
+    next(self._reader)
+    next(self._reader)
+    next(self._reader)
 
     # Reset record count, etc.
     self._recordCount = 0
@@ -352,7 +352,7 @@ class FileRecordStream(RecordStreamIface):
 
     # Read the line
     try:
-      line = self._reader.next()
+      line = next(self._reader)
 
     except StopIteration:
       if self.rewindAtEOF:
@@ -360,7 +360,7 @@ class FileRecordStream(RecordStreamIface):
           raise Exception("The source configured to reset at EOF but "
                           "'%s' appears to be empty" % self._filename)
         self.rewind()
-        line = self._reader.next()
+        line = next(self._reader)
 
       else:
         return None
@@ -405,7 +405,7 @@ class FileRecordStream(RecordStreamIface):
     # Write header if needed
     if self._recordCount == 0:
       # Write the header
-      names, types, specials = zip(*self.getFields())
+      names, types, specials = list(zip(*self.getFields()))
       for line in names, types, specials:
         self._writer.writerow(line)
 
@@ -519,24 +519,24 @@ class FileRecordStream(RecordStreamIface):
 
       # Create a new reader; read names, types, specials
       reader = csv.reader(inFile, dialect="excel")
-      names = [n.strip() for n in reader.next()]
-      types = [t.strip() for t in reader.next()]
+      names = [n.strip() for n in next(reader)]
+      types = [t.strip() for t in next(reader)]
       # Skip over specials
-      reader.next()
+      next(reader)
 
       # Initialize stats to all None
       self._stats = dict()
       self._stats['min'] = []
       self._stats['max'] = []
 
-      for i in xrange(len(names)):
+      for i in range(len(names)):
         self._stats['min'].append(None)
         self._stats['max'].append(None)
 
       # Read the file, collect stats
       while True:
         try:
-          line = reader.next()
+          line = next(reader)
           for i, f in enumerate(line):
             if (len(types) > i and
                 types[i] in [FieldMetaType.integer, FieldMetaType.float] and
@@ -669,9 +669,9 @@ class FileRecordStream(RecordStreamIface):
     bookMarkFile = bookMarkDict.get('filepath', None)
 
     if bookMarkFile != realpath:
-      print ("Ignoring bookmark due to mismatch between File's "
+      print(("Ignoring bookmark due to mismatch between File's "
              "filename realpath vs. bookmark; realpath: %r; bookmark: %r") % (
-        realpath, bookMarkDict)
+        realpath, bookMarkDict))
       return 0
     else:
       return bookMarkDict['currentRow']
@@ -747,7 +747,7 @@ class FileRecordStream(RecordStreamIface):
     return self
 
 
-  def next(self):
+  def __next__(self):
     """Implement the iterator protocol """
     record = self.getNextRecord()
     if record is None:

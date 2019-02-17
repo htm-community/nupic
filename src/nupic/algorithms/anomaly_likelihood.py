@@ -449,9 +449,9 @@ def estimateAnomalyLikelihoods(anomalyScores,
   """
   if verbosity > 1:
     print("In estimateAnomalyLikelihoods.")
-    print("Number of anomaly scores:", len(anomalyScores))
-    print("Skip records=", skipRecords)
-    print("First 20:", anomalyScores[0:min(20, len(anomalyScores))])
+    print(("Number of anomaly scores:", len(anomalyScores)))
+    print(("Skip records=", skipRecords))
+    print(("First 20:", anomalyScores[0:min(20, len(anomalyScores))]))
 
   if len(anomalyScores) == 0:
     raise ValueError("Must have at least one anomalyScore")
@@ -508,9 +508,9 @@ def estimateAnomalyLikelihoods(anomalyScores,
   if verbosity > 1:
     print("Discovered params=")
     print(params)
-    print("Number of likelihoods:", len(likelihoods))
-    print("First 20 likelihoods:", (
-      filteredLikelihoods[0:min(20, len(filteredLikelihoods))] ))
+    print(("Number of likelihoods:", len(likelihoods)))
+    print(("First 20 likelihoods:", (
+      filteredLikelihoods[0:min(20, len(filteredLikelihoods))] )))
     print("leaving estimateAnomalyLikelihoods")
 
 
@@ -552,9 +552,9 @@ def updateAnomalyLikelihoods(anomalyScores,
   """
   if verbosity > 3:
     print("In updateAnomalyLikelihoods.")
-    print("Number of anomaly scores:", len(anomalyScores))
-    print("First 20:", anomalyScores[0:min(20, len(anomalyScores))])
-    print("Params:", params)
+    print(("Number of anomaly scores:", len(anomalyScores)))
+    print(("First 20:", anomalyScores[0:min(20, len(anomalyScores))]))
+    print(("Params:", params))
 
   if len(anomalyScores) == 0:
     raise ValueError("Must have at least one anomalyScore")
@@ -603,8 +603,8 @@ def updateAnomalyLikelihoods(anomalyScores,
   assert len(newParams["historicalLikelihoods"]) <= windowSize
 
   if verbosity > 3:
-    print("Number of likelihoods:", len(likelihoods))
-    print("First 20 likelihoods:", likelihoods[0:min(20, len(likelihoods))])
+    print(("Number of likelihoods:", len(likelihoods)))
+    print(("First 20 likelihoods:", likelihoods[0:min(20, len(likelihoods))]))
     print("Leaving updateAnomalyLikelihoods.")
 
   return (likelihoods, aggRecordList, newParams)
@@ -668,7 +668,7 @@ def _anomalyScoreMovingAverage(anomalyScores,
     # Skip (but log) records without correct number of entries
     if not isinstance(record, (list, tuple)) or len(record) != 3:
       if verbosity >= 1:
-        print("Malformed record:", record)
+        print(("Malformed record:", record))
       continue
 
     avg, historicalValues, total = (
@@ -678,8 +678,8 @@ def _anomalyScoreMovingAverage(anomalyScores,
     averagedRecordList.append( [record[0], record[1], avg] )
 
     if verbosity > 2:
-      print("Aggregating input record:", record)
-      print("Result:", [record[0], record[1], avg])
+      print(("Aggregating input record:", record))
+      print(("Result:", [record[0], record[1], avg]))
 
   return averagedRecordList, historicalValues, total
 

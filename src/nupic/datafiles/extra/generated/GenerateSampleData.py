@@ -196,7 +196,7 @@ if __name__ == '__main__':
   # (a,d -> g), (a, e -> h), (a, f -> i) and so on, with probabilities
   # (0.9, 0.05, 0.05)
   
-  print 'Generating %s with %s records, test #%s' % \
-        (sys.argv[1], sys.argv[2], sys.argv[3])
+  print('Generating %s with %s records, test #%s' % \
+        (sys.argv[1], sys.argv[2], sys.argv[3]))
         
   writeSimpleTest1(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]))

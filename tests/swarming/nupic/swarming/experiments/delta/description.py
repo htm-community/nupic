@@ -128,14 +128,14 @@ config = {
             'encoders': {
               'value': {
                   'clipInput': True,
-                  'fieldname': u'value',
+                  'fieldname': 'value',
                   'n': 100,
-                  'name': u'value',
+                  'name': 'value',
                   'type': 'ScalarSpaceEncoder',
                   'w': 21},
               '_classifierInput':     {
-                'name': u'_classifierInput',
-                'fieldname': u'value',
+                'name': '_classifierInput',
+                'fieldname': 'value',
                 'classifierOnly': True,
                 'type': 'ScalarSpaceEncoder',
                 'n': 100,
@@ -341,11 +341,11 @@ control = {
 
   # Input stream specification per py/nupicengine/cluster/database/StreamDef.json.
   #
-  'dataset' : {   u'info': u'sawtooth test',
-        u'streams': [   {   u'columns': [u'value'],
-                            u'info': u'sawtooth',
-                            u'source': u'file://extra/sawtooth/sawtooth.csv'}],
-        u'version': 1},
+  'dataset' : {   'info': 'sawtooth test',
+        'streams': [   {   'columns': ['value'],
+                            'info': 'sawtooth',
+                            'source': 'file://extra/sawtooth/sawtooth.csv'}],
+        'version': 1},
 
   # Iteration count: maximum number of iterations.  Each iteration corresponds
   # to one record from the (possibly aggregated) dataset.  The task is
@@ -358,13 +358,13 @@ control = {
 
 
   # A dictionary containing all the supplementary parameters for inference
-  "inferenceArgs":{u'predictedField': u'value', u'predictionSteps': [1, 5]},
+  "inferenceArgs":{'predictedField': 'value', 'predictionSteps': [1, 5]},
 
   # Metrics: A list of MetricSpecs that instantiate the metrics that are
   # computed for this experiment
   'metrics':[
-    MetricSpec(field=u'value', metric='multiStep', inferenceElement='multiStepBestPredictions', params={'window': 10, 'steps': 1, 'errorMetric': 'aae'}),
-    MetricSpec(field=u'value', metric='multiStep', inferenceElement='multiStepBestPredictions', params={'window': 10, 'steps': 5, 'errorMetric': 'aae'}),
+    MetricSpec(field='value', metric='multiStep', inferenceElement='multiStepBestPredictions', params={'window': 10, 'steps': 1, 'errorMetric': 'aae'}),
+    MetricSpec(field='value', metric='multiStep', inferenceElement='multiStepBestPredictions', params={'window': 10, 'steps': 5, 'errorMetric': 'aae'}),
   ],
 
   # Logged Metrics: A sequence of regular expressions that specify which of

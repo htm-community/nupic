@@ -207,7 +207,7 @@ def _aggr_mode(inList):
     return None
 
   # Sort by counts
-  sortedCounts = valueCounts.items()
+  sortedCounts = list(valueCounts.items())
   sortedCounts.sort(cmp=lambda x,y: x[1] - y[1], reverse=True)
   return sortedCounts[0][0]
 
@@ -455,7 +455,7 @@ class Aggregator(object):
     """
 
     params = None
-    if isinstance(funcName, basestring):
+    if isinstance(funcName, str):
       if funcName == 'sum':
         fp = _aggr_sum
       elif funcName == 'first':
@@ -801,8 +801,8 @@ def generateDataset(aggregationInfo, inputFilename, outputFilename=None):
   if os.path.isfile(outputFilename) or \
      os.path.isfile(lockFilePath):
     while os.path.isfile(lockFilePath):
-      print 'Waiting for %s to be fully written by another process' % \
-            lockFilePath
+      print('Waiting for %s to be fully written by another process' % \
+            lockFilePath)
       time.sleep(1)
     return outputFilename
 

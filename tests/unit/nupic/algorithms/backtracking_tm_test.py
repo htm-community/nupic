@@ -21,7 +21,7 @@
 
 """Tests for the Python implementation of the temporal memory."""
 
-import cPickle as pickle
+import pickle as pickle
 import csv
 import itertools
 import numpy
@@ -67,7 +67,7 @@ class BacktrackingTMTest(unittest.TestCase):
     # Create a model and give it some inputs to learn.
     tm1 = BacktrackingTM(numberOfCols=100, cellsPerColumn=12,
                          verbosity=VERBOSITY)
-    sequences = [self.generateSequence() for _ in xrange(5)]
+    sequences = [self.generateSequence() for _ in range(5)]
     train = list(itertools.chain.from_iterable(sequences[:3]))
     for bottomUpInput in train:
       if bottomUpInput is None:
@@ -107,7 +107,7 @@ class BacktrackingTMTest(unittest.TestCase):
     # Create a model and give it some inputs to learn.
     tm1 = BacktrackingTM(numberOfCols=100, cellsPerColumn=12,
                          verbosity=VERBOSITY)
-    sequences = [self.generateSequence() for _ in xrange(5)]
+    sequences = [self.generateSequence() for _ in range(5)]
     train = list(itertools.chain.from_iterable(sequences[:3] +
                                                [sequences[3][:5]]))
     for bottomUpInput in train:
@@ -164,13 +164,13 @@ class BacktrackingTMTest(unittest.TestCase):
 
     i = 1
     for r in records[:250]:
-      print i
+      print(i)
       i += 1
       output1 = tm1.compute(r, True, True)
       output2 = tm2.compute(r, True, True)
       self.assertTrue(numpy.array_equal(output1, output2))
 
-    print 'Serializing and deserializing models.'
+    print('Serializing and deserializing models.')
 
     savePath1 = os.path.join(self._tmpDir, 'tm1.bin')
     tmProto1 = BacktrackingTM.getSchema().new_message()
@@ -194,7 +194,7 @@ class BacktrackingTMTest(unittest.TestCase):
     self.assertTMsEqual(tm2, tm4)
 
     for r in records[250:]:
-      print i
+      print(i)
       i += 1
       out1 = tm1.compute(r, True, True)
       out2 = tm2.compute(r, True, True)
@@ -214,7 +214,7 @@ class BacktrackingTMTest(unittest.TestCase):
     # Create a model and give it some inputs to learn.
     tm1 = BacktrackingTM(numberOfCols=100, cellsPerColumn=12,
                          verbosity=VERBOSITY)
-    sequences = [self.generateSequence() for _ in xrange(5)]
+    sequences = [self.generateSequence() for _ in range(5)]
     train = list(itertools.chain.from_iterable(sequences[:3]))
     for bottomUpInput in train:
       if bottomUpInput is None:
@@ -249,7 +249,7 @@ class BacktrackingTMTest(unittest.TestCase):
     # Create a model and give it some inputs to learn.
     tm1 = BacktrackingTM(numberOfCols=100, cellsPerColumn=12,
                          verbosity=VERBOSITY)
-    sequences = [self.generateSequence() for _ in xrange(5)]
+    sequences = [self.generateSequence() for _ in range(5)]
     train = list(itertools.chain.from_iterable(sequences[:3] +
                                                [sequences[3][:5]]))
     for bottomUpInput in train:
@@ -301,13 +301,13 @@ class BacktrackingTMTest(unittest.TestCase):
 
     i = 1
     for r in records[:250]:
-      print i
+      print(i)
       i += 1
       output1 = tm1.compute(r, True, True)
       output2 = tm2.compute(r, True, True)
       self.assertTrue(numpy.array_equal(output1, output2))
 
-    print 'Serializing and deserializing models.'
+    print('Serializing and deserializing models.')
 
     savePath1 = os.path.join(self._tmpDir, 'tm1.bin')
     tm1.saveToFile(savePath1)
@@ -323,7 +323,7 @@ class BacktrackingTMTest(unittest.TestCase):
     self.assertTMsEqual(tm2, tm4)
 
     for r in records[250:]:
-      print i
+      print(i)
       i += 1
       out1 = tm1.compute(r, True, True)
       out2 = tm2.compute(r, True, True)
@@ -354,7 +354,7 @@ class BacktrackingTMTest(unittest.TestCase):
     """Generates a sequence of n patterns."""
     return [None] + [BacktrackingTMTest.generatePattern(numCols, minOnes,
                                                         maxOnes)
-                     for _ in xrange(n)]
+                     for _ in range(n)]
 
 
   @staticmethod
@@ -370,7 +370,7 @@ class BacktrackingTMTest(unittest.TestCase):
     assert maxOnes < numCols
 
     nOnes = random.randint(minOnes, maxOnes)
-    ind = random.sample(xrange(numCols), nOnes)
+    ind = random.sample(range(numCols), nOnes)
     x = numpy.zeros(numCols, dtype='float32')
     x[ind] = 1
 

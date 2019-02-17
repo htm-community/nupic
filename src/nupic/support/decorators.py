@@ -116,7 +116,7 @@ def logEntryExit(getLoggerCallback=logging.getLogger,
       if logArgs:
         argsRepr = ', '.join(
           [repr(a) for a in args] +
-          ['%s=%r' % (k,v,) for k,v in kwargs.iteritems()])
+          ['%s=%r' % (k,v,) for k,v in kwargs.items()])
       else:
         argsRepr = ''
 
@@ -206,7 +206,7 @@ def retry(timeoutSec, initialRetryDelaySec, maxRetryDelaySec,
         numAttempts += 1
         try:
           result = func(*args, **kwargs)
-        except retryExceptions, e:
+        except retryExceptions as e:
           if not retryFilter(e, args, kwargs):
             if logger.isEnabledFor(logging.DEBUG):
               logger.debug(

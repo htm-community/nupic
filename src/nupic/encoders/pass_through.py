@@ -93,8 +93,8 @@ class PassThroughEncoder(Encoder):
     outputVal[:] = inputVal[:]
 
     if self.verbosity >= 2:
-      print "input:", inputVal, "output:", outputVal
-      print "decoded:", self.decodedToStr(self.decode(outputVal))
+      print("input:", inputVal, "output:", outputVal)
+      print("decoded:", self.decodedToStr(self.decode(outputVal)))
 
 
   def decode(self, encoded, parentFieldName=""):

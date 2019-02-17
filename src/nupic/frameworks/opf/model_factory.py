@@ -29,10 +29,10 @@ import logging
 import nupic.frameworks.opf.opf_utils as opf_utils
 
 # Import models
-from htm_prediction_model import HTMPredictionModel
-from model import Model
-from two_gram_model import TwoGramModel
-from previous_value_model import PreviousValueModel
+from .htm_prediction_model import HTMPredictionModel
+from .model import Model
+from .two_gram_model import TwoGramModel
+from .previous_value_model import PreviousValueModel
 
 class ModelFactory(object):
   """

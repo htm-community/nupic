@@ -40,7 +40,7 @@ def makeDirectoryFromAbsolutePath(absDirPath):
 
   try:
     os.makedirs(absDirPath)
-  except OSError, e:
+  except OSError as e:
     if e.errno != os.errno.EEXIST:
       raise
 

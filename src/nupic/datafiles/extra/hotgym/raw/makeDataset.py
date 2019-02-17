@@ -110,7 +110,7 @@ def makeDataset():
       f.readline()
       
       # iterate over all the lines in the input file
-      for line in f.xreadlines():
+      for line in f:
         
         # Parse the fields in the current line
         record = _parseLine(line)
@@ -120,7 +120,7 @@ def makeDataset():
         
         if record[0] != gymName:
           gymName = record[0]
-          print gymName
+          print(gymName)
  		  
   return total, missing
   
@@ -128,6 +128,6 @@ def makeDataset():
 if __name__ == '__main__':
   makeDataset()
   
-  print 'Done.'
+  print('Done.')
   
 

@@ -28,7 +28,7 @@ import logging
 import json
 import hashlib
 import itertools
-import StringIO
+import io
 import traceback
 
 from nupic.support import initLogging
@@ -37,7 +37,7 @@ from nupic.swarming.hypersearch.extended_logger import ExtendedLogger
 from nupic.swarming.hypersearch.error_codes import ErrorCodes
 from nupic.swarming.utils import clippedObj, validate
 from nupic.database.client_jobs_dao import ClientJobsDAO
-from hypersearch_v2 import HypersearchV2
+from .hypersearch_v2 import HypersearchV2
 
 
 
@@ -151,9 +151,8 @@ class HypersearchWorker(object):
     # Each item in the list we are filtering contains:
     #  (idxIntoModelIDCtrList, (modelID, curCtr), (modelID, oldCtr))
     # We only want to keep the ones where the oldCtr != curCtr
-    changedEntries = filter(lambda x:x[1][1] != x[2][1],
-                      itertools.izip(xrange(numItems), curModelIDCtrList,
-                                     self._modelIDCtrList))
+    changedEntries = [x for x in zip(range(numItems), curModelIDCtrList,
+                                     self._modelIDCtrList) if x[1][1] != x[2][1]]
 
     if len(changedEntries) > 0:
       # Update values in our cache
@@ -200,7 +199,7 @@ class HypersearchWorker(object):
       modelParamsAndHashs = cjDAO.modelsGetParams(newModelIDs)
       modelParamsAndHashs.sort()
 
-      for (mResult, mParamsAndHash) in itertools.izip(modelInfos,
+      for (mResult, mParamsAndHash) in zip(modelInfos,
                                                   modelParamsAndHashs):
 
         modelID = mResult.modelId
@@ -314,7 +313,7 @@ class HypersearchWorker(object):
     try:
       exit = False
       numModelsTotal = 0
-      print >>sys.stderr, "reporter:status:Evaluating first model..."
+      print("reporter:status:Evaluating first model...", file=sys.stderr)
       while not exit:
 
         # ------------------------------------------------------------------
@@ -451,9 +450,9 @@ class HypersearchWorker(object):
 
         self.logger.info("COMPLETED MODEL GID=%d; EVALUATED %d MODELs",
           modelIDToRun, numModelsTotal)
-        print >>sys.stderr, "reporter:status:Evaluated %d models..." % \
-                                    (numModelsTotal)
-        print >>sys.stderr, "reporter:counter:HypersearchWorker,numModels,1"
+        print("reporter:status:Evaluated %d models..." % \
+                                    (numModelsTotal), file=sys.stderr)
+        print("reporter:counter:HypersearchWorker,numModels,1", file=sys.stderr)
 
         if options.modelID is not None:
           exit = True
@@ -464,7 +463,7 @@ class HypersearchWorker(object):
       self._hs.close()
 
     self.logger.info("FINISHED. Evaluated %d models." % (numModelsTotal))
-    print >>sys.stderr, "reporter:status:Finished, evaluated %d models" % (numModelsTotal)
+    print("reporter:status:Finished, evaluated %d models" % (numModelsTotal), file=sys.stderr)
     return options.jobID
 
 
@@ -543,11 +542,11 @@ def main(argv):
     try:
       jobID = hst.run()
 
-    except Exception, e:
+    except Exception as e:
       jobID = options.jobID
-      msg = StringIO.StringIO()
-      print >>msg, "%s: Exception occurred in Hypersearch Worker: %r" % \
-         (ErrorCodes.hypersearchLogicErr, e)
+      msg = io.StringIO()
+      print("%s: Exception occurred in Hypersearch Worker: %r" % \
+         (ErrorCodes.hypersearchLogicErr, e), file=msg)
       traceback.print_exc(None, msg)
 
       completionReason = ClientJobsDAO.CMPL_REASON_ERROR
@@ -576,7 +575,7 @@ def main(argv):
 
     try:
       jobID = hst.run()
-    except Exception, e:
+    except Exception as e:
       jobID = hst._options.jobID
       completionReason = ClientJobsDAO.CMPL_REASON_ERROR
       completionMsg = "ERROR: %s" % (e,)

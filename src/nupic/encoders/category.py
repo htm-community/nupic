@@ -66,7 +66,7 @@ class CategoryEncoder(Encoder):
     self.categoryToIndex = dict()
     self.indexToCategory = dict()
     self.indexToCategory[0] = UNKNOWN
-    for i in xrange(len(categoryList)):
+    for i in range(len(categoryList)):
       self.categoryToIndex[categoryList[i]] = i+1
       self.indexToCategory[i+1] = categoryList[i]
 
@@ -130,8 +130,8 @@ class CategoryEncoder(Encoder):
       self.encoder.encodeIntoArray(val, output)
 
     if self.verbosity >= 2:
-      print "input:", input, "va:", val, "output:", output
-      print "decoded:", self.decodedToStr(self.decode(output))
+      print("input:", input, "va:", val, "output:", output)
+      print("decoded:", self.decodedToStr(self.decode(output)))
 
 
   def decode(self, encoded, parentFieldName=''):
@@ -148,7 +148,7 @@ class CategoryEncoder(Encoder):
 
     # Get the list of categories the scalar values correspond to and
     #  generate the description from the category name(s).
-    (inRanges, inDesc) = fieldsDict.values()[0]
+    (inRanges, inDesc) = list(fieldsDict.values())[0]
     outRanges = []
     desc = ""
     for (minV, maxV) in inRanges:
@@ -245,7 +245,7 @@ class CategoryEncoder(Encoder):
                                for x in proto.indexToCategory}
     encoder.categoryToIndex = {category: index
                                for index, category
-                               in encoder.indexToCategory.items()
+                               in list(encoder.indexToCategory.items())
                                if category != UNKNOWN}
     encoder._topDownMappingM = None
     encoder.ncategories = len(proto.indexToCategory)
@@ -259,7 +259,7 @@ class CategoryEncoder(Encoder):
     proto.width = self.width
     proto.indexToCategory = [
       {"index": index, "category": category}
-      for index, category in self.indexToCategory.items()
+      for index, category in list(self.indexToCategory.items())
     ]
     proto.name = self.name
     proto.verbosity = self.verbosity

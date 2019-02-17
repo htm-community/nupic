@@ -139,7 +139,7 @@ def _fixupRandomEncoderParams(params, minVal, maxVal, minResolution):
     params["modelConfig"]["modelParams"]["sensorParams"]["encoders"]
   )
 
-  for encoder in encodersDict.itervalues():
+  for encoder in encodersDict.values():
     if encoder is not None:
       if encoder["type"] == "RandomDistributedScalarEncoder":
         resolution = max(minResolution,

@@ -82,7 +82,7 @@ class NetworkTwoNodeTest(unittest.TestCase):
     # compute() behavior.
     l1output = level1.getOutputData("bottomUpOut")
     self.assertEquals(len(l1output), 48) # 24 nodes; 2 values per node
-    for i in xrange(24):
+    for i in range(24):
       self.assertEquals(l1output[2*i], 0)      # size of input to each node is 0
       self.assertEquals(l1output[2*i+1], i)    # node number
 
@@ -104,7 +104,7 @@ class NetworkTwoNodeTest(unittest.TestCase):
     outputVals.append(3 + (12 + 13 + 18 + 19))
     outputVals.append(4 + (14 + 15 + 20 + 21))
     outputVals.append(5 + (16 + 17 + 22 + 23))
-    for i in xrange(6):
+    for i in range(6):
       self.assertEquals(l2output[2*i], 8) # size of input for each node is 8
       self.assertEquals(l2output[2*i+1], outputVals[i])
 
@@ -121,11 +121,11 @@ class NetworkTwoNodeTest(unittest.TestCase):
 
     # Outputs are all the same except that the first output is
     # incremented by the iteration number
-    for i in xrange(24):
+    for i in range(24):
       self.assertEquals(l1output[2*i], 1)
       self.assertEquals(l1output[2*i+1], i)
 
-    for i in xrange(6):
+    for i in range(6):
       self.assertEquals(l2output[2*i], 9)
       self.assertEquals(l2output[2*i+1], outputVals[i] + 4)
 

@@ -39,7 +39,7 @@ np.random.seed(_SEED)
 
 def _printOneTrainingVector(x):
   "Print a single vector succinctly."
-  print ''.join('1' if k != 0 else '.' for k in x)
+  print(''.join('1' if k != 0 else '.' for k in x))
 
 
 def _getSimplePatterns(numOnes, numPatterns):
@@ -49,7 +49,7 @@ def _getSimplePatterns(numOnes, numPatterns):
 
   numCols = numOnes * numPatterns
   p = []
-  for i in xrange(numPatterns):
+  for i in range(numPatterns):
     x = np.zeros(numCols, dtype='float32')
     x[i*numOnes:(i + 1)*numOnes] = 1
     p.append(x)
@@ -124,10 +124,10 @@ class TMConstantTest(unittest.TestCase):
           tm.learn(seq)
         tm.reset()
 
-    print "Learning completed"
+    print("Learning completed")
 
     # Infer
-    print "Running inference"
+    print("Running inference")
 
     tm.collectStats = True
     for seq in trainingSet[0:5]:
@@ -136,20 +136,20 @@ class TMConstantTest(unittest.TestCase):
       for _ in range(10):
         tm.infer(seq)
         if VERBOSITY > 1 :
-          print
+          print()
           _printOneTrainingVector(seq)
           tm.printStates(False, False)
-          print
-          print
+          print()
+          print()
       if VERBOSITY > 1:
-        print tm.getStats()
+        print(tm.getStats())
 
       # Ensure our predictions are accurate for each sequence
       self.assertGreater(tm.getStats()['predictionScoreAvg2'], 0.8)
-      print ("tm.getStats()['predictionScoreAvg2'] = ",
-             tm.getStats()['predictionScoreAvg2'])
+      print(("tm.getStats()['predictionScoreAvg2'] = ",
+             tm.getStats()['predictionScoreAvg2']))
 
-    print "TMConstant basicTest ok"
+    print("TMConstant basicTest ok")
 
 
   def testCppTmBasic(self):

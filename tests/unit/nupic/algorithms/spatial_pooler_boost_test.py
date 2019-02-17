@@ -43,8 +43,8 @@ def _computeOverlap(x, y):
 
 def _areAllSDRsUnique(sdrDict):
   """Return True iff all the SDR's in the dict are unique."""
-  for k1, v1 in sdrDict.iteritems():
-    for k2, v2 in sdrDict.iteritems():
+  for k1, v1 in sdrDict.items():
+    for k2, v2 in sdrDict.items():
       # Return false if two different keys have identical SDR's
       if (k2 != k1) and ((v1 == v2).sum() == v1.size):
         return False
@@ -134,7 +134,7 @@ class SpatialPoolerBoostTest(unittest.TestCase):
       'boostStrength':              10.0,
       'seed':                       SEED,
     }
-    print "SP seed set to:", self.params['seed']
+    print("SP seed set to:", self.params['seed'])
 
   def debugPrint(self):
     """
@@ -146,22 +146,22 @@ class SpatialPoolerBoostTest(unittest.TestCase):
     
     boost = numpy.zeros(self.columnDimensions, dtype=GetNTAReal())
     self.sp.getBoostFactors(boost)
-    print "\n--------- ITERATION", (
-      self.sp.getIterationNum() ),"-----------------------"
-    print "SP implementation:", self.spImplementation
-    print "Learning iteration:",
-    print "Max/min active duty cycle:", (
-      activeDutyCycle.max(), activeDutyCycle.min() )
-    print "Average non-zero active duty cycle:", (
-      activeDutyCycle[activeDutyCycle>0].mean() )
-    print "Active duty cycle", activeDutyCycle
-    print
-    print "Boost factor for sp:", boost
-    print
-    print "Last winning iteration for each column"
-    print self.winningIteration
-    print "Number of columns that have won at some point:", (
-      self.columnDimensions - (self.winningIteration==0).sum() )
+    print("\n--------- ITERATION", (
+      self.sp.getIterationNum() ),"-----------------------")
+    print("SP implementation:", self.spImplementation)
+    print("Learning iteration:", end=' ')
+    print("Max/min active duty cycle:", (
+      activeDutyCycle.max(), activeDutyCycle.min() ))
+    print("Average non-zero active duty cycle:", (
+      activeDutyCycle[activeDutyCycle>0].mean() ))
+    print("Active duty cycle", activeDutyCycle)
+    print()
+    print("Boost factor for sp:", boost)
+    print()
+    print("Last winning iteration for each column")
+    print(self.winningIteration)
+    print("Number of columns that have won at some point:", (
+      self.columnDimensions - (self.winningIteration==0).sum() ))
 
     
   def verifySDRProperties(self):

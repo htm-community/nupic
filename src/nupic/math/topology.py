@@ -45,7 +45,7 @@ def coordinatesFromIndex(index, dimensions):
   coordinates = [0] * len(dimensions)
 
   shifted = index
-  for i in xrange(len(dimensions) - 1, 0, -1):
+  for i in range(len(dimensions) - 1, 0, -1):
     coordinates[i] = shifted % dimensions[i]
     shifted = shifted / dimensions[i]
 
@@ -113,7 +113,7 @@ def neighborhood(centerIndex, radius, dimensions):
   for i, dimension in enumerate(dimensions):
     left = max(0, centerPosition[i] - radius)
     right = min(dimension - 1, centerPosition[i] + radius)
-    intervals.append(xrange(left, right + 1))
+    intervals.append(range(left, right + 1))
 
   coords = numpy.array(list(itertools.product(*intervals)))
   return numpy.ravel_multi_index(coords.T, dimensions)
@@ -145,7 +145,7 @@ def wrappingNeighborhood(centerIndex, radius, dimensions):
     left = centerPosition[i] - radius
     right = min(centerPosition[i] + radius,
                 left + dimensions[i] - 1)
-    interval = [v % dimension for v in xrange(left, right + 1)]
+    interval = [v % dimension for v in range(left, right + 1)]
     intervals.append(interval)
 
   coords = numpy.array(list(itertools.product(*intervals)))

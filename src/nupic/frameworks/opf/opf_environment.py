@@ -36,11 +36,10 @@ from collections import namedtuple
 
 
 
-class PredictionLoggerIface(object):
+class PredictionLoggerIface(object, metaclass=ABCMeta):
   """
   This class defines the interface for OPF prediction logger implementations.
   """
-  __metaclass__ = ABCMeta
 
   @abstractmethod
   def close(self):

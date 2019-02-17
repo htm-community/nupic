@@ -56,7 +56,7 @@ from collections import defaultdict
 import itertools
 import logging
 
-from prediction_metrics_manager import (
+from .prediction_metrics_manager import (
   MetricsManager,
   )
 
@@ -343,8 +343,7 @@ class _PhaseManager(object):
     self.__model = model
 
     # Instantiate Iteration Phase drivers
-    self.__phases = tuple(map(lambda x: x._getImpl(model=model),
-                              phaseSpecs))
+    self.__phases = tuple([x._getImpl(model=model) for x in phaseSpecs])
 
     # Init phase-management structures
     if self.__phases:
@@ -363,7 +362,7 @@ class _PhaseManager(object):
   def __advancePhase(self):
     """ Advance to the next iteration cycle phase
     """
-    self.__currentPhase = self.__phaseCycler.next()
+    self.__currentPhase = next(self.__phaseCycler)
     self.__currentPhase.enterPhase()
 
     return
@@ -396,11 +395,9 @@ class _PhaseManager(object):
 
 
 
-class _IterationPhase(object):
+class _IterationPhase(object, metaclass=ABCMeta):
   """ Interface for IterationPhaseXXXXX classes
   """
-
-  __metaclass__ = ABCMeta
 
   def __init__(self, nIters):
     """
@@ -419,10 +416,10 @@ class _IterationPhase(object):
     be called before handleInputRecord() at the beginning of each phase
     """
 
-    self.__iter = iter(xrange(self.__nIters))
+    self.__iter = iter(range(self.__nIters))
 
     # Prime the iterator
-    self.__iter.next()
+    next(self.__iter)
 
 
   def advance(self):
@@ -433,7 +430,7 @@ class _IterationPhase(object):
     """
     hasMore = True
     try:
-      self.__iter.next()
+      next(self.__iter)
     except StopIteration:
       self.__iter = None
       hasMore = False

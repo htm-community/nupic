@@ -437,14 +437,14 @@ class KNNClassifier(Serializable):
     :returns: The number of patterns currently stored in the classifier
     """
     if self.verbosity >= 1:
-      print "%s learn:" % g_debugPrefix
-      print "  category:", int(inputCategory)
-      print "  active inputs:", _labeledInput(inputPattern,
-                                              cellsPerCol=self.cellsPerCol)
+      print("%s learn:" % g_debugPrefix)
+      print("  category:", int(inputCategory))
+      print("  active inputs:", _labeledInput(inputPattern,
+                                              cellsPerCol=self.cellsPerCol))
 
     if isSparse > 0:
       assert all(inputPattern[i] <= inputPattern[i+1]
-                 for i in xrange(len(inputPattern)-1)), \
+                 for i in range(len(inputPattern)-1)), \
                      "Sparse inputPattern must be sorted."
       assert all(bit < isSparse for bit in inputPattern), \
         ("Sparse inputPattern must not index outside the dense "
@@ -742,13 +742,13 @@ class KNNClassifier(Serializable):
       categoryDist.clip(0, 1.0, categoryDist)
 
     if self.verbosity >= 1:
-      print "%s infer:" % (g_debugPrefix)
-      print "  active inputs:",  _labeledInput(inputPattern,
-                                               cellsPerCol=self.cellsPerCol)
-      print "  winner category:", winner
-      print "  pct neighbors of each category:", inferenceResult
-      print "  dist of each prototype:", dist
-      print "  dist of each category:", categoryDist
+      print("%s infer:" % (g_debugPrefix))
+      print("  active inputs:",  _labeledInput(inputPattern,
+                                               cellsPerCol=self.cellsPerCol))
+      print("  winner category:", winner)
+      print("  pct neighbors of each category:", inferenceResult)
+      print("  dist of each prototype:", dist)
+      print("  dist of each category:", categoryDist)
 
     result = (winner, inferenceResult, dist, categoryDist)
     return result
@@ -905,7 +905,7 @@ class KNNClassifier(Serializable):
     """
     :returns: a list containing unique (non-None) partition Ids (just the keys)
     """
-    return self._partitionIdMap.keys()
+    return list(self._partitionIdMap.keys())
 
 
   def getPatternIndicesWithPartitionId(self, partitionId):
@@ -1091,10 +1091,10 @@ class KNNClassifier(Serializable):
     v = singularValues/singularValues[0]
     idx = numpy.where(v<fractionOfMax)[0]
     if len(idx):
-      print "Number of PCA dimensions chosen: ", idx[0], "out of ", len(v)
+      print("Number of PCA dimensions chosen: ", idx[0], "out of ", len(v))
       return idx[0]
     else:
-      print "Number of PCA dimensions chosen: ", len(v)-1, "out of ", len(v)
+      print("Number of PCA dimensions chosen: ", len(v)-1, "out of ", len(v))
       return len(v)-1
 
 
@@ -1117,11 +1117,11 @@ class KNNClassifier(Serializable):
 
 
     if self._vt.shape[0] < self.numSVDDims:
-      print "******************************************************************"
+      print("******************************************************************")
       print ("Warning: The requested number of PCA dimensions is more than "
              "the number of pattern dimensions.")
-      print "Setting numSVDDims = ", self._vt.shape[0]
-      print "******************************************************************"
+      print("Setting numSVDDims = ", self._vt.shape[0])
+      print("******************************************************************")
       self.numSVDDims = self._vt.shape[0]
 
     self._vt = self._vt[:self.numSVDDims]
@@ -1153,7 +1153,7 @@ class KNNClassifier(Serializable):
     categoryArray = numpy.array(self._categoryList)
     newCategoryArray = numpy.zeros(categoryArray.shape[0])
     newCategoryArray.fill(-1)
-    for i in xrange(len(mapping)):
+    for i in range(len(mapping)):
       newCategoryArray[categoryArray==i] = mapping[i]
     self._categoryList = list(newCategoryArray)
 
@@ -1176,7 +1176,7 @@ class KNNClassifier(Serializable):
     elif not hasattr(categoryIndices, "__iter__"):
       categoryIndices = [categoryIndices] * len(vectorIndices)
 
-    for i in xrange(len(vectorIndices)):
+    for i in range(len(vectorIndices)):
       vectorIndex = vectorIndices[i]
       categoryIndex = categoryIndices[i]
 

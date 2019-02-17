@@ -44,7 +44,7 @@ def _sampleDistribution(params, numSamples, verbosity=0):
 
   :returns: A numpy array of samples.
   """
-  if params.has_key("name"):
+  if "name" in params:
     if params["name"] == "normal":
       samples = numpy.random.normal(loc=params["mean"],
                                     scale=math.sqrt(params["variance"]),
@@ -60,9 +60,9 @@ def _sampleDistribution(params, numSamples, verbosity=0):
     raise ValueError("Bad distribution params: " + str(params))
 
   if verbosity > 0:
-    print "\nSampling from distribution:", params
-    print "After estimation, mean=", numpy.mean(samples), \
-          "var=", numpy.var(samples), "stdev=", math.sqrt(numpy.var(samples))
+    print("\nSampling from distribution:", params)
+    print("After estimation, mean=", numpy.mean(samples), \
+          "var=", numpy.var(samples), "stdev=", math.sqrt(numpy.var(samples)))
   return samples
 
 
@@ -463,10 +463,10 @@ class AnomalyLikelihoodAlgorithmTest(TestCaseBase):
   def testEstimateAnomalyLikelihoodsCategoryValues(self):
     start = datetime.datetime(2017, 1, 1, 0, 0, 0)
     delta = datetime.timedelta(minutes=5)
-    dts = [start + (i * delta) for i in xrange(10)]
+    dts = [start + (i * delta) for i in range(10)]
     values = ["a", "b", "c", "d", "e"] * 2
-    rawScores = [0.1 * i for i in xrange(10)]
-    data = zip(dts, values, rawScores)
+    rawScores = [0.1 * i for i in range(10)]
+    data = list(zip(dts, values, rawScores))
 
     likelihoods, avgRecordList, estimatorParams = (
       an.estimateAnomalyLikelihoods(data)

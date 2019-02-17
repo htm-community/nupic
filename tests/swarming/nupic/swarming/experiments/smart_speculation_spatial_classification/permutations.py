@@ -96,7 +96,7 @@ def dummyModelParams(perm):
   #  speculative models
   encoderCount = 0
   encoders = perm['modelParams']['sensorParams']['encoders']
-  for field,encoder in encoders.items():
+  for field,encoder in list(encoders.items()):
    	if encoder is not None:
    		encoderCount += 1
 

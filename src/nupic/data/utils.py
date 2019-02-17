@@ -146,8 +146,8 @@ def escape(s):
   if s is None:
     return ''
 
-  assert isinstance(s, basestring), \
-        "expected %s but got %s; value=%s" % (basestring, type(s), s)
+  assert isinstance(s, str), \
+        "expected %s but got %s; value=%s" % (str, type(s), s)
   s = s.replace('\\', '\\\\')
   s = s.replace('\n', '\\n')
   s = s.replace('\t', '\\t')
@@ -165,7 +165,7 @@ def unescape(s):
   :param s: (string) to unescape
   :returns: (string) unescaped string
   """
-  assert isinstance(s, basestring)
+  assert isinstance(s, str)
   s = s.replace('\t', ',')
   s = s.replace('\\,', ',')
   s = s.replace('\\n', '\n')
@@ -182,7 +182,7 @@ def parseSdr(s):
   :param s: (string) string to parse
   :returns: (list) SDR out
   """
-  assert isinstance(s, basestring)
+  assert isinstance(s, str)
   sdr = [int(c) for c in s if c in ("0", "1")]
   if len(sdr) != len(s):
     raise ValueError("The provided string %s is malformed. The string should "
@@ -211,7 +211,7 @@ def parseStringList(s):
   :param s: (string) to parse
   :returns: (list) binary SDR
   """
-  assert isinstance(s, basestring)
+  assert isinstance(s, str)
   return [int(i) for i in s.split()]
 
 

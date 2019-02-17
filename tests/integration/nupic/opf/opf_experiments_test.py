@@ -50,12 +50,12 @@ def getAllDirectoriesWithFile(path, filename, excludeDirs):
     for d in dirnames[:]:
       if d in excludeDirs:
         dirnames.remove(d)
-        print "EXCLUDING %s..." % (os.path.join(dirpath, d))
+        print("EXCLUDING %s..." % (os.path.join(dirpath, d)))
         
       # If this directory is UNDER_DEVELOPMENT, exclude it
       elif 'UNDER_DEVELOPMENT' in os.listdir(os.path.join(dirpath, d)):
         dirnames.remove(d)
-        print "EXCLUDING %s..." % (os.path.join(dirpath, d))
+        print("EXCLUDING %s..." % (os.path.join(dirpath, d)))
 
     for f in filenames:
       if f==filename:
@@ -106,25 +106,25 @@ class OPFExperimentsTest(unittest.TestCase):
     successExperiments = []
     for expDirPath in expDirPathList:
       if os.path.exists(os.path.join(expDirPath, "UNDER_DEVELOPMENT")):
-        print "Skipping experiment: %s -- under development" % expDirPath
+        print("Skipping experiment: %s -- under development" % expDirPath)
         continue
-      print "Running experiment: %s" % expDirPath
+      print("Running experiment: %s" % expDirPath)
       try:
         if RUN_ALL_ITERATIONS:
           runReducedExperiment(expDirPath, False)
         else:
           runReducedExperiment(expDirPath)
       except KeyboardInterrupt:
-        print "Keyboard interrupt received. Exiting"
+        print("Keyboard interrupt received. Exiting")
         sys.exit(1)
       except:
         failedExperiments.append(expDirPath)
-        print
-        print "Unable to run experiment: %s" % expDirPath
-        print "See the trace below-"
+        print()
+        print("Unable to run experiment: %s" % expDirPath)
+        print("See the trace below-")
         traceback.print_exc()
       else:
-        print "Successfully ran experiment: %s" % expDirPath
+        print("Successfully ran experiment: %s" % expDirPath)
         successExperiments.append(expDirPath)
 
     self.assertEqual(len(failedExperiments), 0)

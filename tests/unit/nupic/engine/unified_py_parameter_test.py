@@ -41,8 +41,8 @@ class NetworkUnifiedPyParameterTest(unittest.TestCase):
     scalars = [
       ("int32Param", 32, int, 35),
       ("uint32Param", 33, int, 36),
-      ("int64Param", 64, long, 74),
-      ("uint64Param", 65, long, 75),
+      ("int64Param", 64, int, 74),
+      ("uint64Param", 65, int, 75),
       ("real32Param", 32.1, float, 33.1),
       ("real64Param", 64.1, float, 65.1),
       ("stringParam", "nodespec value", str, "new value")]
@@ -90,10 +90,10 @@ class NetworkUnifiedPyParameterTest(unittest.TestCase):
       self.assertTrue(isinstance(x, nupic.bindings.engine_internal.Array))
       self.assertEqual(x.getType(), paramtype)
       self.assertEqual(len(x), len(initval))
-      for i in xrange(len(x)):
+      for i in range(len(x)):
         self.assertEqual(x[i], initval[i])
 
-      for i in xrange(len(x)):
+      for i in range(len(x)):
         x[i] = x[i] * 2
       l1.setParameter(paramName, x)
 
@@ -101,7 +101,7 @@ class NetworkUnifiedPyParameterTest(unittest.TestCase):
       self.assertTrue(isinstance(x, nupic.bindings.engine_internal.Array))
       self.assertEqual(x.getType(), paramtype)
       self.assertEqual(len(x), len(initval))
-      for i in xrange(len(x)):
+      for i in range(len(x)):
         self.assertEqual(x[i], 2 * initval[i])
 
 

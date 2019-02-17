@@ -19,7 +19,7 @@
 # http://numenta.org/licenses/
 # ----------------------------------------------------------------------
 
-from cStringIO import StringIO
+from io import StringIO
 import sys
 import tempfile
 import unittest2 as unittest
@@ -316,12 +316,12 @@ class RandomDistributedScalarEncoderTest(unittest.TestCase):
     encoder = RandomDistributedScalarEncoder(name="encoder", resolution=1.0,
                                              w=5, n=5*20)
     midIdx = encoder._maxBuckets/2
-    encoder.bucketMap[midIdx-2] = numpy.array(range(3, 8))
-    encoder.bucketMap[midIdx-1] = numpy.array(range(4, 9))
-    encoder.bucketMap[midIdx]   = numpy.array(range(5, 10))
-    encoder.bucketMap[midIdx+1] = numpy.array(range(6, 11))
-    encoder.bucketMap[midIdx+2] = numpy.array(range(7, 12))
-    encoder.bucketMap[midIdx+3] = numpy.array(range(8, 13))
+    encoder.bucketMap[midIdx-2] = numpy.array(list(range(3, 8)))
+    encoder.bucketMap[midIdx-1] = numpy.array(list(range(4, 9)))
+    encoder.bucketMap[midIdx]   = numpy.array(list(range(5, 10)))
+    encoder.bucketMap[midIdx+1] = numpy.array(list(range(6, 11)))
+    encoder.bucketMap[midIdx+2] = numpy.array(list(range(7, 12)))
+    encoder.bucketMap[midIdx+3] = numpy.array(list(range(8, 13)))
     encoder.minIndex = midIdx - 2
     encoder.maxIndex = midIdx + 3
 
@@ -350,14 +350,14 @@ class RandomDistributedScalarEncoderTest(unittest.TestCase):
     encoder = RandomDistributedScalarEncoder(name="encoder", resolution=1.0,
                                              w=5, n=5*20)
     midIdx = encoder._maxBuckets/2
-    encoder.bucketMap[midIdx-3] = numpy.array(range(4, 9)) # Not ok with
+    encoder.bucketMap[midIdx-3] = numpy.array(list(range(4, 9))) # Not ok with
                                                            # midIdx-1
-    encoder.bucketMap[midIdx-2] = numpy.array(range(3, 8))
-    encoder.bucketMap[midIdx-1] = numpy.array(range(4, 9))
-    encoder.bucketMap[midIdx]   = numpy.array(range(5, 10))
-    encoder.bucketMap[midIdx+1] = numpy.array(range(6, 11))
-    encoder.bucketMap[midIdx+2] = numpy.array(range(7, 12))
-    encoder.bucketMap[midIdx+3] = numpy.array(range(8, 13))
+    encoder.bucketMap[midIdx-2] = numpy.array(list(range(3, 8)))
+    encoder.bucketMap[midIdx-1] = numpy.array(list(range(4, 9)))
+    encoder.bucketMap[midIdx]   = numpy.array(list(range(5, 10)))
+    encoder.bucketMap[midIdx+1] = numpy.array(list(range(6, 11)))
+    encoder.bucketMap[midIdx+2] = numpy.array(list(range(7, 12)))
+    encoder.bucketMap[midIdx+3] = numpy.array(list(range(8, 13)))
     encoder.minIndex = midIdx - 3
     encoder.maxIndex = midIdx + 3
 
@@ -488,7 +488,7 @@ class RandomDistributedScalarEncoderTest(unittest.TestCase):
                      encoder.decode(encodedFromOriginal))
     self.assertEqual(original.random.getSeed(), encoder.random.getSeed())
 
-    for key, value in original.bucketMap.items():
+    for key, value in list(original.bucketMap.items()):
       self.assertTrue(numpy.array_equal(value, encoder.bucketMap[key]))
 
 

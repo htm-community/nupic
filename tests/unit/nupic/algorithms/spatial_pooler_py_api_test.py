@@ -21,7 +21,7 @@
 
 from mock import Mock, patch, ANY, call
 import numpy
-import cPickle as pickle
+import pickle as pickle
 import unittest2 as unittest
 
 from nupic.bindings.math import GetNTAReal

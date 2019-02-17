@@ -29,7 +29,7 @@ from nupic.support.unittesthelpers.abstract_temporal_memory_test import Abstract
 
 
 
-class ExtensiveTemporalMemoryTest(AbstractTemporalMemoryTest):
+class ExtensiveTemporalMemoryTest(AbstractTemporalMemoryTest, metaclass=ABCMeta):
   """
   ==============================================================================
                   Basic First Order Sequences
@@ -188,12 +188,11 @@ class ExtensiveTemporalMemoryTest(AbstractTemporalMemoryTest):
   when presented with the second A and B is different from the representation
   in the first presentation. [TODO]
   """
-  __metaclass__ = ABCMeta
 
   VERBOSITY = 1
 
   def getPatternMachine(self):
-    return PatternMachine(100, range(21, 26), num=300)
+    return PatternMachine(100, list(range(21, 26)), num=300)
 
   def getDefaultTMParams(self):
     return {
@@ -301,7 +300,7 @@ class ExtensiveTemporalMemoryTest(AbstractTemporalMemoryTest):
     numbers = self.sequenceMachine.generateNumbers(1, 100)
     sequence = self.sequenceMachine.generateFromNumbers(numbers)
 
-    for _ in xrange(4):
+    for _ in range(4):
       self.feedTM(sequence)
 
     self._testTM(sequence)
@@ -320,7 +319,7 @@ class ExtensiveTemporalMemoryTest(AbstractTemporalMemoryTest):
     numbers = self.sequenceMachine.generateNumbers(1, 100)
     sequence = self.sequenceMachine.generateFromNumbers(numbers)
 
-    for _ in xrange(4):
+    for _ in range(4):
       self.feedTM(sequence)
 
     self._testTM(sequence)
@@ -338,7 +337,7 @@ class ExtensiveTemporalMemoryTest(AbstractTemporalMemoryTest):
     numbers = self.sequenceMachine.generateNumbers(1, 100)
     sequence = self.sequenceMachine.generateFromNumbers(numbers)
 
-    for _ in xrange(3):
+    for _ in range(3):
       self.feedTM(sequence)
 
     self._testTM(sequence)
@@ -400,7 +399,7 @@ class ExtensiveTemporalMemoryTest(AbstractTemporalMemoryTest):
     numbers = self.sequenceMachine.generateNumbers(2, 20, (10, 15))
     sequence = self.sequenceMachine.generateFromNumbers(numbers)
 
-    for _ in xrange(10):
+    for _ in range(10):
       self.feedTM(sequence)
 
     self._testTM(sequence)
@@ -453,12 +452,12 @@ class ExtensiveTemporalMemoryTest(AbstractTemporalMemoryTest):
     self.init({"cellsPerColumn": 4})
 
     numbers = []
-    for _ in xrange(2):
+    for _ in range(2):
       numbers += self.sequenceMachine.generateNumbers(1, 20)
 
     sequence = self.sequenceMachine.generateFromNumbers(numbers)
 
-    for _ in xrange(20):
+    for _ in range(20):
       self.feedTM(sequence)
 
     self._testTM(sequence)
@@ -476,14 +475,14 @@ class ExtensiveTemporalMemoryTest(AbstractTemporalMemoryTest):
 
     numbers = []
     shared = self.sequenceMachine.generateNumbers(1, 5)[:-1]
-    for _ in xrange(2):
+    for _ in range(2):
       sublist = self.sequenceMachine.generateNumbers(1, 20)
-      sublist = [x for x in sublist if x not in xrange(5)]
+      sublist = [x for x in sublist if x not in range(5)]
       numbers += sublist[0:10] + shared + sublist[10:]
 
     sequence = self.sequenceMachine.generateFromNumbers(numbers)
 
-    for _ in xrange(20):
+    for _ in range(20):
       self.feedTM(sequence)
 
     self._testTM(sequence)
@@ -504,7 +503,7 @@ class ExtensiveTemporalMemoryTest(AbstractTemporalMemoryTest):
     numbers = self.sequenceMachine.generateNumbers(2, 20, (10, 15))
     sequence = self.sequenceMachine.generateFromNumbers(numbers)
 
-    for _ in xrange(10):
+    for _ in range(10):
       self.feedTM(sequence)
 
     sequence = self.sequenceMachine.addSpatialNoise(sequence, 0.05)
@@ -530,7 +529,7 @@ class ExtensiveTemporalMemoryTest(AbstractTemporalMemoryTest):
     sequence = self.sequenceMachine.generateFromNumbers(numbers)
 
     sequenceNoisy = dict()
-    for i in xrange(10):
+    for i in range(10):
       sequenceNoisy[i] = self.sequenceMachine.addSpatialNoise(sequence, 0.05)
       self.feedTM(sequenceNoisy[i])
     self.tm.mmClearHistory()
@@ -551,7 +550,7 @@ class ExtensiveTemporalMemoryTest(AbstractTemporalMemoryTest):
                "minThreshold": 8,
                "predictedSegmentDecrement": 0.04})
 
-    for i in xrange(10):
+    for i in range(10):
       self.feedTM(sequenceNoisy[i])
     self.tm.mmClearHistory()
 
@@ -576,12 +575,12 @@ class ExtensiveTemporalMemoryTest(AbstractTemporalMemoryTest):
   def setUp(self):
     super(ExtensiveTemporalMemoryTest, self).setUp()
 
-    print ("\n"
+    print(("\n"
            "======================================================\n"
            "Test: {0} \n"
            "{1}\n"
            "======================================================\n"
-    ).format(self.id(), self.shortDescription())
+    ).format(self.id(), self.shortDescription()))
 
 
   def feedTM(self, sequence, learn=True, num=1):
@@ -589,12 +588,12 @@ class ExtensiveTemporalMemoryTest(AbstractTemporalMemoryTest):
       sequence, learn=learn, num=num)
 
     if self.VERBOSITY >= 2:
-      print self.tm.mmPrettyPrintTraces(
-        self.tm.mmGetDefaultTraces(verbosity=self.VERBOSITY-1))
-      print
+      print(self.tm.mmPrettyPrintTraces(
+        self.tm.mmGetDefaultTraces(verbosity=self.VERBOSITY-1)))
+      print()
 
     if learn and self.VERBOSITY >= 3:
-      print self.tm.mmPrettyPrintConnections()
+      print(self.tm.mmPrettyPrintConnections())
 
 
   # ==============================
@@ -604,7 +603,7 @@ class ExtensiveTemporalMemoryTest(AbstractTemporalMemoryTest):
   def _testTM(self, sequence):
     self.feedTM(sequence, learn=False)
 
-    print self.tm.mmPrettyPrintMetrics(self.tm.mmGetDefaultMetrics())
+    print(self.tm.mmPrettyPrintMetrics(self.tm.mmGetDefaultMetrics()))
 
 
   def assertAllActiveWerePredicted(self):

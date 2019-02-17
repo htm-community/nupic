@@ -41,9 +41,9 @@ def getNumpyRandomGenerator(seed = None):
   """
   if seed is None:
     seed = int((time.time()%10000)*10)
-  print "Numpy seed set to:", seed, "called by",
+  print("Numpy seed set to:", seed, "called by", end=' ')
   callStack = traceback.extract_stack(limit=3)
-  print callStack[0][2], "line", callStack[0][1], "->", callStack[1][2]
+  print(callStack[0][2], "line", callStack[0][1], "->", callStack[1][2])
   return numpy.random.RandomState(seed)
 
 
@@ -55,7 +55,7 @@ def convertPermanences(sourceSP, destSP):
   """
   numColumns = sourceSP.getNumColumns()
   numInputs = sourceSP.getNumInputs()
-  for i in xrange(numColumns):
+  for i in range(numColumns):
     potential = numpy.zeros(numInputs).astype(uintType)
     sourceSP.getPotential(i, potential)
     destSP.setPotential(i, potential)
@@ -69,9 +69,9 @@ def convertPermanences(sourceSP, destSP):
 def getSeed():
   """Generate and log a 32-bit compatible seed value."""
   seed = int((time.time()%10000)*10)
-  print "New seed generated as:", seed, "called by",
+  print("New seed generated as:", seed, "called by", end=' ')
   callStack = traceback.extract_stack(limit=3)
-  print callStack[0][2], "line", callStack[0][1], "->", callStack[1][2]
+  print(callStack[0][2], "line", callStack[0][1], "->", callStack[1][2])
   return seed
 
 
@@ -128,7 +128,7 @@ def convertSP(pySp, newSeed):
   pySp.getMinOverlapDutyCycles(minOverlapDuty)
   cppSp.setMinOverlapDutyCycles(minOverlapDuty)
 
-  for i in xrange(numColumns):
+  for i in range(numColumns):
     potential = numpy.zeros(numInputs).astype(uintType)
     pySp.getPotential(i, potential)
     cppSp.setPotential(i, potential)
@@ -163,7 +163,7 @@ def CreateSP(imp, params):
   else:
     raise RuntimeError("unrecognized implementation")
 
-  print params
+  print(params)
   sp = spClass(**params)
 
   return sp

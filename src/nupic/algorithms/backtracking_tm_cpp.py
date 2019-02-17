@@ -197,7 +197,7 @@ class BacktrackingTMCPP(BacktrackingTM):
 
     # Additional CPP-specific deserialization
     newCells4 = Cells4.read(proto.cells4)
-    print newCells4
+    print(newCells4)
     obj.cells4 = newCells4
     obj.makeCells4Ephemeral = proto.makeCells4Ephemeral
     obj.seed = proto.seed
@@ -435,7 +435,7 @@ class BacktrackingTMCPP(BacktrackingTM):
     Overrides :meth:`nupic.algorithms.backtracking_tm.BacktrackingTM.reset`.
     """
     if self.verbosity >= 3:
-      print "TM Reset"
+      print("TM Reset")
     self._setStatePointers()
     self.cells4.reset()
     BacktrackingTM.reset(self)
@@ -463,7 +463,7 @@ class BacktrackingTMCPP(BacktrackingTM):
 
     # Print all cells if verbosity says to
     if self.verbosity >= 5:
-      print "Cells, all segments:"
+      print("Cells, all segments:")
       self.printCells(predictedOnly=False)
 
     return self.cells4.trimSegments(minPermanence=minPermanence, minNumSyns=minNumSyns)
@@ -483,12 +483,12 @@ class BacktrackingTMCPP(BacktrackingTM):
 
     # Sequence segment or pooling segment
     if s[0][1] == True:
-      print "S",
+      print("S", end=' ')
     else:
-      print 'P',
+      print('P', end=' ')
 
     # Frequency count
-    print s[0][2],
+    print(s[0][2], end=' ')
 
     if self._isSegmentActive(s, 't'):
       ss = '[' + str(currAct) + ']'
@@ -500,7 +500,7 @@ class BacktrackingTMCPP(BacktrackingTM):
     else:
       ss = ss + str(prevAct)
     ss = ss + ':'
-    print ss,
+    print(ss, end=' ')
 
     for i,synapse in enumerate(s[1:]):
 
@@ -518,22 +518,22 @@ class BacktrackingTMCPP(BacktrackingTM):
         ss = ss + ']'
       if i < len(s)-2:
         ss = ss + ' |'
-      print ss,
+      print(ss, end=' ')
 
     if self.verbosity > 3:
       if self._isSegmentActive(s, 't') and \
              prevAct < self.activationThreshold and currAct >= self.activationThreshold:
-        print "reached activation",
+        print("reached activation", end=' ')
       if prevAct < self.minThreshold and currAct >= self.minThreshold:
-        print "reached min threshold",
+        print("reached min threshold", end=' ')
       if self._isSegmentActive(s, 't-1') and \
              prevAct >= self.activationThreshold and currAct < self.activationThreshold:
-        print "dropped below activation",
+        print("dropped below activation", end=' ')
       if prevAct >= self.minThreshold and currAct < self.minThreshold:
-        print "dropped below min",
+        print("dropped below min", end=' ')
       if self._isSegmentActive(s, 't') and self._isSegmentActive(s, 't-1') and \
              prevAct >= self.activationThreshold and currAct >= self.activationThreshold:
-        print "maintained activation",
+        print("maintained activation", end=' ')
 
   def printSegmentUpdates(self):
     """
@@ -541,10 +541,10 @@ class BacktrackingTMCPP(BacktrackingTM):
     """
     # TODO: need to add C++ accessors to implement this method
     assert False
-    print "=== SEGMENT UPDATES ===, Num = ", len(self.segmentUpdates)
-    for key, updateList in self.segmentUpdates.iteritems():
+    print("=== SEGMENT UPDATES ===, Num = ", len(self.segmentUpdates))
+    for key, updateList in self.segmentUpdates.items():
       c,i = key[0],key[1]
-      print c,i,updateList
+      print(c,i,updateList)
 
 
   def _slowIsSegmentActive(self, seg, timeStep):
@@ -556,7 +556,7 @@ class BacktrackingTMCPP(BacktrackingTM):
 
     numSyn = seg.size()
     numActiveSyns = 0
-    for synIdx in xrange(numSyn):
+    for synIdx in range(numSyn):
       if seg.getPermanence(synIdx) < self.connectedPerm:
         continue
       sc, si = self.getColCellIdx(seg.getSrcCellIdx(synIdx))
@@ -576,30 +576,30 @@ class BacktrackingTMCPP(BacktrackingTM):
     if nSegs > 0:
       segList = self.cells4.getNonEmptySegList(c,i)
       gidx = c * self.cellsPerColumn + i
-      print "Column", c, "Cell", i, "(%d)"%(gidx),":", nSegs, "segment(s)"
+      print("Column", c, "Cell", i, "(%d)"%(gidx),":", nSegs, "segment(s)")
       for k,segIdx in enumerate(segList):
         seg = self.cells4.getSegment(c, i, segIdx)
         isActive = self._slowIsSegmentActive(seg, 't')
         if onlyActiveSegments and not isActive:
           continue
         isActiveStr = "*" if isActive else " "
-        print "  %sSeg #%-3d" % (isActiveStr, segIdx),
-        print seg.size(),
-        print seg.isSequenceSegment(), "%9.7f" % (seg.dutyCycle(
-              self.cells4.getNLrnIterations(), False, True)),
+        print("  %sSeg #%-3d" % (isActiveStr, segIdx), end=' ')
+        print(seg.size(), end=' ')
+        print(seg.isSequenceSegment(), "%9.7f" % (seg.dutyCycle(
+              self.cells4.getNLrnIterations(), False, True)), end=' ')
 
         # numPositive/totalActivations
-        print "(%4d/%-4d)" % (seg.getPositiveActivations(),
-                           seg.getTotalActivations()),
+        print("(%4d/%-4d)" % (seg.getPositiveActivations(),
+                           seg.getTotalActivations()), end=' ')
         # Age
-        print "%4d" % (self.cells4.getNLrnIterations()
-                       - seg.getLastActiveIteration()),
+        print("%4d" % (self.cells4.getNLrnIterations()
+                       - seg.getLastActiveIteration()), end=' ')
 
         numSyn = seg.size()
-        for s in xrange(numSyn):
+        for s in range(numSyn):
           sc, si = self.getColCellIdx(seg.getSrcCellIdx(s))
-          print "[%d,%d]%4.2f"%(sc, si, seg.getPermanence(s)),
-        print
+          print("[%d,%d]%4.2f"%(sc, si, seg.getPermanence(s)), end=' ')
+        print()
 
 
   def getAvgLearnedSeqLength(self):
@@ -639,7 +639,7 @@ class BacktrackingTMCPP(BacktrackingTM):
                    seg.getLastPosDutyCycle(),
                    seg.getLastPosDutyCycleIteration()])
 
-    for s in xrange(numSyn):
+    for s in range(numSyn):
       sc, si = self.getColCellIdx(seg.getSrcCellIdx(s))
       result.append([int(sc), int(si), seg.getPermanence(s)])
 
@@ -686,24 +686,24 @@ class BacktrackingTMCPP(BacktrackingTM):
       distAges.append(['%d-%d' % (i*ageBucketSize, (i+1)*ageBucketSize-1), 0])
 
 
-    for c in xrange(self.numberOfCols):
-      for i in xrange(self.cellsPerColumn):
+    for c in range(self.numberOfCols):
+      for i in range(self.cellsPerColumn):
 
         # Update histogram counting cell sizes
         nSegmentsThisCell = self.getNumSegmentsInCell(c,i)
         if nSegmentsThisCell > 0:
-          if distNSegsPerCell.has_key(nSegmentsThisCell):
+          if nSegmentsThisCell in distNSegsPerCell:
             distNSegsPerCell[nSegmentsThisCell] += 1
           else:
             distNSegsPerCell[nSegmentsThisCell] = 1
 
           # Update histogram counting segment sizes.
           segList = self.cells4.getNonEmptySegList(c,i)
-          for segIdx in xrange(nSegmentsThisCell):
+          for segIdx in range(nSegmentsThisCell):
             seg = self.getSegmentOnCell(c, i, segIdx)
             nSynapsesThisSeg = len(seg) - 1
             if nSynapsesThisSeg > 0:
-              if distSegSizes.has_key(nSynapsesThisSeg):
+              if nSynapsesThisSeg in distSegSizes:
                 distSegSizes[nSynapsesThisSeg] += 1
               else:
                 distSegSizes[nSynapsesThisSeg] = 1
@@ -711,7 +711,7 @@ class BacktrackingTMCPP(BacktrackingTM):
               # Accumulate permanence value histogram
               for syn in seg[1:]:
                 p = int(syn[2]*10)
-                if distPermValues.has_key(p):
+                if p in distPermValues:
                   distPermValues[p] += 1
                 else:
                   distPermValues[p] = 1

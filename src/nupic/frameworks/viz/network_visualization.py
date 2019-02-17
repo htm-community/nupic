@@ -62,7 +62,7 @@ class NetworkVisualizer(object):
     # Add regions to graph as nodes, annotated by name
     regions = self.network.getRegions()
 
-    for idx in xrange(regions.getCount()):
+    for idx in range(regions.getCount()):
       regionPair = regions.getByIndex(idx)
       regionName = regionPair[0]
       graph.add_node(regionName, label=regionName)

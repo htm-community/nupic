@@ -44,8 +44,8 @@ class DotRenderer(object):
 
   def render(self, graph):
 
-    self.outp.write(u"digraph structs {\n")
-    self.outp.write(u'rankdir = "LR";\n')
+    self.outp.write("digraph structs {\n")
+    self.outp.write('rankdir = "LR";\n')
 
 
     lookup = {}
@@ -56,10 +56,10 @@ class DotRenderer(object):
       lookup.setdefault(edge[0], {"inputs": set(), "outputs": set()})
       lookup.setdefault(edge[1], {"inputs": set(), "outputs": set()})
 
-      for labels in data.values():
+      for labels in list(data.values()):
         lookup[edge[0]]["outputs"].add(labels["src"])
         lookup[edge[1]]["inputs"].add(labels["dest"])
-        self.outp.write(u'"{}":{} -> "{}":{};\n'.format(edge[0],
+        self.outp.write('"{}":{} -> "{}":{};\n'.format(edge[0],
                                                         labels["src"],
                                                         edge[1],
                                                         labels["dest"]))
@@ -67,10 +67,10 @@ class DotRenderer(object):
     def _renderPorts(ports):
       return "{" + "|".join("<{}>{}".format(port, port) for port in ports) + "}"
 
-    for node, ports in lookup.items():
+    for node, ports in list(lookup.items()):
       def _renderNode():
         nodeAttrs = ",".join("{}={}".format(key, value)
-                             for key, value in self.node_attrs.items())
+                             for key, value in list(self.node_attrs.items()))
         nodeAttrs += "," if nodeAttrs else ""
 
         return ('{} [{}label="{}"];\n'
@@ -80,6 +80,6 @@ class DotRenderer(object):
                                         node,
                                         _renderPorts(ports["outputs"])]) + "}"))
 
-      self.outp.write(unicode(_renderNode()))
+      self.outp.write(str(_renderNode()))
 
-    self.outp.write(u"}\n")
+    self.outp.write("}\n")

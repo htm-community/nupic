@@ -360,7 +360,7 @@ def _applyValueGettersImpl(container, currentObj, recursionStack):
   # Resolve value-getters within dictionaries, tuples and lists
 
   if isinstance(currentObj, dict):
-    for (key, value) in currentObj.items():
+    for (key, value) in list(currentObj.items()):
       if isinstance(value, ValueGetterBase):
         currentObj[key] = value(container)
 

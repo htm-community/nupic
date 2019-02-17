@@ -28,7 +28,7 @@ import json
 import pprint
 import shutil
 import copy
-import StringIO
+import io
 import logging
 import itertools
 import numpy
@@ -120,8 +120,8 @@ class ExperimentTestBaseClass(HelperTestCaseBase):
     """ Print out what test we are running
     """
 
-    print "###############################################################"
-    print "Running test: %s.%s..." % (self.__class__, self._testMethodName)
+    print("###############################################################")
+    print("Running test: %s.%s..." % (self.__class__, self._testMethodName))
 
 
   def _setDataPath(self, env):
@@ -327,10 +327,10 @@ class ExperimentTestBaseClass(HelperTestCaseBase):
     """
 
 
-    print
-    print "=================================================================="
-    print "Running Hypersearch job using 1 worker in current process"
-    print "=================================================================="
+    print()
+    print("==================================================================")
+    print("Running Hypersearch job using 1 worker in current process")
+    print("==================================================================")
 
     # Plug in modified environment variables
     if env is not None:
@@ -380,7 +380,7 @@ class ExperimentTestBaseClass(HelperTestCaseBase):
     metricResults = []
     for result in results:
       if result.results is not None:
-        metricResults.append(json.loads(result.results)[1].values()[0])
+        metricResults.append(list(json.loads(result.results)[1].values())[0])
       else:
         metricResults.append(None)
       if not ignoreErrModels:
@@ -417,16 +417,16 @@ class ExperimentTestBaseClass(HelperTestCaseBase):
     retval:          (jobID, jobInfo, resultsInfoForAllModels, metricResults)
     """
 
-    print
-    print "=================================================================="
-    print "Running Hypersearch job on cluster"
-    print "=================================================================="
+    print()
+    print("==================================================================")
+    print("Running Hypersearch job on cluster")
+    print("==================================================================")
 
     # --------------------------------------------------------------------
     # Submit the job
     if env is not None and len(env) > 0:
       envItems = []
-      for (key, value) in env.iteritems():
+      for (key, value) in env.items():
         if (sys.platform.startswith('win')):
           envItems.append("set \"%s=%s\"" % (key, value))
         else:
@@ -454,9 +454,9 @@ class ExperimentTestBaseClass(HelperTestCaseBase):
                           % (envStr, jobID, loggingLevel)
     workers = self._launchWorkers(cmdLine=workerCmdLine, numWorkers=maxNumWorkers)
 
-    print "Successfully submitted new test job, jobID=%d" % (jobID)
-    print "Each of %d workers executing the command line: " % (maxNumWorkers), \
-            cmdLine
+    print("Successfully submitted new test job, jobID=%d" % (jobID))
+    print("Each of %d workers executing the command line: " % (maxNumWorkers), \
+            cmdLine)
 
     if not waitForCompletion:
       return (jobID, None, None)
@@ -479,9 +479,9 @@ class ExperimentTestBaseClass(HelperTestCaseBase):
     lastActiveSwarms = None
     lastEngStatus = None
     modelIDs = []
-    print "\n%-15s    %-15s %-15s %-15s %-15s" % ("jobStatus", "modelsStarted",
-                                "modelsCompleted", "modelErrs", "modelOrphans")
-    print "-------------------------------------------------------------------"
+    print("\n%-15s    %-15s %-15s %-15s %-15s" % ("jobStatus", "modelsStarted",
+                                "modelsCompleted", "modelErrs", "modelOrphans"))
+    print("-------------------------------------------------------------------")
     while (lastJobStatus != ClientJobsDAO.STATUS_COMPLETED) \
           and (time.time() - lastUpdate < timeout):
 
@@ -495,8 +495,8 @@ class ExperimentTestBaseClass(HelperTestCaseBase):
       if jobInfo.status != lastJobStatus:
         if jobInfo.status == ClientJobsDAO.STATUS_RUNNING \
             and lastJobStatus != ClientJobsDAO.STATUS_RUNNING:
-          print "# Swarm job now running. jobID=%s" \
-                % (jobInfo.jobId)
+          print("# Swarm job now running. jobID=%s" \
+                % (jobInfo.jobId))
 
         lastJobStatus = jobInfo.status
         printUpdate = True
@@ -506,18 +506,18 @@ class ExperimentTestBaseClass(HelperTestCaseBase):
           activeSwarms = json.loads(jobInfo.engWorkerState)['activeSwarms']
           if activeSwarms != lastActiveSwarms:
             #print "-------------------------------------------------------"
-            print ">> Active swarms:\n   ", '\n    '.join(activeSwarms)
+            print(">> Active swarms:\n   ", '\n    '.join(activeSwarms))
             lastActiveSwarms = activeSwarms
-            print
+            print()
 
         if jobInfo.results != lastJobResults:
           #print "-------------------------------------------------------"
-          print ">> New best:", jobInfo.results, "###"
+          print(">> New best:", jobInfo.results, "###")
           lastJobResults = jobInfo.results
 
         if jobInfo.engStatus != lastEngStatus:
-          print '>> Status: "%s"' % jobInfo.engStatus
-          print
+          print('>> Status: "%s"' % jobInfo.engStatus)
+          print()
           lastEngStatus = jobInfo.engStatus
 
 
@@ -558,19 +558,19 @@ class ExperimentTestBaseClass(HelperTestCaseBase):
       if printUpdate:
         lastUpdate = time.time()
         if g_myEnv.options.verbosity >= 1:
-          print ">>",
-        print "%-15s %-15d %-15d %-15d %-15d" % (lastJobStatus, lastStarted,
+          print(">>", end=' ')
+        print("%-15s %-15d %-15d %-15d %-15d" % (lastJobStatus, lastStarted,
                 lastCompleted,
                 lastCompletedWithError,
-                lastCompletedAsOrphan)
+                lastCompletedAsOrphan))
 
 
     # ========================================================================
     # Final total
-    print "\n<< %-15s %-15d %-15d %-15d %-15d" % (lastJobStatus, lastStarted,
+    print("\n<< %-15s %-15d %-15d %-15d %-15d" % (lastJobStatus, lastStarted,
                 lastCompleted,
                 lastCompletedWithError,
-                lastCompletedAsOrphan)
+                lastCompletedAsOrphan))
 
     # Success?
     jobInfo = self._getJobInfo(cjDAO, workers, jobID)
@@ -590,7 +590,7 @@ class ExperimentTestBaseClass(HelperTestCaseBase):
     metricResults = []
     for result in results:
       if result.results is not None:
-        metricResults.append(json.loads(result.results)[1].values()[0])
+        metricResults.append(list(json.loads(result.results)[1].values())[0])
       else:
         metricResults.append(None)
       if not ignoreErrModels:
@@ -678,14 +678,14 @@ class ExperimentTestBaseClass(HelperTestCaseBase):
       return (jobID, jobInfo, resultInfos, metricResults, None)
 
     # Print job status
-    print "\n------------------------------------------------------------------"
-    print "Hadoop completion reason: %s" % (jobInfo.completionReason)
-    print "Worker completion reason: %s" % (jobInfo.workerCompletionReason)
-    print "Worker completion msg: %s" % (jobInfo.workerCompletionMsg)
+    print("\n------------------------------------------------------------------")
+    print("Hadoop completion reason: %s" % (jobInfo.completionReason))
+    print("Worker completion reason: %s" % (jobInfo.workerCompletionReason))
+    print("Worker completion msg: %s" % (jobInfo.workerCompletionMsg))
 
     if jobInfo.engWorkerState is not None:
-      print "\nEngine worker state:"
-      print "---------------------------------------------------------------"
+      print("\nEngine worker state:")
+      print("---------------------------------------------------------------")
       pprint.pprint(json.loads(jobInfo.engWorkerState))
 
 
@@ -706,12 +706,12 @@ class ExperimentTestBaseClass(HelperTestCaseBase):
       # Get model info
       cjDAO = ClientJobsDAO.get()
       modelParams = cjDAO.modelsGetParams([minModelID])[0].params
-      print "Model params for best model: \n%s" \
-                              % (pprint.pformat(json.loads(modelParams)))
-      print "Best model result: %f" % (minErrScore)
+      print("Model params for best model: \n%s" \
+                              % (pprint.pformat(json.loads(modelParams))))
+      print("Best model result: %f" % (minErrScore))
 
     else:
-      print "No models finished"
+      print("No models finished")
 
 
     return (jobID, jobInfo, resultInfos, metricResults, minErrScore)
@@ -1321,8 +1321,8 @@ class OneNodeTests(ExperimentTestBaseClass):
     params = json.loads(bestModel.params)
 
     actualFieldContributions = jobResults['fieldContributions']
-    print "Actual field contributions:", \
-                              pprint.pformat(actualFieldContributions)
+    print("Actual field contributions:", \
+                              pprint.pformat(actualFieldContributions))
     expectedFieldContributions = {
                       'address': 100 * (90.0-30)/90.0,
                       'gym': 100 * (90.0-40)/90.0,
@@ -1330,7 +1330,7 @@ class OneNodeTests(ExperimentTestBaseClass):
                       'timestamp_timeOfDay': 100 * (90.0-90.0)/90.0,
                       }
 
-    for key, value in expectedFieldContributions.items():
+    for key, value in list(expectedFieldContributions.items()):
       self.assertEqual(actualFieldContributions[key], value,
                        "actual field contribution from field '%s' does not "
                        "match the expected value of %f" % (key, value))
@@ -1475,8 +1475,8 @@ class OneNodeTests(ExperimentTestBaseClass):
 
       # Check the field contributions
       actualFieldContributions = jobResults['fieldContributions']
-      print "Actual field contributions:", \
-                                pprint.pformat(actualFieldContributions)
+      print("Actual field contributions:", \
+                                pprint.pformat(actualFieldContributions))
 
       expectedFieldContributions = {
                         'consumption': 0.0,
@@ -1486,7 +1486,7 @@ class OneNodeTests(ExperimentTestBaseClass):
                         'gym': 100 * (60.0-30.0)/60.0}
 
 
-      for key, value in expectedFieldContributions.items():
+      for key, value in list(expectedFieldContributions.items()):
         self.assertEqual(actualFieldContributions[key], value,
                          "actual field contribution from field '%s' does not "
                          "match the expected value of %f" % (key, value))
@@ -1533,8 +1533,8 @@ class OneNodeTests(ExperimentTestBaseClass):
 
       # Check field contributions returned
       actualFieldContributions = jobResults['fieldContributions']
-      print "Actual field contributions:", \
-                                pprint.pformat(actualFieldContributions)
+      print("Actual field contributions:", \
+                                pprint.pformat(actualFieldContributions))
 
       expectedFieldContributions = {
                         'consumption': 0.0,
@@ -1543,7 +1543,7 @@ class OneNodeTests(ExperimentTestBaseClass):
                         'timestamp_dayOfWeek': 100 * (60.0-10.0)/60.0,
                         'gym': 100 * (60.0-30.0)/60.0}
 
-      for key, value in expectedFieldContributions.items():
+      for key, value in list(expectedFieldContributions.items()):
         self.assertEqual(actualFieldContributions[key], value,
                          "actual field contribution from field '%s' does not "
                          "match the expected value of %f" % (key, value))
@@ -1632,8 +1632,8 @@ class OneNodeTests(ExperimentTestBaseClass):
 
       # Check field contributions returned
       actualFieldContributions = jobResults['fieldContributions']
-      print "Actual field contributions:", \
-                                pprint.pformat(actualFieldContributions)
+      print("Actual field contributions:", \
+                                pprint.pformat(actualFieldContributions))
 
       expectedFieldContributions = {
                         'consumption': 0.0,
@@ -1999,7 +1999,7 @@ class MultiNodeTests(ExperimentTestBaseClass):
     jobResults = json.loads(jobResultsStr)
 
     actualFieldContributions = jobResults['fieldContributions']
-    print "Actual field contributions:", actualFieldContributions
+    print("Actual field contributions:", actualFieldContributions)
 
     expectedFieldContributions = {'consumption': 0.0,
                                   'address': 0.0,
@@ -2008,7 +2008,7 @@ class MultiNodeTests(ExperimentTestBaseClass):
                                   'gym': 10.0}
 
 
-    for key, value in expectedFieldContributions.items():
+    for key, value in list(expectedFieldContributions.items()):
       self.assertEqual(actualFieldContributions[key], value,
                        "actual field contribution from field '%s' does not "
                        "match the expected value of %f" % (key, value))
@@ -2331,9 +2331,9 @@ class ModelMaturityTests(ExperimentTestBaseClass):
     cjDB = ClientJobsDAO.get()
 
     modelIDs, records, completionReasons, matured = \
-                    zip(*self.getModelFields( jobID, ['numRecords',
+                    list(zip(*self.getModelFields( jobID, ['numRecords',
                                                            'completionReason',
-                                                            'engMatured']))
+                                                            'engMatured'])))
 
     results = cjDB.jobGetFields(jobID, ['results'])[0]
     results = json.loads(results)
@@ -2393,10 +2393,10 @@ class ModelMaturityTests(ExperimentTestBaseClass):
     modelOrders = [json.loads(e[1][0])['structuredParams']['__model_num'] for e in modelParams]
     modelFields = []
 
-    for f in xrange(len(fields)):
+    for f in range(len(fields)):
       modelFields.append([e[1][f+1] for e in modelParams])
 
-    modelInfo = zip(modelOrders, modelIDs, *tuple(modelFields))
+    modelInfo = list(zip(modelOrders, modelIDs, *tuple(modelFields)))
     modelInfo.sort(key=lambda info:info[0])
 
     return [e[1:] for e in sorted(modelInfo, key=lambda info:info[0])]
@@ -2444,7 +2444,7 @@ class SwarmTerminatorTests(ExperimentTestBaseClass):
         'nupic.hypersearch.swarmMaturityWindow'))
 
     prefix = 'modelParams|sensorParams|encoders|'
-    for swarm, (generation, scores) in terminatedSwarms.iteritems():
+    for swarm, (generation, scores) in terminatedSwarms.items():
       if prefix + 'gym' in swarm.split('.'):
         self.assertEqual(generation, swarmMaturityWindow-1)
       else:
@@ -2476,7 +2476,7 @@ class SwarmTerminatorTests(ExperimentTestBaseClass):
         'nupic.hypersearch.swarmMaturityWindow'))
 
     prefix = 'modelParams|sensorParams|encoders|'
-    for swarm, (generation, scores) in terminatedSwarms.iteritems():
+    for swarm, (generation, scores) in terminatedSwarms.items():
       encoders = swarm.split('.')
       if prefix + 'gym' in encoders:
         self.assertEqual(generation, swarmMaturityWindow-1 + 3)
@@ -2508,7 +2508,7 @@ def getHypersearchWinningModelID(jobID):
 
   cjDAO = ClientJobsDAO.get()
   jobResults = cjDAO.jobGetFields(jobID, ['results'])[0]
-  print "Hypersearch job results: %r" % (jobResults,)
+  print("Hypersearch job results: %r" % (jobResults,))
   jobResults = json.loads(jobResults)
   return jobResults['bestModel']
 
@@ -2556,7 +2556,7 @@ def _executeExternalCmdAndReapStdout(args):
 def _debugOut(text):
   global g_debug
   if g_debug:
-    print text
+    print(text)
     sys.stdout.flush()
 
   return
@@ -2650,7 +2650,7 @@ class _ArgParser(object):
 
 
 def setUpModule():
-  print "\nCURRENT DIRECTORY:", os.getcwd()
+  print("\nCURRENT DIRECTORY:", os.getcwd())
 
   initLogging(verbose=True)
 

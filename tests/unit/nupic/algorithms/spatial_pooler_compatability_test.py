@@ -19,7 +19,7 @@
 # http://numenta.org/licenses/
 # ----------------------------------------------------------------------
 
-import cPickle as pickle
+import pickle as pickle
 import numpy
 import time
 import traceback
@@ -126,8 +126,8 @@ class SpatialPoolerCompatibilityTest(unittest.TestCase):
     cppSp.getMinOverlapDutyCycles(cppMinOverlap)
     self.assertListAlmostEqual(list(pyMinOverlap), list(cppMinOverlap))
 
-    for i in xrange(pySp.getNumColumns()):
-      if self.verbosity > 2: print "Column:",i
+    for i in range(pySp.getNumColumns()):
+      if self.verbosity > 2: print("Column:",i)
       pyPot = numpy.zeros(numInputs).astype(uintType)
       cppPot = numpy.zeros(numInputs).astype(uintType)
       pySp.getPotential(i, pyPot)
@@ -178,13 +178,13 @@ class SpatialPoolerCompatibilityTest(unittest.TestCase):
       randomState.rand(numRecords,numInputs) > threshold).astype(uintType)
 
     # Run side by side for numRecords iterations
-    for i in xrange(numRecords):
+    for i in range(numRecords):
       if learnMode is None:
         learn = (randomState.rand() > 0.5)
       else:
         learn = learnMode
       if self.verbosity > 1:
-        print "Iteration:",i,"learn=",learn
+        print("Iteration:",i,"learn=",learn)
       PyActiveArray = numpy.zeros(numColumns).astype(uintType)
       CppActiveArray = numpy.zeros(numColumns).astype(uintType)
       inputVector = inputMatrix[i,:]
@@ -219,14 +219,14 @@ class SpatialPoolerCompatibilityTest(unittest.TestCase):
     inputMatrix = (
       randomState.rand(numRecords,numInputs) > threshold).astype(uintType)
 
-    for i in xrange(numRecords/2):
+    for i in range(numRecords/2):
       activeArray = numpy.zeros(numColumns).astype(uintType)
       inputVector = inputMatrix[i,:]
       learn = (randomState.rand() > 0.5)
       sp1.compute(inputVector, learn, activeArray)
 
     sp2 = pickle.loads(pickle.dumps(sp1))
-    for i in xrange(numRecords/2+1,numRecords):
+    for i in range(numRecords/2+1,numRecords):
       activeArray1 = numpy.zeros(numColumns).astype(uintType)
       activeArray2 = numpy.zeros(numColumns).astype(uintType)
       inputVector = inputMatrix[i,:]
@@ -414,7 +414,7 @@ class SpatialPoolerCompatibilityTest(unittest.TestCase):
         inputDimensions=[121], columnDimensions=[300])
 
     data = numpy.zeros([121], dtype=uintType)
-    for i in xrange(21):
+    for i in range(21):
       data[i] = 1
 
     nCols = 300
@@ -440,7 +440,7 @@ class SpatialPoolerCompatibilityTest(unittest.TestCase):
         inputDimensions=[121, 1], columnDimensions=[30, 30])
 
     data = numpy.zeros([121, 1], dtype=uintType)
-    for i in xrange(21):
+    for i in range(21):
       data[i][0] = 1
 
     nCols = 900

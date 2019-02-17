@@ -58,19 +58,19 @@ class Club(object):
     
   def processAttendance(self, f):
     # Skip first two
-    line = f.next()
+    line = next(f)
     assert line == ',,,,,,,,,,,,,,,,,,,\n'
 
-    line = f.next()
+    line = next(f)
     assert line == 'Date Of Swipe, < 6 am,6-7 am,7-8 am,8-9 am,9-10 am,10-11 am,11-12 am,12-1 pm,1-2 pm,2-3 pm,3-4 pm,4-5 pm,5-6 pm,6-7 pm,7-8 pm,8-9 pm,9-10 pm,> 10 pm,Totals\n'
     
     for i, line in enumerate(f):
       # Check weather we're done with this club
       if line == ',,,,,,,,,,,,,,,,,,,\n':
         # skip next two lines
-        line = f.next()
+        line = next(f)
         assert line.startswith('Club Totals:')
-        line = f.next()
+        line = next(f)
         assert line == ',,,,,,,,,,,,,,,,,,,\n'
         return
       else:
@@ -116,7 +116,7 @@ class Club(object):
     # Locate record
     key = ((yyyy, mm, dd), t)
     if not key in self.records:
-      print self.name, 'is missing attendance data for', key
+      print(self.name, 'is missing attendance data for', key)
     else:
       r = self.records[key]
       r.consumption = consumption
@@ -136,9 +136,9 @@ def processClubAttendance(f, clubs):
   """
   try:
     # Skip as many empty lines as necessary (file format inconsistent)
-    line = f.next()
+    line = next(f)
     while line == ',,,,,,,,,,,,,,,,,,,\n':
-      line = f.next()
+      line = next(f)
     
     # The first non-empty line should have the name as the first field
     name = line.split(',')[0]
@@ -168,10 +168,10 @@ def processClubConsumption(f, clubs):
   """
   try:
     # Skip header line
-    line = f.next()
+    line = next(f)
     assert line.endswith('"   ","SITE_LOCATION_NAME","TIMESTAMP","TOTAL_KWH"\n')
 
-    valid_times = range(24)
+    valid_times = list(range(24))
     t = 0 # used to track time
     club = None
     clubName = None
@@ -267,8 +267,8 @@ def makeDataset():
   with File('gym.csv', fields) as f:
     ## write header
     #f.write('Gym Name,Date,Time,Attendee Count,Consumption (KWH)\n')
-    for c in clubs.values():
-      for k, r in sorted(c.records.iteritems(), key=operator.itemgetter(0)):          
+    for c in list(clubs.values()):
+      for k, r in sorted(iter(c.records.items()), key=operator.itemgetter(0)):          
         #dd = r.date[2]
         #mm = r.date[1]
         #yyyy = r.date[0]
@@ -279,5 +279,5 @@ def makeDataset():
       
 if __name__=='__main__':
   makeDataset()
-  print 'Done.'
+  print('Done.')
   

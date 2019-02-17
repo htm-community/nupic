@@ -37,7 +37,7 @@ class SwarmTerminator(object):
   """
   MATURITY_WINDOW = None
   MAX_GENERATIONS = None
-  _DEFAULT_MILESTONES = [1.0 / (x + 1) for x in xrange(12)]
+  _DEFAULT_MILESTONES = [1.0 / (x + 1) for x in range(12)]
 
   def __init__(self, milestones=None, logLevel=None):
     # Set class constants.
@@ -126,7 +126,7 @@ class SwarmTerminator(object):
   def _getTerminatedSwarms(self, generation):
     terminatedSwarms = []
     generationScores = dict()
-    for swarm, scores in self.swarmScores.iteritems():
+    for swarm, scores in self.swarmScores.items():
       if len(scores) > generation and swarm not in self.terminatedSwarms:
         generationScores[swarm] = scores[generation]
 
@@ -136,7 +136,7 @@ class SwarmTerminator(object):
     bestScore = min(generationScores.values())
     tolerance = self.milestones[generation]
 
-    for swarm, score in generationScores.iteritems():
+    for swarm, score in generationScores.items():
       if score > (1 + tolerance) * bestScore:
         self._logger.info('Swarm %s is doing poorly at generation %d.\n'
                           'Current Score:%s \n'

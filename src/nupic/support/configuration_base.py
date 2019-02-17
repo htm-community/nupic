@@ -25,7 +25,7 @@ configuration parameters from ``nupic-site.xml`` and ``nupic-default.xml``.
 """
 
 
-from __future__ import with_statement
+
 
 import os
 import logging
@@ -186,9 +186,8 @@ class Configuration(object):
     # Make a copy so we can update any current values obtained from environment
     #  variables
     result = dict(cls._properties)
-    keys = os.environ.keys()
-    replaceKeys = filter(lambda x: x.startswith(cls.envPropPrefix),
-                         keys)
+    keys = list(os.environ.keys())
+    replaceKeys = [x for x in keys if x.startswith(cls.envPropPrefix)]
     for envKey in replaceKeys:
       key = envKey[len(cls.envPropPrefix):]
       key = key.replace('_', '.')

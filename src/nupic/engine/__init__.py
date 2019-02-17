@@ -79,7 +79,7 @@ for a in arrayTypes:
 # stack trace define this environment variable
 if not 'NTA_STANDARD_PYTHON_UNHANDLED_EXCEPTIONS' in os.environ:
   import traceback
-  import cStringIO
+  import io
 
   def customExceptionHandler(type, value, tb):
     """Catch unhandled Python exception
@@ -92,7 +92,7 @@ if not 'NTA_STANDARD_PYTHON_UNHANDLED_EXCEPTIONS' in os.environ:
     file.
     """
     # Print the exception info to a string IO buffer for manipulation
-    buff = cStringIO.StringIO()
+    buff = io.StringIO()
     traceback.print_exception(type, value, tb, file=buff)
 
     text = buff.getvalue()
@@ -123,17 +123,17 @@ if not 'NTA_STANDARD_PYTHON_UNHANDLED_EXCEPTIONS' in os.environ:
 
     failMessage = 'The program failed with the following error message:'
     dashes = '-' * len(failMessage)
-    print
-    print dashes
-    print 'Traceback (most recent call last):'
-    print '\n'.join(lines[:begin-2])
+    print()
+    print(dashes)
+    print('Traceback (most recent call last):')
+    print('\n'.join(lines[:begin-2]))
     if stacktrace:
-      print stacktrace
-    print dashes
-    print 'The program failed with the following error message:'
-    print dashes
-    print message
-    print
+      print(stacktrace)
+    print(dashes)
+    print('The program failed with the following error message:')
+    print(dashes)
+    print(message)
+    print()
 
   #sys.excepthook = customExceptionHandler
 
@@ -282,7 +282,7 @@ class CollectionWrapper(object):
     return values
 
   def items(self):
-    return zip(self.keys(), self.values())
+    return list(zip(list(self.keys()), list(self.values())))
 
   def __eq__(self, other):
     return self.collection == other.collection
@@ -451,14 +451,14 @@ class Region(LockAttributesMixin):
     Returns list of input names in spec.
     """
     inputs = self.getSpec().inputs
-    return [inputs.getByIndex(i)[0] for i in xrange(inputs.getCount())]
+    return [inputs.getByIndex(i)[0] for i in range(inputs.getCount())]
 
   def getOutputNames(self):
     """
     Returns list of output names in spec.
     """
     outputs = self.getSpec().outputs
-    return [outputs.getByIndex(i)[0] for i in xrange(outputs.getCount())]
+    return [outputs.getByIndex(i)[0] for i in range(outputs.getCount())]
 
   def executeCommand(self, args):
     """
@@ -610,7 +610,7 @@ class Network(engine_internal.Network):
         setattr(Network, obj, property(prop.fget, prop.fset, prop.fdel,
                                        docString))
       else:
-        obj.im_func.__doc__ = docString
+        obj.__func__.__doc__ = docString
 
   def _getRegions(self):
     """Get the collection of regions in a network
@@ -735,7 +735,7 @@ class Network(engine_internal.Network):
     """
     regions = []
 
-    for region in self.regions.values():
+    for region in list(self.regions.values()):
       if type(region.getSelf()) is regionClass:
         regions.append(region)
 
@@ -779,23 +779,23 @@ class Network(engine_internal.Network):
 
 if __name__ == '__main__':
   n = Network()
-  print n.regions
-  print len(n.regions)
-  print Network.regions.__doc__
+  print(n.regions)
+  print(len(n.regions))
+  print(Network.regions.__doc__)
 
   d = Dimensions([3, 4, 5])
-  print len(d)
-  print d
+  print(len(d))
+  print(d)
 
   a = Array('Byte', 5)
-  print len(a)
+  print(len(a))
   for i in range(len(a)):
     a[i] = ord('A') + i
 
   for i in range(len(a)):
-    print a[i]
+    print(a[i])
 
   r = n.addRegion('r', 'TestNode', '')
-  print 'name:', r.name
-  print 'node type:', r.type
-  print 'node spec:', r.spec
+  print('name:', r.name)
+  print('node type:', r.type)
+  print('node spec:', r.spec)

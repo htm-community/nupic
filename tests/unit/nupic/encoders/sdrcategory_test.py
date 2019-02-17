@@ -140,7 +140,7 @@ class SDRCategoryEncoderTest(unittest.TestCase):
 
     # serialization
     # TODO: Remove pickle-based serialization tests -- issues #1419 and #1420
-    import cPickle as pickle
+    import pickle as pickle
     t = pickle.loads(pickle.dumps(s))
     self.assertTrue((t.encode("ES") == es).all())
     self.assertTrue((t.encode("GB") == s.encode("GB")).all())
@@ -191,7 +191,7 @@ class SDRCategoryEncoderTest(unittest.TestCase):
       s = SDRCategoryEncoder(n=fieldWidth, w=bitsOn,
                              categoryList=newcategories, name="foo",
                              forced=True)
-    except RuntimeError, e:
+    except RuntimeError as e:
       caughtException = True
     finally:
       if not caughtException:

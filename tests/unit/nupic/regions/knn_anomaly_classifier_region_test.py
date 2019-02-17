@@ -839,13 +839,13 @@ class KNNAnomalyClassifierRegionTest(unittest.TestCase):
 
     self.maxDiff = None
     records = []
-    for i in xrange(self.helper.trainRecords):
+    for i in range(self.helper.trainRecords):
       spBottomUpOut = numpy.zeros(1000)
       tpTopDownOut = numpy.zeros(1000)
       tpLrnActiveStateT = numpy.zeros(1000)
-      spBottomUpOut[random.sample(xrange(1000), 20)] = 1
-      tpTopDownOut[random.sample(xrange(1000), 20)] = 1
-      tpLrnActiveStateT[random.sample(xrange(1000), 20)] = 1
+      spBottomUpOut[random.sample(range(1000), 20)] = 1
+      tpTopDownOut[random.sample(range(1000), 20)] = 1
+      tpLrnActiveStateT[random.sample(range(1000), 20)] = 1
       records.append({
         'spBottomUpOut': spBottomUpOut,
         'tpTopDownOut': tpTopDownOut,
@@ -853,10 +853,10 @@ class KNNAnomalyClassifierRegionTest(unittest.TestCase):
       })
 
     self.helper.setParameter('anomalyThreshold', None, 0.5)
-    for i in xrange(self.helper.trainRecords):
+    for i in range(self.helper.trainRecords):
       self.helper.compute(records[i], None)
 
-    for _ in xrange(10):
+    for _ in range(10):
       self.helper.compute(random.choice(records), None)
 
     proto = KNNAnomalyClassifierRegionProto.new_message()

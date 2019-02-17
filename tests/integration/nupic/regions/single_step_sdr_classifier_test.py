@@ -121,7 +121,7 @@ class SingleStepSDRClassifierTest(unittest.TestCase):
 
     expectedCats = ([0.0], [1.0], [0.0], [1.0], [0.0], [1.0], [0.0], [1.0],)
     dataSource.rewind()
-    for i in xrange(8):
+    for i in range(8):
       net.run(1)
       inferredCats = classifier.getOutputData("categoriesOut")
       self.assertSequenceEqual(expectedCats[i], inferredCats.tolist(),
@@ -203,7 +203,7 @@ class SingleStepSDRClassifierTest(unittest.TestCase):
 
     expectedCats = ([0.0], [1.0], [0.0], [1.0], [0.0], [1.0], [0.0], [1.0],)
     dataSource.rewind()
-    for i in xrange(8):
+    for i in range(8):
       net.run(1)
       inferredCats = classifier.getOutputData("categoriesOut")
       self.assertSequenceEqual(expectedCats[i], inferredCats.tolist(),
@@ -231,8 +231,8 @@ class SingleStepSDRClassifierTest(unittest.TestCase):
           "verbosity": 0,
           "encoders": {
             "token": {
-              "fieldname": u"token",
-              "name": u"token",
+              "fieldname": "token",
+              "name": "token",
               "type": "CategoryEncoder",
               "categoryList": categories,
               "w": colsPerChar,
@@ -293,14 +293,14 @@ class SingleStepSDRClassifierTest(unittest.TestCase):
 
     # train
     prediction = None
-    for rpt in xrange(20):
+    for rpt in range(20):
       for token in text:
         if prediction is not None:
           if rpt > 15:
             self.assertEqual(prediction, token)
         modelInput = {"token": token}
         result = model.run(modelInput)
-        prediction = sorted(result.inferences["multiStepPredictions"][1].items(),
+        prediction = sorted(list(result.inferences["multiStepPredictions"][1].items()),
                        key=itemgetter(1), reverse=True)[0][0]
       model.resetSequenceStates()
       prediction = None
@@ -382,7 +382,7 @@ class SingleStepSDRClassifierTest(unittest.TestCase):
 
     expectedValues = ([0.5], [1.5], [0.5], [1.5], [0.5], [1.5], [0.5], [1.5],)
     dataSource.rewind()
-    for i in xrange(8):
+    for i in range(8):
       net.run(1)
       predictedValue = classifier.getOutputData("categoriesOut")
       self.assertAlmostEqual(expectedValues[i], predictedValue[0],
@@ -476,7 +476,7 @@ class SingleStepSDRClassifierTest(unittest.TestCase):
 
     expectedValues = ([0.5], [1.5], [0.5], [1.5], [0.5], [1.5], [0.5], [1.5],)
     dataSource.rewind()
-    for i in xrange(8):
+    for i in range(8):
       net.run(1)
       predictedValue = classifier.getOutputData("categoriesOut")
       self.assertAlmostEqual(expectedValues[i], predictedValue[0],

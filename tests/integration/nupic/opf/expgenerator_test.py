@@ -308,7 +308,7 @@ class ExperimentTestBaseClass(HelperTestCaseBase):
     self.assertDictEqual(tmpAggregationInfo, minAggregation)
 
     predictAheadTime = dict(minAggregation)
-    for key in predictAheadTime.iterkeys():
+    for key in predictAheadTime.keys():
       predictAheadTime[key] *=  predictionSteps
     self.assertEqual(base.config['predictAheadTime'],
                      predictAheadTime)
@@ -467,13 +467,13 @@ class PositiveExperimentTests(ExperimentTestBaseClass):
                    oneGram,
                    trivialMetric,
                    legacyMetric=None):
-    print "base.control"
+    print("base.control")
     pprint.pprint(base.control)
     #taskMetrics = base.control['tasks'][0]['taskControl']['metrics']
     taskMetrics = base.control['metrics']
 
     for metricSpec in taskMetrics:
-      print metricSpec.metric
+      print(metricSpec.metric)
       self.assertTrue(metricSpec.metric in ["multiStep", optimizeMetric,
                                             movingBaseline, oneGram,
                                             nupicScore, trivialMetric,
@@ -500,8 +500,8 @@ class PositiveExperimentTests(ExperimentTestBaseClass):
                      ":window=%d:field=%s" % \
                                 (optimizeMetric, experiment_generator.METRIC_WINDOW,
                                  predictedField))
-    print "perm.minimize=",perm.minimize
-    print "optimizeString=",optimizeString
+    print("perm.minimize=",perm.minimize)
+    print("optimizeString=",optimizeString)
     self.assertEqual(perm.minimize, optimizeString,
                      msg="got: %s" % perm.minimize)
 
@@ -621,7 +621,7 @@ class PositiveExperimentTests(ExperimentTestBaseClass):
     actEncoderFields = set()
     actEncoderNames = set()
     for _, encoder in (
-        base.config['modelParams']['sensorParams']['encoders'].iteritems()):
+        iter(base.config['modelParams']['sensorParams']['encoders'].items())):
       actEncoderFields.add(encoder['fieldname'])
       actEncoderNames.add(encoder['name'])
 
@@ -649,7 +649,7 @@ class PositiveExperimentTests(ExperimentTestBaseClass):
     actEncoderFields = set()
     actEncoderNames = set()
     for _, encoder in (
-        base.config['modelParams']['sensorParams']['encoders'].iteritems()):
+        iter(base.config['modelParams']['sensorParams']['encoders'].items())):
       actEncoderFields.add(encoder['fieldname'])
       actEncoderNames.add(encoder['name'])
 
@@ -676,7 +676,7 @@ class PositiveExperimentTests(ExperimentTestBaseClass):
     minValues = set()
     maxValues = set()
     for _, encoder in (
-        base.config['modelParams']['sensorParams']['encoders'].iteritems()):
+        iter(base.config['modelParams']['sensorParams']['encoders'].items())):
       actEncoderFields.add(encoder['fieldname'])
       actEncoderNames.add(encoder['name'])
       actEncoderTypes.add(encoder['type'])
@@ -711,7 +711,7 @@ class PositiveExperimentTests(ExperimentTestBaseClass):
     minValues = set()
     maxValues = set()
     for _, encoder in (
-        base.config['modelParams']['sensorParams']['encoders'].iteritems()):
+        iter(base.config['modelParams']['sensorParams']['encoders'].items())):
       actEncoderFields.add(encoder['fieldname'])
       actEncoderNames.add(encoder['name'])
       actEncoderTypes.add(encoder['type'])
@@ -1018,13 +1018,13 @@ class PositiveExperimentTests(ExperimentTestBaseClass):
     # --------------------------------------------------------------------
     (base, perms) = self.getModules(expDesc)
 
-    print "base.config['modelParams']:"
+    print("base.config['modelParams']:")
     pprint.pprint(base.config['modelParams'])
-    print "perms.permutations"
+    print("perms.permutations")
     pprint.pprint(perms.permutations)
-    print "perms.minimize"
+    print("perms.minimize")
     pprint.pprint(perms.minimize)
-    print "expDesc"
+    print("expDesc")
     pprint.pprint(expDesc)
 
     # Make sure we have the expected info in the base description file
@@ -1185,7 +1185,7 @@ class PositiveExperimentTests(ExperimentTestBaseClass):
 
     self.assertNotIn(
       'consumption',
-      base.config['modelParams']['sensorParams']['encoders'].keys())
+      list(base.config['modelParams']['sensorParams']['encoders'].keys()))
 
 
   def test_DeltaEncoders(self):
@@ -1792,7 +1792,7 @@ class PositiveExperimentTests(ExperimentTestBaseClass):
                      expDesc['inferenceArgs']['predictedField'])
 
     self.assertNotIn('consumption',
-             base.config['modelParams']['sensorParams']['encoders'].keys())
+             list(base.config['modelParams']['sensorParams']['encoders'].keys()))
 
 
     # The SP and TM should both be disabled

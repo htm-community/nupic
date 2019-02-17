@@ -23,7 +23,7 @@
 
 import csv
 from mock import MagicMock, patch
-from StringIO import StringIO
+from io import StringIO
 
 import unittest2 as unittest
 
@@ -334,13 +334,13 @@ class AnomalyzerTest(unittest.TestCase):
                                       write=True)
         anomalyzer.sample(inputFile, outputFile, 1)
     result = StringIO(output.getvalue())
-    result.next()
-    result.next()
-    result.next()
+    next(result)
+    next(result)
+    next(result)
     reader = csv.reader(result)
-    _, value = reader.next()
+    _, value = next(reader)
     self.assertIn(int(value), (1, 2, 3, 4, 5, 6))
-    self.assertRaises(StopIteration, result.next)
+    self.assertRaises(StopIteration, result.__next__)
 
 
 

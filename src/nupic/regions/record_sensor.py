@@ -319,7 +319,7 @@ class RecordSensor(PyRegion):
     """
 
     if self.verbosity > 0:
-      print "RecordSensor got data: %s" % data
+      print("RecordSensor got data: %s" % data)
 
     allFiltersHaveEnoughData = True
     if len(self.preEncodingFilters) > 0:
@@ -435,27 +435,27 @@ class RecordSensor(PyRegion):
         if self._iterNum == 0:
           self.encoder.pprintHeader(prefix="sensor:")
         if reset:
-          print "RESET - sequenceID:%d" % sequenceId
+          print("RESET - sequenceID:%d" % sequenceId)
         if self.verbosity >= 2:
-          print
+          print()
 
       # If verbosity >=2, print the record fields
       if self.verbosity >= 1:
         self.encoder.pprint(outputs["dataOut"], prefix="%7d:" % (self._iterNum))
         scalarValues = self.encoder.getScalars(data)
         nz = outputs["dataOut"].nonzero()[0]
-        print "     nz: (%d)" % (len(nz)), nz
-        print "  encIn:", self.encoder.scalarsToStr(scalarValues)
+        print("     nz: (%d)" % (len(nz)), nz)
+        print("  encIn:", self.encoder.scalarsToStr(scalarValues))
       if self.verbosity >= 2:
         # if hasattr(data, 'header'):
         #  header = data.header()
         # else:
         #  header = '     '.join(self.dataSource.names)
         # print "        ", header
-        print "   data:", str(data)
+        print("   data:", str(data))
       if self.verbosity >= 3:
         decoded = self.encoder.decode(outputs["dataOut"])
-        print "decoded:", self.encoder.decodedToStr(decoded)
+        print("decoded:", self.encoder.decodedToStr(decoded))
 
       self._iterNum += 1
 

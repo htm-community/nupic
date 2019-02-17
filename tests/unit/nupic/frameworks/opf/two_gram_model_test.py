@@ -66,7 +66,7 @@ class TwoGramModelTest(unittest.TestCase):
 
 
   def testSequenceReset(self):
-    encoders = {"a": {"fieldname": u"a",
+    encoders = {"a": {"fieldname": "a",
                       "maxval": 9,
                       "minval": 0,
                       "n": 10,
@@ -94,7 +94,7 @@ class TwoGramModelTest(unittest.TestCase):
 
 
   def testMultipleFields(self):
-    encoders = {"a": {"fieldname": u"a",
+    encoders = {"a": {"fieldname": "a",
                       "maxval": 9,
                       "minval": 0,
                       "n": 10,
@@ -102,7 +102,7 @@ class TwoGramModelTest(unittest.TestCase):
                       "clipInput": True,
                       "forced": True,
                       "type": "ScalarEncoder"},
-                "b": {"fieldname": u"b",
+                "b": {"fieldname": "b",
                       "maxval": 9,
                       "minval": 0,
                       "n": 10,
@@ -127,7 +127,7 @@ class TwoGramModelTest(unittest.TestCase):
 
 
   def testCategoryPredictions(self):
-    encoders = {"a": {"fieldname": u"a",
+    encoders = {"a": {"fieldname": "a",
                       "n": 10,
                       "w": 3,
                       "forced": True,
@@ -149,7 +149,7 @@ class TwoGramModelTest(unittest.TestCase):
 
 
   def testBucketedScalars(self):
-    encoders = {"a": {"fieldname": u"a",
+    encoders = {"a": {"fieldname": "a",
                       "maxval": 9,
                       "minval": 0,
                       "n": 2,
@@ -179,7 +179,7 @@ class TwoGramModelTest(unittest.TestCase):
   @unittest.skipUnless(
     capnp, "pycapnp is not installed, skipping serialization test.")
   def testWriteRead(self):
-    encoders = {"a": {"fieldname": u"a",
+    encoders = {"a": {"fieldname": "a",
                       "maxval": 9,
                       "minval": 0,
                       "n": 10,
@@ -187,7 +187,7 @@ class TwoGramModelTest(unittest.TestCase):
                       "clipInput": True,
                       "forced": True,
                       "type": "ScalarEncoder"},
-                "b": {"fieldname": u"b",
+                "b": {"fieldname": "b",
                       "maxval": 9,
                       "minval": 0,
                       "n": 10,

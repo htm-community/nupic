@@ -114,7 +114,7 @@ class ModelRecordEncoder(object):
     """
 
     # Create the return dict
-    result = dict(zip(self._fieldNames, inputRow))
+    result = dict(list(zip(self._fieldNames, inputRow)))
 
     # Add in the special fields
     if self._categoryFieldIndex is not None:
@@ -211,12 +211,10 @@ class ModelRecordEncoder(object):
 
 
 
-class RecordStreamIface(object):
+class RecordStreamIface(object, metaclass=ABCMeta):
   """
   This is the interface for the record input/output storage classes.
   """
-
-  __metaclass__ = ABCMeta
 
 
   def __init__(self):

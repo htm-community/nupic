@@ -31,6 +31,7 @@ from operator import mul
 from nupic.algorithms.connections import Connections, binSearch
 from nupic.serializable import Serializable
 from nupic.support.group_by import groupby2
+from functools import reduce
 
 try:
   import capnp
@@ -284,13 +285,13 @@ class TemporalMemory(Serializable):
 
     activeSegments = (
       self.connections.segmentForFlatIdx(i)
-      for i in xrange(len(numActiveConnected))
+      for i in range(len(numActiveConnected))
       if numActiveConnected[i] >= self.activationThreshold
     )
 
     matchingSegments = (
       self.connections.segmentForFlatIdx(i)
-      for i in xrange(len(numActivePotential))
+      for i in range(len(numActivePotential))
       if numActivePotential[i] >= self.minThreshold
     )
 
@@ -377,7 +378,7 @@ class TemporalMemory(Serializable):
     """
 
     start = self.cellsPerColumn * column
-    cellsForColumn = xrange(start, start + self.cellsPerColumn)
+    cellsForColumn = range(start, start + self.cellsPerColumn)
 
     return self._burstColumn(
       self.connections, self._random, self.lastUsedIterationForSegment, column,
@@ -706,7 +707,7 @@ class TemporalMemory(Serializable):
       key=lambda s: s._ordinal
     )
 
-    for _ in xrange(nDestroy):
+    for _ in range(nDestroy):
       if len(destroyCandidates) == 0:
         break
 
@@ -862,7 +863,7 @@ class TemporalMemory(Serializable):
 
     start = self.cellsPerColumn * column
     end = start + self.cellsPerColumn
-    return range(start, end)
+    return list(range(start, end))
 
 
   def numberOfColumns(self):
@@ -1265,14 +1266,14 @@ class TemporalMemory(Serializable):
       tm.numActivePotentialSynapsesForSegment[segment.flatIdx] = (
         int(protoSegment.number))
 
-    tm.iteration = long(proto.iteration)
+    tm.iteration = int(proto.iteration)
 
     for protoSegment in proto.lastUsedIterationForSegment:
       segment = tm.connections.getSegment(protoSegment.cell,
                                           protoSegment.idxOnCell)
 
       tm.lastUsedIterationForSegment[segment.flatIdx] = (
-        long(protoSegment.number))
+        int(protoSegment.number))
 
     return tm
 

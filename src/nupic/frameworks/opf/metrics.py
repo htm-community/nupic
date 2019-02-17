@@ -88,7 +88,7 @@ from nupic.utils import MovingAverage
 
 from collections import deque
 from operator import itemgetter
-from safe_interpreter import SafeInterpreter
+from .safe_interpreter import SafeInterpreter
 from io import StringIO
 from functools import partial
 
@@ -159,7 +159,7 @@ class MetricSpec(object):
     params = self.params
     if params is not None:
 
-      sortedParams= params.keys()
+      sortedParams= list(params.keys())
       sortedParams.sort()
       for param in sortedParams:
         # Don't include the customFuncSource - it is too long an unwieldy
@@ -294,7 +294,7 @@ class _MovingMode(object):
     if len(self._countDict) == 0:
       pred = ""
     else:
-      pred = max(self._countDict.items(), key = itemgetter(1))[0]
+      pred = max(list(self._countDict.items()), key = itemgetter(1))[0]
 
     # Update count dict and history buffer
     self._history.appendleft(value)
@@ -317,7 +317,7 @@ def _isNumber(value):
 
 
 
-class MetricsIface(object):
+class MetricsIface(object, metaclass=ABCMeta):
   """
   A Metrics module compares a prediction Y to corresponding ground truth X and 
   returns a single measure representing the "goodness" of the prediction. It is 
@@ -325,8 +325,6 @@ class MetricsIface(object):
 
   :param metricSpec: (:class:`MetricSpec`) spec used to created the metric
   """
-
-  __metaclass__ = ABCMeta
 
   @abstractmethod
   def __init__(self, metricSpec):
@@ -543,8 +541,8 @@ class AggregateMetric(MetricsIface):
       return self.aggregateError
 
     if self.verbosity > 0:
-      print "groundTruth:\n%s\nPredictions:\n%s\n%s\n" % (groundTruth,
-                                                prediction, self.getMetric())
+      print("groundTruth:\n%s\nPredictions:\n%s\n%s\n" % (groundTruth,
+                                                prediction, self.getMetric()))
 
     # Ignore if we've reached maxRecords
     if self._maxRecords is not None and self.steps >= self._maxRecords:
@@ -585,9 +583,9 @@ class MetricNegativeLogLikelihood(AggregateMetric):
       # a manually set minimum prediction probability so that the log(LL) doesn't blow up
       minProb = 0.00001
       negLL = 0
-      for step in bucketll.keys():
+      for step in list(bucketll.keys()):
         outOfBucketProb = 1 - sum(bucketll[step].values())
-        if bucketIdxTruth in bucketll[step].keys():
+        if bucketIdxTruth in list(bucketll[step].keys()):
           prob = bucketll[step][bucketIdxTruth]
         else:
           prob = outOfBucketProb
@@ -715,8 +713,8 @@ class MetricAltMAPE(AggregateMetric):
     # Compute absolute error
     error = abs(groundTruth - prediction)
     if self.verbosity > 0:
-      print "MetricAltMAPE:\n  groundTruth: %s\n  Prediction: " \
-            "%s\n  Error: %s" % (groundTruth, prediction, error)
+      print("MetricAltMAPE:\n  groundTruth: %s\n  Prediction: " \
+            "%s\n  Error: %s" % (groundTruth, prediction, error))
 
     # Update the accumulated groundTruth and aggregate error
     if self.history is not None:
@@ -737,9 +735,9 @@ class MetricAltMAPE(AggregateMetric):
       self.aggregateError = 0
 
     if self.verbosity >= 1:
-      print "  accumGT:", self._accumulatedGroundTruth
-      print "  accumError:", self._accumulatedError
-      print "  aggregateError:", self.aggregateError
+      print("  accumGT:", self._accumulatedGroundTruth)
+      print("  accumError:", self._accumulatedError)
+      print("  aggregateError:", self.aggregateError)
 
     self.steps += 1
     return self.aggregateError
@@ -776,13 +774,13 @@ class MetricMAPE(AggregateMetric):
     else:
       # Ignore this sample
       if self.verbosity > 0:
-        print "Ignoring sample with groundTruth of 0"
+        print("Ignoring sample with groundTruth of 0")
       self.steps += 1
       return self.aggregateError
 
     if self.verbosity > 0:
-      print "MetricMAPE:\n  groundTruth: %s\n  Prediction: " \
-            "%s\n  Error: %s" % (groundTruth, prediction, pctError)
+      print("MetricMAPE:\n  groundTruth: %s\n  Prediction: " \
+            "%s\n  Error: %s" % (groundTruth, prediction, pctError))
 
     # Update the accumulated groundTruth and aggregate error
     if self.history is not None:
@@ -797,8 +795,8 @@ class MetricMAPE(AggregateMetric):
     self.aggregateError = 100.0 * self._accumulatedPctError / len(self.history)
 
     if self.verbosity >= 1:
-      print "  accumPctError:", self._accumulatedPctError
-      print "  aggregateError:", self.aggregateError
+      print("  accumPctError:", self._accumulatedPctError)
+      print("  aggregateError:", self.aggregateError)
 
     self.steps += 1
     return self.aggregateError
@@ -861,7 +859,7 @@ class MetricMovingMean(AggregateMetric):
     assert (len(self._predictionSteps) == 1)
 
     self.mean_window = 10
-    if metricSpec.params.has_key('mean_window'):
+    if 'mean_window' in metricSpec.params:
       assert metricSpec.params['mean_window'] >= 1
       self.mean_window = metricSpec.params['mean_window']
 
@@ -878,7 +876,7 @@ class MetricMovingMean(AggregateMetric):
       return self._subErrorMetrics[0].aggregateError
 
     if self.verbosity > 0:
-      print "groundTruth:\n%s\nPredictions:\n%s\n%s\n" % (groundTruth, prediction, self.getMetric())
+      print("groundTruth:\n%s\nPredictions:\n%s\n%s\n" % (groundTruth, prediction, self.getMetric()))
 
     # Use ground truth from 'steps' steps ago as our most recent ground truth
     lastGT = self._getShiftedGroundTruth(groundTruth)
@@ -1016,12 +1014,12 @@ class CustomErrorMetric(MetricsIface):
         likely outcome given a probability distribution
     """
     if len(pred) == 1:
-      return pred.keys()[0]
+      return list(pred.keys())[0]
 
     mostLikelyOutcome = None
     maxProbability = 0
 
-    for prediction, probability in pred.items():
+    for prediction, probability in list(pred.items()):
       if probability > maxProbability:
         mostLikelyOutcome = prediction
         maxProbability = probability
@@ -1033,9 +1031,9 @@ class CustomErrorMetric(MetricsIface):
         value of a probability distribution
     """
     if len(pred) == 1:
-      return pred.keys()[0]
+      return list(pred.keys())[0]
 
-    return sum([x*p for x,p in pred.items()])
+    return sum([x*p for x,p in list(pred.items())])
 
   def evalAbsErr(self,pred,ground):
     return abs(pred-ground)
@@ -1081,7 +1079,7 @@ class MetricMovingMode(AggregateMetric):
     super(MetricMovingMode, self).__init__(metricSpec)
 
     self.mode_window = 100
-    if metricSpec.params.has_key('mode_window'):
+    if 'mode_window' in metricSpec.params:
       assert metricSpec.params['mode_window'] >= 1
       self.mode_window = metricSpec.params['mode_window']
 
@@ -1101,8 +1099,8 @@ class MetricMovingMode(AggregateMetric):
       return self._subErrorMetrics[0].aggregateError
 
     if self.verbosity > 0:
-      print "groundTruth:\n%s\nPredictions:\n%s\n%s\n" % (groundTruth, prediction,
-                                                          self.getMetric())
+      print("groundTruth:\n%s\nPredictions:\n%s\n%s\n" % (groundTruth, prediction,
+                                                          self.getMetric()))
 
     # Use ground truth from 'steps' steps ago as our most recent ground truth
     lastGT = self._getShiftedGroundTruth(groundTruth)
@@ -1147,8 +1145,8 @@ class MetricTrivial(AggregateMetric):
     prediction = self._getShiftedGroundTruth(groundTruth)
 
     if self.verbosity > 0:
-      print "groundTruth:\n%s\nPredictions:\n%s\n%s\n" % (groundTruth,
-                                            prediction, self.getMetric())
+      print("groundTruth:\n%s\nPredictions:\n%s\n%s\n" % (groundTruth,
+                                            prediction, self.getMetric()))
     # If missing data,
     if groundTruth == SENTINEL_VALUE_FOR_MISSING_DATA:
       return self._subErrorMetrics[0].aggregateError
@@ -1177,7 +1175,7 @@ class MetricTwoGram(AggregateMetric):
     assert len(self._predictionSteps) == 1
 
     # Must supply the predictionField
-    assert(metricSpec.params.has_key('predictionField'))
+    assert('predictionField' in metricSpec.params)
     self.predictionField = metricSpec.params['predictionField']
     self.twoGramDict = dict()
 
@@ -1232,13 +1230,13 @@ class MetricTwoGram(AggregateMetric):
       # Find most often occurring 1-gram
       if isinstance(actualGroundTruth,str):
         # Get the most frequent category that followed the previous timestep
-        twoGramMax = max(self.twoGramDict[prevGTKey].items(), key=itemgetter(1))
+        twoGramMax = max(list(self.twoGramDict[prevGTKey].items()), key=itemgetter(1))
         pred = twoGramMax[0]
 
       else:
         # Get average of all possible values that followed the previous
         # timestep
-        pred = sum(self.twoGramDict[prevGTKey].iterkeys())
+        pred = sum(self.twoGramDict[prevGTKey].keys())
         pred /= len(self.twoGramDict[prevGTKey])
 
       # Add current ground truth to dict
@@ -1248,8 +1246,8 @@ class MetricTwoGram(AggregateMetric):
         self.twoGramDict[prevGTKey][actualGroundTruth] = 1
 
     if self.verbosity > 0:
-      print "\nencoding:%s\nactual:%s\nprevEncoding:%s\nprediction:%s\nmetric:%s" % \
-          (groundTruth, actualGroundTruth, prevGTKey, pred, self.getMetric())
+      print("\nencoding:%s\nactual:%s\nprevEncoding:%s\nprediction:%s\nmetric:%s" % \
+          (groundTruth, actualGroundTruth, prevGTKey, pred, self.getMetric()))
 
     return self._subErrorMetrics[0].addInstance(actualGroundTruth, pred, record)
 
@@ -1377,11 +1375,11 @@ class MetricNegAUC(AggregateMetric):
     # Print warning the first time this metric is asked to be computed on a
     #  problem with more than 2 classes
     if sorted(classes) != [0,1]:
-      print "WARNING: AUC only implemented for binary classifications where " \
+      print("WARNING: AUC only implemented for binary classifications where " \
           "the categories are category 0 and 1. In this network, the " \
-          "categories are: %s" % (classes)
-      print "WARNING: Computation of this metric is disabled for the remainder of " \
-            "this experiment."
+          "categories are: %s" % (classes))
+      print("WARNING: Computation of this metric is disabled for the remainder of " \
+            "this experiment.")
       self.disabled = True
       return 0.0
 
@@ -1395,14 +1393,14 @@ class MetricNegAUC(AggregateMetric):
 
     # Debug?
     if False:
-      print
-      print "AUC metric debug info (%d steps):" % (steps)
-      print " actuals:", actuals
-      print " probabilities:", ["%.2f" % x for x in scores]
-      print " fpr:", fpr
-      print " tpr:", tpr
-      print " thresholds:", thresholds
-      print " AUC:", auc
+      print()
+      print("AUC metric debug info (%d steps):" % (steps))
+      print(" actuals:", actuals)
+      print(" probabilities:", ["%.2f" % x for x in scores])
+      print(" fpr:", fpr)
+      print(" tpr:", tpr)
+      print(" thresholds:", thresholds)
+      print(" AUC:", auc)
 
     return -1 * auc
 
@@ -1455,15 +1453,15 @@ class MetricMultiStep(AggregateMetric):
         if isinstance(stepPrediction, dict) \
             and not isinstance(subErrorMetric, CustomErrorMetric):
           predictions = [(prob,value) for (value, prob) in \
-                                                    stepPrediction.iteritems()]
+                                                    stepPrediction.items()]
           predictions.sort()
           stepPrediction = predictions[-1][1]
 
         # Get sum of the errors
         aggErr = subErrorMetric.addInstance(groundTruth, stepPrediction, record, result)
         if self.verbosity >= 2:
-          print "MetricMultiStep %s: aggErr for stepSize %d: %s" % \
-                  (self._predictionSteps, step, aggErr)
+          print("MetricMultiStep %s: aggErr for stepSize %d: %s" % \
+                  (self._predictionSteps, step, aggErr))
 
         aggErrSum += aggErr
     except:
@@ -1473,14 +1471,14 @@ class MetricMultiStep(AggregateMetric):
     # Return average aggregate error across all step sizes
     self.aggregateError = aggErrSum / len(self._subErrorMetrics)
     if self.verbosity >= 2:
-      print "MetricMultiStep %s: aggErrAvg: %s" % (self._predictionSteps,
-                                                   self.aggregateError)
+      print("MetricMultiStep %s: aggErrAvg: %s" % (self._predictionSteps,
+                                                   self.aggregateError))
     self.steps += 1
 
     if self.verbosity >= 1:
-      print "\nMetricMultiStep %s: \n  groundTruth:  %s\n  Predictions:  %s" \
+      print("\nMetricMultiStep %s: \n  groundTruth:  %s\n  Predictions:  %s" \
             "\n  Metric:  %s" % (self._predictionSteps, groundTruth, prediction,
-                                 self.getMetric())
+                                 self.getMetric()))
 
     return self.aggregateError
 
@@ -1536,9 +1534,9 @@ class MetricMultiStepProbability(AggregateMetric):
       return self.aggregateError
 
     if self.verbosity >= 1:
-      print "\nMetricMultiStepProbability %s: \n  groundTruth:  %s\n  " \
+      print("\nMetricMultiStepProbability %s: \n  groundTruth:  %s\n  " \
             "Predictions:  %s" % (self._predictionSteps, groundTruth,
-                                  prediction)
+                                  prediction))
 
     # Get the aggregateErrors for all requested step sizes and average them
     aggErrSum = 0
@@ -1552,7 +1550,7 @@ class MetricMultiStepProbability(AggregateMetric):
       if isinstance(stepPrediction, dict):
         expectedValue = 0
         # For every possible prediction multiply its error by its probability
-        for (pred, prob) in stepPrediction.iteritems():
+        for (pred, prob) in stepPrediction.items():
           error += subErrorMetric.addInstance(groundTruth, pred, record) \
                     * prob
       else:
@@ -1560,8 +1558,8 @@ class MetricMultiStepProbability(AggregateMetric):
                                             record)
 
       if self.verbosity >= 2:
-          print ("MetricMultiStepProbability %s: aggErr for stepSize %d: %s" %
-                 (self._predictionSteps, step, error))
+          print(("MetricMultiStepProbability %s: aggErr for stepSize %d: %s" %
+                 (self._predictionSteps, step, error)))
 
       aggErrSum += error
 
@@ -1570,15 +1568,15 @@ class MetricMultiStepProbability(AggregateMetric):
     avgAggErr = aggErrSum / len(self._subErrorMetrics)
     self.aggregateError = self._movingAverage(avgAggErr)
     if self.verbosity >= 2:
-      print ("MetricMultiStepProbability %s: aggErr over all steps, this "
-             "iteration (%d): %s" % (self._predictionSteps, self.steps, avgAggErr))
-      print ("MetricMultiStepProbability %s: aggErr moving avg: %s" %
-             (self._predictionSteps, self.aggregateError))
+      print(("MetricMultiStepProbability %s: aggErr over all steps, this "
+             "iteration (%d): %s" % (self._predictionSteps, self.steps, avgAggErr)))
+      print(("MetricMultiStepProbability %s: aggErr moving avg: %s" %
+             (self._predictionSteps, self.aggregateError)))
     self.steps += 1
 
     if self.verbosity >= 1:
-      print "MetricMultiStepProbability %s: \n  Error: %s\n  Metric:  %s" % \
-              (self._predictionSteps, avgAggErr, self.getMetric())
+      print("MetricMultiStepProbability %s: \n  Error: %s\n  Metric:  %s" % \
+              (self._predictionSteps, avgAggErr, self.getMetric()))
 
     return self.aggregateError
 
@@ -1621,7 +1619,7 @@ class MetricMulti(MetricsIface):
   def addInstance(self, groundTruth, prediction, record = None, result = None):
     err = 0.0
     subResults = [m.addInstance(groundTruth, prediction, record) for m in self.metrics]
-    for i in xrange(len(self.weights)):
+    for i in range(len(self.weights)):
       if subResults[i] is not None:
         err += subResults[i]*self.weights[i]
       else: # submetric returned None, propagate
@@ -1629,7 +1627,7 @@ class MetricMulti(MetricsIface):
         return None
 
     if self.verbosity > 2:
-      print "IN=",groundTruth," pred=",prediction,": w=",self.weights[i]," metric=",self.metrics[i]," value=",m," err=",err
+      print("IN=",groundTruth," pred=",prediction,": w=",self.weights[i]," metric=",self.metrics[i]," value=",m," err=",err)
     if self.movingAvg is not None:
       err=self.movingAvg(err)
     self.err = err

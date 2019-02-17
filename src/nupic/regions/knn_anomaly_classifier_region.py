@@ -29,7 +29,7 @@ import numpy
 
 from nupic.algorithms import anomaly
 from nupic.bindings.regions.PyRegion import PyRegion
-from knn_classifier_region import KNNClassifierRegion
+from .knn_classifier_region import KNNClassifierRegion
 from nupic.bindings.math import Random
 from nupic.frameworks.opf.exceptions import (HTMPredictionModelInvalidRangeError,
                                              HTMPredictionModelInvalidArgument)
@@ -1091,7 +1091,7 @@ class _CLAClassificationRecord(object):
 
 
   def __setstate__(self, data_dict):
-    for (name, value) in data_dict.iteritems():
+    for (name, value) in data_dict.items():
       setattr(self, name, value)
 
 

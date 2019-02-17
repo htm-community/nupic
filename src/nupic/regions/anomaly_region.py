@@ -86,7 +86,7 @@ class AnomalyRegion(PyRegion, Serializable):
 
 
   def __eq__(self, other):
-    for k, v1 in self.__dict__.iteritems():
+    for k, v1 in self.__dict__.items():
       if not k in other.__dict__:
         return False
       v2 = getattr(other, k)

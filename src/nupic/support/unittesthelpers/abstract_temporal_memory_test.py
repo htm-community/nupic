@@ -27,9 +27,7 @@ from nupic.data.generators.sequence_machine import SequenceMachine
 
 
 
-class AbstractTemporalMemoryTest(object):
-  __metaclass__ = ABCMeta
-
+class AbstractTemporalMemoryTest(object, metaclass=ABCMeta):
   VERBOSITY = 1
 
   @abstractmethod

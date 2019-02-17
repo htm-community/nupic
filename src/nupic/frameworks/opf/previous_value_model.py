@@ -26,7 +26,7 @@ import itertools
 from nupic.data import field_meta
 from nupic.frameworks.opf import model
 from nupic.frameworks.opf import opf_utils
-from opf_utils import InferenceType
+from .opf_utils import InferenceType
 
 try:
   import capnp
@@ -114,7 +114,7 @@ class PreviousValueModel(model.Model):
 
   def getFieldInfo(self):
     return tuple(field_meta.FieldMetaInfo(*args) for args in
-                 itertools.izip(
+                 zip(
                      self._fieldNames, self._fieldTypes,
                      itertools.repeat(field_meta.FieldMetaSpecial.none)))
 

@@ -358,8 +358,8 @@ class ScalarEncoder(Encoder):
         # Don't clip periodic inputs. Out-of-range input is always an error
         if self.clipInput and not self.periodic:
           if self.verbosity > 0:
-            print "Clipped input %s=%.2f to minval %.2f" % (self.name, input,
-                                                            self.minval)
+            print("Clipped input %s=%.2f to minval %.2f" % (self.name, input,
+                                                            self.minval))
           input = self.minval
         else:
           raise Exception('input (%s) less than range (%s - %s)' %
@@ -374,8 +374,8 @@ class ScalarEncoder(Encoder):
         if input > self.maxval:
           if self.clipInput:
             if self.verbosity > 0:
-              print "Clipped input %s=%.2f to maxval %.2f" % (self.name, input,
-                                                              self.maxval)
+              print("Clipped input %s=%.2f to maxval %.2f" % (self.name, input,
+                                                              self.maxval))
             input = self.maxval
           else:
             raise Exception('input (%s) greater than range (%s - %s)' %
@@ -458,14 +458,14 @@ class ScalarEncoder(Encoder):
 
     # Debug the decode() method
     if self.verbosity >= 2:
-      print
-      print "input:", input
-      print "range:", self.minval, "-", self.maxval
-      print "n:", self.n, "w:", self.w, "resolution:", self.resolution, \
-            "radius", self.radius, "periodic:", self.periodic
-      print "output:",
+      print()
+      print("input:", input)
+      print("range:", self.minval, "-", self.maxval)
+      print("n:", self.n, "w:", self.w, "resolution:", self.resolution, \
+            "radius", self.radius, "periodic:", self.periodic)
+      print("output:", end=' ')
       self.pprint(output)
-      print "input desc:", self.decodedToStr(self.decode(output))
+      print("input desc:", self.decodedToStr(self.decode(output)))
 
 
   def decode(self, encoded, parentFieldName=''):
@@ -486,28 +486,28 @@ class ScalarEncoder(Encoder):
 
     # Search for portions of the output that have "holes"
     maxZerosInARow = self.halfwidth
-    for i in xrange(maxZerosInARow):
+    for i in range(maxZerosInARow):
       searchStr = numpy.ones(i + 3, dtype=encoded.dtype)
       searchStr[1:-1] = 0
       subLen = len(searchStr)
 
       # Does this search string appear in the output?
       if self.periodic:
-        for j in xrange(self.n):
+        for j in range(self.n):
           outputIndices = numpy.arange(j, j + subLen)
           outputIndices %= self.n
           if numpy.array_equal(searchStr, tmpOutput[outputIndices]):
             tmpOutput[outputIndices] = 1
 
       else:
-        for j in xrange(self.n - subLen + 1):
+        for j in range(self.n - subLen + 1):
           if numpy.array_equal(searchStr, tmpOutput[j:j + subLen]):
             tmpOutput[j:j + subLen] = 1
 
 
     if self.verbosity >= 2:
-      print "raw output:", encoded[:self.n]
-      print "filtered output:", tmpOutput
+      print("raw output:", encoded[:self.n])
+      print("filtered output:", tmpOutput)
 
     # ------------------------------------------------------------------------
     # Find each run of 1's.
@@ -592,7 +592,7 @@ class ScalarEncoder(Encoder):
     """generate description from a text description of the ranges"""
     desc = ""
     numRanges = len(ranges)
-    for i in xrange(numRanges):
+    for i in range(numRanges):
       if ranges[i][0] != ranges[i][1]:
         desc += "%.2f-%.2f" % (ranges[i][0], ranges[i][1])
       else:
@@ -628,7 +628,7 @@ class ScalarEncoder(Encoder):
       self._topDownMappingM = SM32(numCategories, self.n)
 
       outputSpace = numpy.zeros(self.n, dtype=GetNTAReal())
-      for i in xrange(numCategories):
+      for i in range(numCategories):
         value = self._topDownValues[i]
         value = max(value, self.minval)
         value = min(value, self.maxval)

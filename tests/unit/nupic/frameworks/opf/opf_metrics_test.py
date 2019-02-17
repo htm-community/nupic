@@ -38,7 +38,7 @@ class OPFMetricsTest(unittest.TestCase):
 {"verbosity" : OPFMetricsTest.VERBOSITY}))
     gt = [9, 4, 5, 6]
     p = [0, 13, 8, 3]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       rmse.addInstance(gt[i], p[i])
     target = 6.71
 
@@ -51,7 +51,7 @@ class OPFMetricsTest(unittest.TestCase):
                                  {"verbosity" : OPFMetricsTest.VERBOSITY}))
     gt = [9, 4, 5, 6]
     p = [0, 13, 8, 3]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       nrmse.addInstance(gt[i], p[i])
     target = 3.5856858280031814
 
@@ -76,7 +76,7 @@ class OPFMetricsTest(unittest.TestCase):
 {"verbosity" : OPFMetricsTest.VERBOSITY}))
     gt = [9, 4, 5, 6]
     p = [0, 13, 8, 3]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       aae.addInstance(gt[i], p[i])
     target = 6.0
     self.assertTrue(abs(aae.getMetric()["value"]-target) < OPFMetricsTest.DELTA)
@@ -87,7 +87,7 @@ class OPFMetricsTest(unittest.TestCase):
                 {"verbosity" : OPFMetricsTest.VERBOSITY,"errorMetric":"aae"}))
     gt = [i/4+1 for i in range(100)]
     p = [i for i in range(100)]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       trivialaae.addInstance(gt[i], p[i])
     target = .25
     self.assertTrue(abs(trivialaae.getMetric()["value"]-target) \
@@ -99,7 +99,7 @@ class OPFMetricsTest(unittest.TestCase):
                 {"verbosity" : OPFMetricsTest.VERBOSITY,"errorMetric":"acc"}))
     gt = [str(i/4+1) for i in range(100)]
     p = [str(i) for i in range(100)]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       trivialaccuracy.addInstance(gt[i], p[i])
     target = .75
     self.assertTrue(abs(trivialaccuracy.getMetric()["value"]-target) \
@@ -112,7 +112,7 @@ class OPFMetricsTest(unittest.TestCase):
             {"verbosity" : OPFMetricsTest.VERBOSITY,"errorMetric":"avg_err"}))
     gt = [str(i/4+1) for i in range(100)]
     p = [str(i) for i in range(100)]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       trivialAveErr.addInstance(gt[i], p[i])
     target = .25
     self.assertTrue(abs(trivialAveErr.getMetric()["value"]-target)\
@@ -125,7 +125,7 @@ class OPFMetricsTest(unittest.TestCase):
     {"verbosity" : OPFMetricsTest.VERBOSITY, "window":100,"errorMetric":"aae"}))
     gt = [i/4+1 for i in range(1000)]
     p = [i for i in range(1000)]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       trivialaae.addInstance(gt[i], p[i])
     target = .25
     self.assertTrue(abs(trivialaae.getMetric()["value"]-target) \
@@ -138,7 +138,7 @@ class OPFMetricsTest(unittest.TestCase):
  {"verbosity" : OPFMetricsTest.VERBOSITY, "window":100,"errorMetric":"acc"}))
     gt = [str(i/4+1) for i in range(1000)]
     p = [str(i) for i in range(1000)]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       trivialaccuracy.addInstance(gt[i], p[i])
     target = .75
     self.assertTrue(abs(trivialaccuracy.getMetric()["value"]-target)\
@@ -151,7 +151,7 @@ class OPFMetricsTest(unittest.TestCase):
 {"verbosity" : OPFMetricsTest.VERBOSITY, "window":100,"errorMetric":"avg_err"}))
     gt = [str(i/4+1) for i in range(500, 1000)]
     p = [str(i) for i in range(1000)]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       trivialAveErr.addInstance(gt[i], p[i])
     target = .25
     self.assertTrue(abs(trivialAveErr.getMetric()["value"]-target)\
@@ -168,7 +168,7 @@ class OPFMetricsTest(unittest.TestCase):
     gt = [i+1 for i in range(100)]
     p = [{3: {i: .7, 5: 0.3}} for i in range(100)]
 
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       msp.addInstance(gt[i], p[i])
     target = 1
     self.assertTrue(abs(msp.getMetric()["value"]-target) < OPFMetricsTest.DELTA)
@@ -186,7 +186,7 @@ class OPFMetricsTest(unittest.TestCase):
     p = [{3: {i+1: .7, 5: 0.3},
           6: {i+0.5: .7, 5: 0.3}} for i in range(100)]
 
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       msp.addInstance(gt[i], p[i])
     target = 0.75  # average of +1 error and 0.5 error
     self.assertTrue(abs(msp.getMetric()["value"]-target) < OPFMetricsTest.DELTA)
@@ -199,7 +199,7 @@ class OPFMetricsTest(unittest.TestCase):
            "steps":3}))
     gt = [5 for i in range(1000)]
     p = [{3: {i: .3, 5: .7}} for i in range(1000)]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       msp.addInstance(gt[i], p[i])
     #((999-5)(1000-5)/2-(899-5)(900-5)/2)*.3/100
     target = 283.35
@@ -215,7 +215,7 @@ class OPFMetricsTest(unittest.TestCase):
     gt = [5 for i in range(1000)]
     p = [{3: {i: .3, 5: .7},
           1: {5: 1.0}} for i in range(1000)]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       msp.addInstance(gt[i], p[i])
     #(((999-5)(1000-5)/2-(899-5)(900-5)/2)*.3/100) / 2
     #  / 2 because the 1-step prediction is 100% accurate
@@ -232,7 +232,7 @@ class OPFMetricsTest(unittest.TestCase):
     gt.extend([2*i for i in range(110)])
     p = [i for i in range(1000)]
     res = []
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       movingMeanAAE.addInstance(gt[i], p[i])
       res.append(movingMeanAAE.getMetric()["value"])
     self.assertTrue(max(res[1:890]) == 2.0)
@@ -251,7 +251,7 @@ class OPFMetricsTest(unittest.TestCase):
     gt.extend([2*i for i in range(110)])
     p = [i for i in range(1000)]
     res = []
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       movingMeanRMSE.addInstance(gt[i], p[i])
       res.append(movingMeanRMSE.getMetric()["value"])
     self.assertTrue(max(res[1:890]) == 2.0)
@@ -272,7 +272,7 @@ class OPFMetricsTest(unittest.TestCase):
     gt.extend([2*i/4 for i in range(100)])
     p = [i for i in range(1000)]
     res = []
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       movingModeAvgErr.addInstance(gt[i], p[i])
       res.append(movingModeAvgErr.getMetric()["value"])
     #Make sure that there is no point where the average error is >.5
@@ -298,7 +298,7 @@ class OPFMetricsTest(unittest.TestCase):
     gt.extend([2*i/4 for i in range(100)])
     p = [i for i in range(1000)]
     res = []
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       movingModeACC.addInstance(gt[i], p[i])
       res.append(movingModeACC.getMetric()["value"])
     #Make sure that there is no point where the average acc is <.5
@@ -327,7 +327,7 @@ class OPFMetricsTest(unittest.TestCase):
       encoding[i] = 1
     gt = [i%5 for i in range(1000)]
     res = []
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       if i == 20:
         # Make sure we don"t barf with missing values
         oneGram.addInstance(np.zeros(10), prediction=None,
@@ -356,7 +356,7 @@ record={"test":gt[i]})
       encoding[i] = 1
     gt = [i%5 for i in range(1000)]
     res = []
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       if i == 20:
         # Make sure we don"t barf with missing values
         oneGram.addInstance(np.zeros(10), prediction=None,
@@ -391,7 +391,7 @@ record={"test":gt[i]})
       newElem += 20
 
     res = []
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       if i==20:
         # Make sure we don"t barf with missing values
         oneGram.addInstance(np.zeros(10), prediction=None,
@@ -411,7 +411,7 @@ record={"test":gt[i]})
 {"verbosity" : OPFMetricsTest.VERBOSITY, "window":1}))
     gt = [9, 4, 5, 6]
     p = [0, 13, 8, 3]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       waae.addInstance(gt[i], p[i])
     target = 3.0
     self.assertTrue( abs(waae.getMetric()["value"]-target) \
@@ -424,7 +424,7 @@ record={"test":gt[i]})
 {"verbosity" : OPFMetricsTest.VERBOSITY}))
     gt = [0, 1, 2, 3, 4, 5]
     p = [0, 1, 2, 4, 5, 6]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       acc.addInstance(gt[i], p[i])
     target = 0.5
     self.assertTrue(abs(acc.getMetric()["value"]-target) < OPFMetricsTest.DELTA)
@@ -436,7 +436,7 @@ record={"test":gt[i]})
 {"verbosity" : OPFMetricsTest.VERBOSITY,  "window":2}))
     gt = [0, 1, 2, 3, 4, 5]
     p = [0, 1, 2, 4, 5, 6]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       acc.addInstance(gt[i], p[i])
     target = 0.0
 
@@ -449,7 +449,7 @@ record={"test":gt[i]})
 {"verbosity" : OPFMetricsTest.VERBOSITY}))
     gt = [1, 1, 2, 3, 4, 5]
     p = [0, 1, 2, 4, 5, 6]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       err.addInstance(gt[i], p[i])
     target = (2.0/3.0)
     self.assertTrue(abs(err.getMetric()["value"]-target) < OPFMetricsTest.DELTA)
@@ -461,7 +461,7 @@ record={"test":gt[i]})
 {"verbosity" : OPFMetricsTest.VERBOSITY, "window":2}))
     gt = [0, 1, 2, 3, 4, 5]
     p = [0, 1, 2, 4, 5, 6]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       err.addInstance(gt[i], p[i])
     target = 1.0
 
@@ -474,7 +474,7 @@ record={"test":gt[i]})
 {"verbosity" : OPFMetricsTest.VERBOSITY, "window":100}))
     gt = [9, 4, 5, 6]
     p = [0, 13, 8, 3]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       rmse.addInstance(gt[i], p[i])
     target = 6.71
 
@@ -525,7 +525,7 @@ record={"test":gt[i]})
     gt_bucketIdx = [0, 2, 1, 3]
     negLL = getModule(MetricSpec("negativeLogLikelihood", None, None,
                                 {"verbosity" : OPFMetricsTest.VERBOSITY}))
-    for i in xrange(len(bucketLL)):
+    for i in range(len(bucketLL)):
       negLL.addInstance(0, 0, record = None,
                         result=MockModelResult(bucketLL[i], gt_bucketIdx[i]))
     target = 5.756462
@@ -569,7 +569,7 @@ record={"test":gt[i]})
                                 {"verbosity" : OPFMetricsTest.VERBOSITY}))
     negLL_mean = getModule(MetricSpec("negativeLogLikelihood", None, None,
                                 {"verbosity" : OPFMetricsTest.VERBOSITY}))
-    for i in xrange(len(gt_bucketIdx)):
+    for i in range(len(gt_bucketIdx)):
       negLL_gt.addInstance(0, 0, record = None,
                         result=MockModelResult(prediction_gt, gt_bucketIdx[i]))
       negLL_ml.addInstance(0, 0, record = None,
@@ -589,7 +589,7 @@ record={"test":gt[i]})
 {"customFuncSource":customFunc, "errorWindow":3}))
     gt = [9, 4, 5, 6]
     p = [0, 13, 8, 3]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       aggErr = customEM.addInstance(gt[i], p[i])
     target = 5.0
     delta = 0.001
@@ -609,7 +609,7 @@ record={"test":gt[i]})
 {"customFuncSource":customFunc}))
     gt = [9, 4, 5, 6]
     p = [0, 13, 8, 3]
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       customEM.addInstance(gt[i], p[i])
     target = 5.0
     delta = 0.001
@@ -631,7 +631,7 @@ record={"test":gt[i]})
       t1 = [3*i for i in range(100)]
       t2 = [str(4*i) for i in range(100)]
 
-      for i in xrange(len(gt)):
+      for i in range(len(gt)):
         curRecord = {"pred":p[i], "ground":gt[i], "test1":t1[i], "test2":t2[i]}
         if i < lookBack:
           try:
@@ -655,7 +655,7 @@ record={"test":gt[i]})
       t1 = [3*i for i in range(100)]
       t2 = [str(4*i) for i in range(100)]
 
-      for i in xrange(len(gt)):
+      for i in range(len(gt)):
         curRecord = {"pred":p[i], "ground":gt[i], "test1":t1[i], "test2":t2[i]}
         if lookBack>=storeWindow-1:
           pass
@@ -683,7 +683,7 @@ record={"test":gt[i]})
       t1 = [3*i for i in range(100)]
       t2 = [str(4*i) for i in range(100)]
 
-      for i in xrange(len(gt)):
+      for i in range(len(gt)):
         curRecord = {"pred":p[i], "ground":gt[i], "test1":t1[i], "test2":t2[i]}
         if i < lookBack:
           try:
@@ -707,7 +707,7 @@ record={"test":gt[i]})
       t1 = [3*i for i in range(100)]
       t2 = [str(4*i) for i in range(100)]
 
-      for i in xrange(len(gt)):
+      for i in range(len(gt)):
         curRecord = {"pred":p[i], "ground":gt[i], "test1":t1[i], "test2":t2[i]}
         if i < lookBack or lookBack>=storeWindow:
           try:
@@ -733,7 +733,7 @@ record={"test":gt[i]})
       t1 = [3*i for i in range(100)]
       t2 = [str(4*i) for i in range(100)]
 
-      for i in xrange(len(gt)):
+      for i in range(len(gt)):
         curRecord = {"pred":p[i], "ground":gt[i], "test1":t1[i], "test2":t2[i]}
         if i < lookBack:
           try:
@@ -757,7 +757,7 @@ record={"test":gt[i]})
       t1 = [3*i for i in range(100)]
       t2 = [str(4*i) for i in range(100)]
 
-      for i in xrange(len(gt)):
+      for i in range(len(gt)):
         curRecord = {"pred":p[i], "ground":gt[i], "test1":t1[i], "test2":t2[i]}
         if i < lookBack or lookBack>=storeWindow:
           try:
@@ -781,7 +781,7 @@ record={"test":gt[i]})
       t1 = [3*i for i in range(100)]
       t2 = [str(4*i) for i in range(100)]
 
-      for i in xrange(len(gt)):
+      for i in range(len(gt)):
         curRecord = {"pred":p[i], "ground":gt[i], "test1":t1[i], "test2":t2[i]}
         if i < lookBack:
           try:
@@ -806,7 +806,7 @@ record={"test":gt[i]})
       t1 = [3*i for i in range(100)]
       t2 = [str(4*i) for i in range(100)]
 
-      for i in xrange(len(gt)):
+      for i in range(len(gt)):
         curRecord = {"pred":p[i], "ground":gt[i], "test1":t1[i], "test2":t2[i]}
         if i < lookBack or lookBack>=storeWindow:
           try:
@@ -830,7 +830,7 @@ record={"test":gt[i]})
     t1 = [3*i for i in range(100)]
     t2 = [str(4*i) for i in range(100)]
 
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       curRecord = {"pred":p[i], "ground":gt[i], "test1":t1[i], "test2":t2[i]}
       customEM.addInstance(gt[i], p[i], curRecord)
       self.assertTrue (customEM.getMetric()["value"] == i+1)
@@ -845,7 +845,7 @@ record={"test":gt[i]})
     t1 = [3*i for i in range(100)]
     t2 = [str(4*i) for i in range(100)]
 
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       curRecord = {"pred":p[i], "ground":gt[i], "test1":t1[i], "test2":t2[i]}
       customEM.addInstance(gt[i], p[i], curRecord)
       self.assertTrue (customEM.getMetric()["value"] == min(i+1, 4))
@@ -881,10 +881,10 @@ record={"test":gt[i]})
     metric10ref = getModule(ms2)
 
 
-    gt = range(500, 1000)
-    p = range(500)
+    gt = list(range(500, 1000))
+    p = list(range(500))
 
-    for i in xrange(len(gt)):
+    for i in range(len(gt)):
       v10=metric10ref.addInstance(gt[i], p[i])
       v1000=metric1000ref.addInstance(gt[i], p[i])
       if v10 is None or v1000 is None:
