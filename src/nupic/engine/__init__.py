@@ -32,14 +32,6 @@ basicTypes = ['Byte',
               'Handle',
               'Bool']
 
-arrayTypes = ['ByteArray',
-              'Int16Array', 'UInt16Array',
-              'Int32Array', 'UInt32Array',
-              'Int64Array', 'UInt64Array',
-              'Real32Array', 'Real64Array',
-              # No 'HandleArray'
-              'BoolArray']
-
 pyRegions = (
     ("nupic.bindings.regions.TestNode", "TestNode"),
     ("nupic.regions.anomaly_likelihood_region", "AnomalyLikelihoodRegion"),
@@ -70,9 +62,6 @@ def registerBuiltInRegions():
 
 
 registerBuiltInRegions()
-
-for a in arrayTypes:
-  exec('from %s import %s as %s' % (engine_internal.__name__, a, a))
 
 # Intercept the default exception handling for the purposes of stripping
 # parts of the stack trace that can confuse users. If you want the original
