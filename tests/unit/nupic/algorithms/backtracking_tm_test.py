@@ -29,7 +29,7 @@ import os
 import random
 import shutil
 import tempfile
-import unittest2 as unittest
+import unittest
 
 try:
   import capnp

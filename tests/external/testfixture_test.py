@@ -28,7 +28,7 @@ system, and an older version of pytest was installed that didn't support
 setUpModule, which resulted in subtle side-effects in some of these tests.
 """
 
-import unittest2 as unittest
+import unittest
 
 
 g_setUpModuleCalled = False

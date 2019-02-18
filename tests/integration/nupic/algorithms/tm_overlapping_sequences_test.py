@@ -43,7 +43,7 @@ import numpy
 import pprint
 import random
 import sys
-import unittest2 as unittest
+import unittest
 from optparse import OptionParser
 
 from nupic.algorithms import fdrutilities as fdrutils

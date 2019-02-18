@@ -30,7 +30,7 @@ but fixing them needs a deeper algoerithm discussion.
 
 import copy
 import datetime
-import unittest2 as unittest
+import unittest
 
 from nupic.algorithms import anomaly_likelihood as an
 from nupic.support.unittesthelpers.testcasebase import TestCaseBase

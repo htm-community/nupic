@@ -32,7 +32,7 @@ import subprocess
 import sys
 
 from pkg_resources import resource_filename
-import unittest2 as unittest
+import unittest
 
 from nupic.database.client_jobs_dao import ClientJobsDAO
 from nupic.support import aggregationDivide

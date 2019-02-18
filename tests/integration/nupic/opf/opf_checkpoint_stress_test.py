@@ -30,7 +30,7 @@ import numpy.random
 import os
 import shutil
 import tempfile
-import unittest2 as unittest
+import unittest
 
 from nupic.frameworks.opf.model_factory import ModelFactory
 from nupic.support.unittesthelpers.testcasebase import TestCaseBase

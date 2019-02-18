@@ -22,7 +22,7 @@
 
 import numpy
 import os
-import unittest2 as unittest
+import unittest
 
 from nupic.engine import Network
 from nupic.encoders import MultiEncoder

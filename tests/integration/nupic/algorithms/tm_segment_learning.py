@@ -54,7 +54,7 @@ right half. Both should be learned well.
 """
 
 import numpy
-import unittest2 as unittest
+import unittest
 
 from nupic.algorithms import fdrutilities as fdrutils
 from nupic.algorithms.backtracking_tm import BacktrackingTM

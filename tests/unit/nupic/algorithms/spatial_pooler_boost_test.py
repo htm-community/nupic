@@ -21,7 +21,7 @@
 
 import time
 import numpy
-import unittest2 as unittest
+import unittest
 
 from nupic.support.unittesthelpers.algorithm_test_helpers \
      import CreateSP

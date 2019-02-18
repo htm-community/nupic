@@ -31,7 +31,7 @@ Note: Since the sp pooler has 2048 cells with a sparsity of 40 cells active
 per iteration, 100% allocation is reached at the 51st unique pattern.
 """
 
-import unittest2 as unittest
+import unittest
 import random as rnd
 import time
 

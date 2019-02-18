@@ -27,7 +27,7 @@ import random
 import sys
 import tempfile
 import types
-import unittest2 as unittest
+import unittest
 
 import numpy
 

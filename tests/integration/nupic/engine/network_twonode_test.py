@@ -31,7 +31,7 @@
 """
 
 import logging
-import unittest2 as unittest
+import unittest
 
 from nupic.engine import Network, Dimensions
 

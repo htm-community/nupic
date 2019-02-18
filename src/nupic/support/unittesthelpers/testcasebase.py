@@ -27,7 +27,7 @@ import optparse
 import sys
 from datetime import datetime
 
-import unittest2 as unittest
+import unittest
 
 
 

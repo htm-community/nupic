@@ -23,7 +23,7 @@ from optparse import OptionParser
 import os
 import sys
 import traceback
-import unittest2 as unittest
+import unittest
 from pkg_resources import resource_filename
 
 from nupic.frameworks.opf.experiment_runner import (

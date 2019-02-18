@@ -22,7 +22,7 @@
 from mock import Mock, patch, ANY, call
 import numpy
 import pickle as pickle
-import unittest2 as unittest
+import unittest
 
 from nupic.bindings.math import GetNTAReal
 from nupic.bindings.algorithms import SpatialPooler

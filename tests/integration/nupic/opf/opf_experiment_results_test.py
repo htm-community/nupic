@@ -29,7 +29,7 @@ import os
 import shutil
 from subprocess import call
 import time
-import unittest2 as unittest
+import unittest
 from pkg_resources import resource_filename
 
 

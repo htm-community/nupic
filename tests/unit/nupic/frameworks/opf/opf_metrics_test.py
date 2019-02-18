@@ -21,7 +21,7 @@
 
 import numpy as np
 
-import unittest2 as unittest
+import unittest
 
 from nupic.frameworks.opf.metrics import getModule, MetricSpec, MetricMulti
 

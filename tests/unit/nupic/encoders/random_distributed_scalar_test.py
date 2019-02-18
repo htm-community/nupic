@@ -22,7 +22,7 @@
 from io import StringIO
 import sys
 import tempfile
-import unittest2 as unittest
+import unittest
 import numpy
 
 from nupic.encoders.base import defaultDtype

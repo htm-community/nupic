@@ -24,7 +24,7 @@
 This file tests the operation of the Previous Value Model.
 """
 
-import unittest2 as unittest
+import unittest
 
 from nupic.data import dict_utils
 from nupic.frameworks.opf import opf_utils, previous_value_model

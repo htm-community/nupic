@@ -24,7 +24,7 @@
 CL_VERBOSITY = 0
 
 import tempfile
-import unittest2 as unittest
+import unittest
 
 import numpy
 

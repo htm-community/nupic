@@ -32,7 +32,7 @@ Need to add tests for parameters:
 import os
 
 import pkg_resources
-import unittest2 as unittest
+import unittest
 
 from nupic.engine import Array, Dimensions, Network
 

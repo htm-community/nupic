@@ -22,7 +22,7 @@
 import copy
 import logging
 import time
-import unittest2 as unittest
+import unittest
 
 import pickle
 import numpy

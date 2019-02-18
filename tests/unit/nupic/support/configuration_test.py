@@ -24,7 +24,7 @@ import shutil
 from io import StringIO
 import sys
 import tempfile
-import unittest2 as unittest
+import unittest
 import uuid
 from pkg_resources import resource_filename
 

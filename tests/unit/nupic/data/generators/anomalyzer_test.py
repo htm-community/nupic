@@ -25,7 +25,7 @@ import csv
 from mock import MagicMock, patch
 from io import StringIO
 
-import unittest2 as unittest
+import unittest
 
 from nupic.data.file_record_stream import FileRecordStream
 from nupic.data.generators import anomalyzer

@@ -25,7 +25,7 @@
   at a moderate performance penalty.
 """
 
-import unittest2 as unittest
+import unittest
 
 # import for type comparison with Array.
 # (Seems we should be able to use nupic.engine.Array directly.)

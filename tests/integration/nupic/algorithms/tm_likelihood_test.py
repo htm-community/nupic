@@ -46,7 +46,7 @@ There should be four segments a-b
 """
 
 import numpy
-import unittest2 as unittest
+import unittest
 
 from nupic.algorithms.backtracking_tm import BacktrackingTM
 from nupic.algorithms.backtracking_tm_cpp import BacktrackingTMCPP

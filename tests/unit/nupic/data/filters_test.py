@@ -27,7 +27,7 @@ NOTE: This test was migrated from the old repo and could use some refactoring.
 from datetime import datetime
 
 import numpy
-import unittest2 as unittest
+import unittest
 from pkg_resources import resource_filename
 
 from nupic.regions.record_sensor import RecordSensor

@@ -22,7 +22,7 @@
 """Unit tests for TwoGramModel.py."""
 
 import tempfile
-import unittest2 as unittest
+import unittest
 
 from nupic.data import dict_utils
 from nupic.frameworks.opf import opf_utils, two_gram_model

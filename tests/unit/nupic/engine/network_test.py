@@ -21,7 +21,7 @@
 
 import sys
 from mock import patch
-import unittest2 as unittest
+import unittest
 
 from nupic import engine
 from nupic.bindings.regions.TestNode import TestNode

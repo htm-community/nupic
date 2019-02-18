@@ -30,7 +30,7 @@ import pickle as pickle
 import numpy as np
 import random
 import time
-import unittest2 as unittest
+import unittest
 from nupic.bindings.math import GetNTAReal
 
 from nupic.algorithms.fdrutilities import spDiff

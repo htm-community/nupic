@@ -21,7 +21,7 @@
 
 """Unit tests for dictutils module."""
 
-import unittest2 as unittest
+import unittest
 
 from nupic.data import dict_utils
 from nupic.swarming.utils import rCopy

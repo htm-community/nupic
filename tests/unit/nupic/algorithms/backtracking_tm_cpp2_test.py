@@ -23,7 +23,7 @@
 
 import pickle as pickle
 import numpy
-import unittest2 as unittest
+import unittest
 from nupic.bindings.math import Random
 
 from nupic.algorithms import fdrutilities as fdrutils

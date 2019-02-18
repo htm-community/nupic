@@ -22,7 +22,7 @@
 """Unit tests for the htm_prediction_model module."""
 
 import datetime
-import unittest2 as unittest
+import unittest
 
 from nupic.frameworks.opf.htm_prediction_model import HTMPredictionModel
 from nupic.frameworks.opf.model_factory import ModelFactory

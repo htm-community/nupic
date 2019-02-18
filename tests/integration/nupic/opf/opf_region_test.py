@@ -45,7 +45,7 @@ import numpy
 import os
 import random
 import tempfile
-import unittest2 as unittest
+import unittest
 from nupic.bindings.algorithms import SpatialPooler
 from pkg_resources import resource_filename
 

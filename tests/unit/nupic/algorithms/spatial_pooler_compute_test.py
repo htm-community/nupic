@@ -21,7 +21,7 @@
 
 import numpy
 import time
-import unittest2 as unittest
+import unittest
 from nupic.bindings.math import (count_gte,
                                  GetNTAReal,
                                  SM_01_32_32 as SparseBinaryMatrix,

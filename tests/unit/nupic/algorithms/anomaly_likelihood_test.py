@@ -29,7 +29,7 @@ import datetime
 import math
 import numpy
 import pickle
-import unittest2 as unittest
+import unittest
 
 import mock
 

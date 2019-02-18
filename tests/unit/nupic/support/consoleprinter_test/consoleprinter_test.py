@@ -20,7 +20,7 @@
 # ----------------------------------------------------------------------
 
 import os
-import unittest2 as unittest
+import unittest
 
 from nupic.support.console_printer import ConsolePrinterMixin, Tee
 

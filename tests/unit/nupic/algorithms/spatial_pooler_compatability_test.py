@@ -23,7 +23,7 @@ import pickle as pickle
 import numpy
 import time
 import traceback
-import unittest2 as unittest
+import unittest
 from nupic.bindings.algorithms import SpatialPooler as CPPSpatialPooler
 from nupic.bindings.math import GetNTAReal, Random as NupicRandom
 
