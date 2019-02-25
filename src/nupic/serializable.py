@@ -19,11 +19,13 @@
 # http://numenta.org/licenses/
 # ----------------------------------------------------------------------
 
+from future.utils import with_metaclass
+
 from abc import ABCMeta, abstractmethod
 
 
 
-class Serializable(object, metaclass=ABCMeta):
+class Serializable(with_metaclass(ABCMeta, object)):
   """
   Serializable base class establishing
   :meth:`~nupic.serializable.Serializable.read` and

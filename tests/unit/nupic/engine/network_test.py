@@ -19,6 +19,8 @@
 # http://numenta.org/licenses/
 # ----------------------------------------------------------------------
 
+from __future__ import print_function
+
 import sys
 from mock import patch
 import unittest

@@ -76,6 +76,8 @@ and `metric.py`. You can also create new monitors by simply defining new classes
 that inherit from MonitorMixinBase.
 """
 
+from future.utils import with_metaclass
+
 import abc
 import numpy
 from prettytable import PrettyTable
@@ -84,7 +86,7 @@ from nupic.algorithms.monitor_mixin.plot import Plot
 
 
 
-class MonitorMixinBase(object, metaclass=abc.ABCMeta):
+class MonitorMixinBase(with_metaclass(abc.ABCMeta, object)):
   """
   Base class for MonitorMixin. Each subclass will be a mixin for a particular
   algorithm.

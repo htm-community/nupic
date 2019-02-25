@@ -24,6 +24,8 @@ This class provides utility classes and functions for use inside permutations
 scripts.
 """
 
+from __future__ import print_function
+
 import random
 
 import numpy

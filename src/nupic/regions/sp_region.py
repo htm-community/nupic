@@ -19,6 +19,8 @@
 # http://numenta.org/licenses/
 # ----------------------------------------------------------------------
 
+from __future__ import print_function
+
 import numpy
 import os
 from nupic.bindings.algorithms import SpatialPooler as CPPSpatialPooler

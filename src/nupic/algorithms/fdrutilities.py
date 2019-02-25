@@ -19,6 +19,8 @@
 # http://numenta.org/licenses/
 # ----------------------------------------------------------------------
 
+from __future__ import print_function
+
 import numpy
 from numpy import *
 import random
@@ -542,7 +544,7 @@ def tmDiff(tm1, tm2, verbosity = 0, relaxSegmentTests =True):
   for c in range(tm1.numberOfCols):
     for i in range(tm2.cellsPerColumn):
       if tm1.getNumSegmentsInCell(c, i) != tm2.getNumSegmentsInCell(c, i):
-        print("Num segments different in cell:",c,i, end=' ')
+        print("Num segments different in cell:", c, i, end=' ')
         print(tm1.getNumSegmentsInCell(c, i), tm2.getNumSegmentsInCell(c, i))
         result = False
 

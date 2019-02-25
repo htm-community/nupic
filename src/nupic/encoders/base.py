@@ -21,6 +21,8 @@
 
 """Classes for encoding different types into SDRs for HTM input."""
 
+from __future__ import print_function
+
 from collections import namedtuple
 
 import numpy

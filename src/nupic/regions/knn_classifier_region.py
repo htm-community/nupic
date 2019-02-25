@@ -1,4 +1,3 @@
-
 # ----------------------------------------------------------------------
 # Numenta Platform for Intelligent Computing (NuPIC)
 # Copyright (C) 2013-15, Numenta, Inc.  Unless you have an agreement
@@ -24,6 +23,9 @@
 ## @file
 This file defines the k Nearest Neighbor classifier region.
 """
+
+from __future__ import print_function
+
 import numpy
 from nupic.bindings.regions.PyRegion import PyRegion
 from nupic.algorithms import knn_classifier

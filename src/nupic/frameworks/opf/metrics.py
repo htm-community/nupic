@@ -74,6 +74,7 @@ See :meth:`getModule` for a mapping of available metric identifiers to their
 implementation classes.
 """
 
+from future.utils import with_metaclass
 
 from abc import ABCMeta, abstractmethod
 
@@ -317,7 +318,7 @@ def _isNumber(value):
 
 
 
-class MetricsIface(object, metaclass=ABCMeta):
+class MetricsIface(with_metaclass(ABCMeta, object)):
   """
   A Metrics module compares a prediction Y to corresponding ground truth X and 
   returns a single measure representing the "goodness" of the prediction. It is 

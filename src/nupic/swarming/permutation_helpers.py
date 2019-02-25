@@ -23,4 +23,6 @@
 Temporary file to keep the API consistent (especially all permutation.py files)
 """
 
+from __future__ import print_function
+
 from nupic.swarming.hypersearch.permutation_helpers import *

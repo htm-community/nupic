@@ -27,6 +27,7 @@ that derive from :class:`LockAttributesMixin` are defined or methods decorated
 with ``_canAddAttributes`` are defined).
 """
 
+from future.utils import with_metaclass
 
 import os
 
@@ -159,7 +160,7 @@ class LockAttributesMetaclass(type):
       if method is not None:
         setattr(cls, name, _allow_new_attributes(method))
 
-class LockAttributesMixin(object, metaclass=LockAttributesMetaclass):
+class LockAttributesMixin(with_metaclass(LockAttributesMetaclass, object)):
   """This class serves as a base (or mixin) for classes that want to enforce
   the locked attributes pattern (all attributes should be defined in
   ``__init__`` or ``__setstate__``.

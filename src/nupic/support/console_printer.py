@@ -29,6 +29,8 @@ The :class:`Tee` class is used to redirect standard output to a file in addition
 to sending it to the console.
 """
 
+from __future__ import print_function
+
 import sys
 
 class ConsolePrinterMixin(object):

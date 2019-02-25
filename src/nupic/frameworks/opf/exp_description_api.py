@@ -36,6 +36,8 @@ This allows ``description.py`` to be generic and oblivious to the specific
 experiments.
 """
 
+from future.utils import with_metaclass
+
 import os
 from abc import ABCMeta, abstractmethod
 import types
@@ -58,7 +60,7 @@ OpfEnvironment = Enum(Nupic='nupic',
 
 
 
-class DescriptionIface(object, metaclass=ABCMeta):
+class DescriptionIface(with_metaclass(ABCMeta, object)):
   """
   This is the base interface class for description API classes which provide
   OPF configuration parameters.

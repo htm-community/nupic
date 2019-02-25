@@ -19,6 +19,8 @@
 # http://numenta.org/licenses/
 # ----------------------------------------------------------------------
 
+from __future__ import print_function
+
 import numpy
 
 def similar(a, b, eps=0.001):

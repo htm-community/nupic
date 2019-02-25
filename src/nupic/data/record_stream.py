@@ -21,6 +21,8 @@
 
 """Interface for different types of storages (file, hbase, rio, etc)."""
 
+from future.utils import with_metaclass
+
 from abc import ABCMeta, abstractmethod
 import datetime
 
@@ -211,7 +213,7 @@ class ModelRecordEncoder(object):
 
 
 
-class RecordStreamIface(object, metaclass=ABCMeta):
+class RecordStreamIface(with_metaclass(ABCMeta, object)):
   """
   This is the interface for the record input/output storage classes.
   """

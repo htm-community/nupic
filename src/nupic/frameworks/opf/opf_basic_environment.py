@@ -35,6 +35,8 @@ data source (e.g., .csv file or database, etc.), prediction sink (.csv file or
 databse, etc.), report and serialization destination,  etc.
 """
 
+from future.utils import with_metaclass
+
 from abc import ABCMeta, abstractmethod
 import copy
 import csv
@@ -57,7 +59,7 @@ from .opf_utils import InferenceType, InferenceElement
 
 
 
-class PredictionMetricsLoggerIface(object, metaclass=ABCMeta):
+class PredictionMetricsLoggerIface(with_metaclass(ABCMeta, object)):
   """ This is the interface for output of prediction metrics.
   """
 
@@ -85,7 +87,7 @@ class PredictionMetricsLoggerIface(object, metaclass=ABCMeta):
 
 
 
-class DatasetReaderIface(object, metaclass=ABCMeta):
+class DatasetReaderIface(with_metaclass(ABCMeta, object)):
   """ This is the interface class for a dataset readers
   """
 
@@ -114,7 +116,7 @@ class DatasetReaderIface(object, metaclass=ABCMeta):
 
 
 
-class PredictionWriterIface(object, metaclass=ABCMeta):
+class PredictionWriterIface(with_metaclass(ABCMeta, object)):
   """ This class defines the interface for prediction writer implementation
   returned by an object factory conforming to PredictionWriterFactoryIface
   """

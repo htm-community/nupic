@@ -49,6 +49,8 @@ The TaskDriver is a simple state machine that:
   "ground truth" records.
 """
 
+from future.utils import with_metaclass
+
 from abc import (
   ABCMeta,
   abstractmethod)
@@ -395,7 +397,7 @@ class _PhaseManager(object):
 
 
 
-class _IterationPhase(object, metaclass=ABCMeta):
+class _IterationPhase(with_metaclass(ABCMeta, object)):
   """ Interface for IterationPhaseXXXXX classes
   """
 

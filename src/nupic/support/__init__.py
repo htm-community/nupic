@@ -25,7 +25,7 @@ tools and plugins to extend standard library functionality.
 These modules should NOT be used by client applications.
 """
 
-
+from __future__ import print_function
 
 # Standard imports
 import os

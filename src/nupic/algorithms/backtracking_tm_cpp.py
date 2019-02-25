@@ -27,6 +27,8 @@ Temporal memory implementation in C++ wrapped by a Python class.
 :meth:`~nupic.algorithms.backtracking_tm.BacktrackingTM.compute`.
 """
 
+from __future__ import print_function
+
 try:
   import capnp
 except ImportError:

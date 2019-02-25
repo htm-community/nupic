@@ -19,6 +19,9 @@
 # http://numenta.org/licenses/
 # ----------------------------------------------------------------------
 
+from __future__ import print_function
+from past.builtins import execfile
+
 import sys
 import os
 import time
@@ -1199,7 +1202,7 @@ class HypersearchV2(object):
     # Open and execute the permutations file
     vars = {}
 
-    permFile = exec(compile(open(filename).read(), filename, 'exec'), globals(), vars)
+    permFile = execfile(filename, globals(), vars)
 
 
     # Read in misc info.

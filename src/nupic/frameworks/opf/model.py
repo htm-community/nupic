@@ -21,6 +21,8 @@
 
 """Module defining the OPF Model base class."""
 
+from future.utils import with_metaclass
+
 import pickle as pickle
 import json
 import os
@@ -34,7 +36,7 @@ from nupic.serializable import Serializable
 # Capnp reader traveral limit (see capnp::ReaderOptions)
 _TRAVERSAL_LIMIT_IN_WORDS = 1 << 63
 
-class Model(Serializable, metaclass=ABCMeta):
+class Model(with_metaclass(ABCMeta, Serializable)):
   """ This is the base class that all OPF Model implementations should
   subclass.
 

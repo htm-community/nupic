@@ -26,6 +26,8 @@ This is the Python implementation and is used as the base class for the C++
 implementation in :class:`~nupic.algorithms.backtracking_tm.BacktrackingTMCPP`.
 """
 
+from __future__ import print_function
+
 import copy
 import pickle as pickle
 import itertools

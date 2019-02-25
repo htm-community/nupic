@@ -22,6 +22,8 @@
 # This is a PyRegion-based python test regions for exploring/testing CLA Network
 # mechanisms
 
+from future.utils import with_metaclass
+
 from abc import ABCMeta, abstractmethod
 
 
@@ -32,7 +34,7 @@ from nupic.serializable import Serializable
 
 
 
-class RegionIdentityPolicyBase(object, metaclass=ABCMeta):
+class RegionIdentityPolicyBase(with_metaclass(ABCMeta, object)):
   """ A base class that must be subclassed by users in order to define the
   TestRegion instance's specialization. See also setIdentityPolicyInstance().
   """

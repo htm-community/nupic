@@ -21,6 +21,8 @@
 
 """Tests for the C++ implementation of the temporal memory."""
 
+from __future__ import print_function
+
 import pickle as pickle
 import numpy
 import unittest

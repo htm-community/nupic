@@ -22,6 +22,8 @@
 # This script implements an extension of the unittest2.TestCase class to be
 # used as a base class unit tests
 
+from __future__ import print_function
+
 import copy
 import optparse
 import sys

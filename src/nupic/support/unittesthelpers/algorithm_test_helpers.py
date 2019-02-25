@@ -21,6 +21,9 @@
 
 """This script contains helper routines for testing algorithms"""
 
+
+from __future__ import print_function
+
 import numpy
 import time
 import traceback
