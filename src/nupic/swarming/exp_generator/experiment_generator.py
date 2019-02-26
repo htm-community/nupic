@@ -150,9 +150,9 @@ def _makeUsageErrorStr(errorString, usageString):
 def _handleShowSchemaOption():
   """ Displays command schema to stdout and exit program
   """
-  print "\n============== BEGIN INPUT SCHEMA for --description =========>>"
-  print(json.dumps(_getExperimentDescriptionSchema(), indent=_INDENT_STEP*2))
-  print "\n<<============== END OF INPUT SCHEMA for --description ========"
+  print("\n============== BEGIN INPUT SCHEMA for --description =========>>")
+  print((json.dumps(_getExperimentDescriptionSchema(), indent=_INDENT_STEP*2)))
+  print("\n<<============== END OF INPUT SCHEMA for --description ========")
   return
 
 
@@ -178,7 +178,7 @@ def _handleDescriptionOption(cmdArgStr, outDir, usageStr, hsVersion,
   # convert --description arg from JSON string to dict
   try:
     args = json.loads(cmdArgStr)
-  except Exception, e:
+  except Exception as e:
     raise _InvalidCommandArgException(
       _makeUsageErrorStr(
         ("JSON arg parsing failed for --description: %s\n" + \
@@ -217,7 +217,7 @@ def _handleDescriptionFromFileOption(filename, outDir, usageStr, hsVersion,
     JSONStringFromFile = fileHandle.read().splitlines()
     JSONStringFromFile = ''.join(JSONStringFromFile)
 
-  except Exception, e:
+  except Exception as e:
     raise _InvalidCommandArgException(
       _makeUsageErrorStr(
         ("File open failed for --descriptionFromFile: %s\n" + \
@@ -253,7 +253,7 @@ def _isString(obj):
   returns whether or not the object is a string
   """
 
-  return type(obj) in types.StringTypes
+  return type(obj) in str
 
 
 
@@ -344,7 +344,7 @@ def _generateMetricSpecString(inferenceElement, metric,
 
   metricSpecAsString = "MetricSpec(%s)" % \
     ', '.join(['%s=%r' % (item[0],item[1])
-              for item in metricSpecArgs.iteritems()])
+              for item in metricSpecArgs.items()])
 
   if not returnLabel:
     return metricSpecAsString
@@ -391,13 +391,13 @@ def _generateFileFromTemplates(templateFileNames, outputFilePath,
     inputFile.close()
 
 
-  print "Writing ", len(inputLines), "lines..."
+  print("Writing ", len(inputLines), "lines...")
 
   for line in inputLines:
     tempLine = line
 
     # Enumerate through each key in replacementDict and replace with value
-    for k, v in replacementDict.iteritems():
+    for k, v in replacementDict.items():
       if v is None:
         v = "None"
       tempLine = re.sub(k, v, tempLine)
@@ -657,7 +657,7 @@ def _generatePermEncoderStr(options, encoderDict):
   # PermuteEncoder().
   if encoderDict.get('classifierOnly', False):
     permStr = "dict("
-    for key, value in encoderDict.items():
+    for key, value in list(encoderDict.items()):
       if key == "name":
         continue
 
@@ -665,7 +665,7 @@ def _generatePermEncoderStr(options, encoderDict):
         permStr += "n=PermuteInt(%d, %d), " % (encoderDict["w"] + 7,
                                                encoderDict["w"] + 500)
       else:
-        if issubclass(type(value), basestring):
+        if issubclass(type(value), str):
           permStr += "%s='%s', " % (key, value)
         else:
           permStr += "%s=%s, " % (key, value)
@@ -677,7 +677,7 @@ def _generatePermEncoderStr(options, encoderDict):
     if encoderDict["type"] in ["ScalarSpaceEncoder", "AdaptiveScalarEncoder",
                              "ScalarEncoder", "LogEncoder"]:
       permStr = "PermuteEncoder("
-      for key, value in encoderDict.items():
+      for key, value in list(encoderDict.items()):
         if key == "fieldname":
           key = "fieldName"
         elif key == "type":
@@ -695,7 +695,7 @@ def _generatePermEncoderStr(options, encoderDict):
           encoderDict.pop("runDelta")
 
         else:
-          if issubclass(type(value), basestring):
+          if issubclass(type(value), str):
             permStr += "%s='%s', " % (key, value)
           else:
             permStr += "%s=%s, " % (key, value)
@@ -704,7 +704,7 @@ def _generatePermEncoderStr(options, encoderDict):
     # Category encoder
     elif encoderDict["type"] in ["SDRCategoryEncoder"]:
       permStr = "PermuteEncoder("
-      for key, value in encoderDict.items():
+      for key, value in list(encoderDict.items()):
         if key == "fieldname":
           key = "fieldName"
         elif key == "type":
@@ -712,7 +712,7 @@ def _generatePermEncoderStr(options, encoderDict):
         elif key == "name":
           continue
 
-        if issubclass(type(value), basestring):
+        if issubclass(type(value), str):
           permStr += "%s='%s', " % (key, value)
         else:
           permStr += "%s=%s, " % (key, value)
@@ -722,7 +722,7 @@ def _generatePermEncoderStr(options, encoderDict):
     # Datetime encoder
     elif encoderDict["type"] in ["DateEncoder"]:
       permStr = "PermuteEncoder("
-      for key, value in encoderDict.items():
+      for key, value in list(encoderDict.items()):
         if key == "fieldname":
           key = "fieldName"
         elif key == "type":
@@ -743,7 +743,7 @@ def _generatePermEncoderStr(options, encoderDict):
           permStr += "radius=PermuteChoices([1]),  "
           permStr += "w=%d, " % (value)
         else:
-          if issubclass(type(value), basestring):
+          if issubclass(type(value), str):
             permStr += "%s='%s', " % (key, value)
           else:
             permStr += "%s=%s, " % (key, value)
@@ -986,7 +986,7 @@ def _handleJAVAParameters(options):
     prediction = options.get('prediction', {InferenceType.TemporalNextStep:
                                               {'optimize':True}})
     inferenceType = None
-    for infType, value in prediction.iteritems():
+    for infType, value in prediction.items():
       if value['optimize']:
         inferenceType = infType
         break
@@ -1070,7 +1070,7 @@ def _generateExperiment(options, outputDirPath, hsVersion,
   # Validate JSON arg using JSON schema validator
   try:
     validictory.validate(options, _gExperimentDescriptionSchema)
-  except Exception, e:
+  except Exception as e:
     raise _InvalidCommandArgException(
       ("JSON arg validation failed for option --description: " + \
        "%s\nOPTION ARG=%s") % (str(e), pprint.pformat(options)))
@@ -1080,7 +1080,7 @@ def _generateExperiment(options, outputDirPath, hsVersion,
                                            'stream_def.json'))
   try:
     validictory.validate(options['streamDef'], streamSchema)
-  except Exception, e:
+  except Exception as e:
     raise _InvalidCommandArgException(
       ("JSON arg validation failed for streamDef " + \
        "%s\nOPTION ARG=%s") % (str(e), json.dumps(options)))
@@ -1227,7 +1227,7 @@ def _generateExperiment(options, outputDirPath, hsVersion,
   # Honor any overrides provided in the stream definition
   aggFunctionsDict = {}
   if 'aggregation' in options['streamDef']:
-    for key in aggregationPeriod.keys():
+    for key in list(aggregationPeriod.keys()):
       if key in options['streamDef']['aggregation']:
         aggregationPeriod[key] = options['streamDef']['aggregation'][key]
     if 'fields' in options['streamDef']['aggregation']:
@@ -1236,14 +1236,14 @@ def _generateExperiment(options, outputDirPath, hsVersion,
 
   # Do we have any aggregation at all?
   hasAggregation = False
-  for v in aggregationPeriod.values():
+  for v in list(aggregationPeriod.values()):
     if v != 0:
       hasAggregation = True
       break
 
 
   # Convert the aggFunctionsDict to a list
-  aggFunctionList = aggFunctionsDict.items()
+  aggFunctionList = list(aggFunctionsDict.items())
   aggregationInfo = dict(aggregationPeriod)
   aggregationInfo['fields'] = aggFunctionList
 
@@ -1293,7 +1293,7 @@ def _generateExperiment(options, outputDirPath, hsVersion,
     # Compute the predictAheadTime
     numSteps = predictionSteps[0]
     predictAheadTime = dict(aggregationPeriod)
-    for key in predictAheadTime.iterkeys():
+    for key in predictAheadTime.keys():
       predictAheadTime[key] *= numSteps
     predictAheadTimeStr = pprint.pformat(predictAheadTime,
                                          indent=2*_INDENT_STEP)
@@ -1516,7 +1516,7 @@ def _generateExperiment(options, outputDirPath, hsVersion,
     #  N * M = maxPredictionSteps constraint
     mTimesN = float(predictionSteps[0])
     possibleNs = []
-    for n in xrange(1, int(mTimesN)+1):
+    for n in range(1, int(mTimesN)+1):
       m = mTimesN / n
       mInt = int(round(m))
       if mInt < 1:
@@ -1526,7 +1526,7 @@ def _generateExperiment(options, outputDirPath, hsVersion,
       possibleNs.append(n)
 
     if debugAgg:
-      print "All integer factors of %d are: %s" % (mTimesN, possibleNs)
+      print("All integer factors of %d are: %s" % (mTimesN, possibleNs))
 
     # Now go through and throw out any N's that don't satisfy the constraint:
     #  computeInterval = K * (minAggregation * N)
@@ -1534,7 +1534,7 @@ def _generateExperiment(options, outputDirPath, hsVersion,
     for n in possibleNs:
       # Compute minAggregation * N
       agg = dict(aggregationPeriod)
-      for key in agg.iterkeys():
+      for key in agg.keys():
         agg[key] *= n
 
       # Make sure computeInterval is an integer multiple of the aggregation
@@ -1552,10 +1552,10 @@ def _generateExperiment(options, outputDirPath, hsVersion,
     aggChoices = aggChoices[-5:]
 
     if debugAgg:
-      print "Aggregation choices that will be evaluted during swarming:"
+      print("Aggregation choices that will be evaluted during swarming:")
       for agg in aggChoices:
-        print "  ==>", agg
-      print
+        print("  ==>", agg)
+      print()
 
     tokenReplacements['\$PERM_AGGREGATION_CHOICES'] = (
         "PermuteChoices(%s)" % (
@@ -1591,7 +1591,7 @@ def _generateExperiment(options, outputDirPath, hsVersion,
   if not os.path.exists(outputDirPath):
     os.makedirs(outputDirPath)
 
-  print "Generating experiment files in directory: %s..." % (outputDirPath)
+  print("Generating experiment files in directory: %s..." % (outputDirPath))
   descriptionPyPath = os.path.join(outputDirPath, "description.py")
   _generateFileFromTemplates([claDescriptionTemplateFile, controlTemplate],
                               descriptionPyPath,
@@ -1609,10 +1609,9 @@ def _generateExperiment(options, outputDirPath, hsVersion,
     _generateFileFromTemplates(['permutationsTemplateV2.tpl'],permutationsPyPath,
                             tokenReplacements)
   else:
-    raise(ValueError("This permutation version is not supported yet: %s" %
-                        hsVersion))
+    raise ValueError
 
-  print "done."
+  print("done.")
 
 
 
@@ -1863,7 +1862,7 @@ def _generateExtraMetricSpecs(options):
   results = []
   for metric in options['metrics']:
 
-    for propertyName in _metricSpecSchema['properties'].keys():
+    for propertyName in list(_metricSpecSchema['properties'].keys()):
       _getPropertyValue(_metricSpecSchema, propertyName, metric)
 
 
@@ -2004,8 +2003,7 @@ def expGenerator(args):
   # -----------------------------------------------------------------
   # Check for use of mutually-exclusive options
   #
-  activeOptions = filter(lambda x: getattr(options, x) != None,
-                         ('description', 'showSchema'))
+  activeOptions = [x for x in ('description', 'showSchema') if getattr(options, x) != None]
   if len(activeOptions) > 1:
     raise _InvalidCommandArgException(
       _makeUsageErrorStr(("The specified command options are " + \

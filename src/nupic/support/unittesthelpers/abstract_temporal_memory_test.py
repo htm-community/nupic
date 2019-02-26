@@ -19,6 +19,8 @@
 # http://numenta.org/licenses/
 # ----------------------------------------------------------------------
 
+from future.utils import with_metacalss
+
 from abc import ABCMeta, abstractmethod
 
 from nupic.algorithms.monitor_mixin.temporal_memory_monitor_mixin import (
@@ -27,9 +29,7 @@ from nupic.data.generators.sequence_machine import SequenceMachine
 
 
 
-class AbstractTemporalMemoryTest(object):
-  __metaclass__ = ABCMeta
-
+class AbstractTemporalMemoryTest(with_metacalss(ABCMeta, object)):
   VERBOSITY = 1
 
   @abstractmethod

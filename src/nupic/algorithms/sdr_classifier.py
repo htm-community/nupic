@@ -204,10 +204,10 @@ class SDRClassifier(Serializable):
                    }
     """
     if self.verbosity >= 1:
-      print "  learn:", learn
-      print "  recordNum:", recordNum
-      print "  patternNZ (%d):" % len(patternNZ), patternNZ
-      print "  classificationIn:", classification
+      print("  learn:", learn)
+      print("  recordNum:", recordNum)
+      print("  patternNZ (%d):" % len(patternNZ), patternNZ)
+      print("  classificationIn:", classification)
 
     # ensures that recordNum increases monotonically
     if len(self._patternNZHistory) > 0:
@@ -282,7 +282,7 @@ class SDRClassifier(Serializable):
         else:
           if (isinstance(actValue, int) or
                 isinstance(actValue, float) or
-                isinstance(actValue, long)):
+                isinstance(actValue, int)):
             self._actualValues[bucketIdx] = ((1.0 - self.actValueAlpha)
                                              * self._actualValues[bucketIdx]
                                              + self.actValueAlpha * actValue)
@@ -300,17 +300,17 @@ class SDRClassifier(Serializable):
     # ------------------------------------------------------------------------
     # Verbose print
     if infer and self.verbosity >= 1:
-      print "  inference: combined bucket likelihoods:"
-      print "    actual bucket values:", retval["actualValues"]
-      for (nSteps, votes) in retval.items():
+      print("  inference: combined bucket likelihoods:")
+      print("    actual bucket values:", retval["actualValues"])
+      for (nSteps, votes) in list(retval.items()):
         if nSteps == "actualValues":
           continue
-        print "    %d steps: " % (nSteps), _pFormatArray(votes)
+        print("    %d steps: " % (nSteps), _pFormatArray(votes))
         bestBucketIdx = votes.argmax()
-        print ("      most likely bucket idx: "
+        print(("      most likely bucket idx: "
                "%d, value: %s" % (bestBucketIdx,
-                                  retval["actualValues"][bestBucketIdx]))
-      print
+                                  retval["actualValues"][bestBucketIdx])))
+      print()
 
     return retval
 
@@ -397,7 +397,7 @@ class SDRClassifier(Serializable):
 
     patternNZHistoryProto = proto.patternNZHistory
     recordNumHistoryProto = proto.recordNumHistory
-    for i in xrange(len(patternNZHistoryProto)):
+    for i in range(len(patternNZHistoryProto)):
       classifier._patternNZHistory.append((recordNumHistoryProto[i],
                                            list(patternNZHistoryProto[i])))
 
@@ -408,7 +408,7 @@ class SDRClassifier(Serializable):
 
     classifier._weightMatrix = {}
     weightMatrixProto = proto.weightMatrix
-    for i in xrange(len(weightMatrixProto)):
+    for i in range(len(weightMatrixProto)):
       classifier._weightMatrix[weightMatrixProto[i].steps] = numpy.reshape(
         weightMatrixProto[i].weight, newshape=(classifier._maxInputIdx+1,
                                                classifier._maxBucketIdx+1))
@@ -428,7 +428,7 @@ class SDRClassifier(Serializable):
 
   def write(self, proto):
     stepsProto = proto.init("steps", len(self.steps))
-    for i in xrange(len(self.steps)):
+    for i in range(len(self.steps)):
       stepsProto[i] = self.steps[i]
 
     proto.alpha = self.alpha
@@ -445,9 +445,9 @@ class SDRClassifier(Serializable):
     patternProto = proto.init("patternNZHistory", len(self._patternNZHistory))
     recordNumHistoryProto = proto.init("recordNumHistory",
                                        len(self._patternNZHistory))
-    for  i in xrange(len(self._patternNZHistory)):
+    for  i in range(len(self._patternNZHistory)):
       subPatternProto = patternProto.init(i, len(self._patternNZHistory[i][1]))
-      for j in xrange(len(self._patternNZHistory[i][1])):
+      for j in range(len(self._patternNZHistory[i][1])):
         subPatternProto[j] = int(self._patternNZHistory[i][1][j])
       recordNumHistoryProto[i] = int(self._patternNZHistory[i][0])
 
@@ -465,7 +465,7 @@ class SDRClassifier(Serializable):
     proto.maxInputIdx = self._maxInputIdx
 
     actualValuesProto = proto.init("actualValues", len(self._actualValues))
-    for i in xrange(len(self._actualValues)):
+    for i in range(len(self._actualValues)):
       if self._actualValues[i] is not None:
         actualValuesProto[i] = self._actualValues[i]
       else:

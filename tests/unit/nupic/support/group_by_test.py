@@ -37,7 +37,7 @@ class GroupByTest(unittest.TestCase):
     i = 0
     for data in groupby2(sequence0, identity):
       self.assertEqual(data[0], expectedValues[i][0])
-      for j in xrange(1, len(data)):
+      for j in range(1, len(data)):
         temp = list(data[j]) if data[j] else data[j]
         self.assertEqual(temp, expectedValues[i][j])
       i += 1
@@ -60,7 +60,7 @@ class GroupByTest(unittest.TestCase):
     for data in groupby2(sequence0, identity,
                          sequence1, times3):
       self.assertEqual(data[0], expectedValues[i][0])
-      for j in xrange(1, len(data)):
+      for j in range(1, len(data)):
         temp = list(data[j]) if data[j] else data[j]
         self.assertEqual(temp, expectedValues[i][j])
       i += 1
@@ -87,7 +87,7 @@ class GroupByTest(unittest.TestCase):
                          sequence1, times3,
                          sequence2, times4):
       self.assertEqual(data[0], expectedValues[i][0])
-      for j in xrange(1, len(data)):
+      for j in range(1, len(data)):
         temp = list(data[j]) if data[j] else data[j]
         self.assertEqual(temp, expectedValues[i][j])
       i += 1
@@ -118,7 +118,7 @@ class GroupByTest(unittest.TestCase):
                          sequence2, times4,
                          sequence3, times5):
       self.assertEqual(data[0], expectedValues[i][0])
-      for j in xrange(1, len(data)):
+      for j in range(1, len(data)):
         temp = list(data[j]) if data[j] else data[j]
         self.assertEqual(temp, expectedValues[i][j])
       i += 1
@@ -154,7 +154,7 @@ class GroupByTest(unittest.TestCase):
                          sequence3, times5,
                          sequence4, times6):
       self.assertEqual(data[0], expectedValues[i][0])
-      for j in xrange(1, len(data)):
+      for j in range(1, len(data)):
         temp = list(data[j]) if data[j] else data[j]
         self.assertEqual(temp, expectedValues[i][j])
       i += 1
@@ -186,7 +186,7 @@ class GroupByTest(unittest.TestCase):
                          sequence3, times5,
                          sequence4, times6):
       self.assertEqual(data[0], expectedValues[i][0])
-      for j in xrange(1, len(data)):
+      for j in range(1, len(data)):
         temp = list(data[j]) if data[j] else data[j]
         self.assertEqual(temp, expectedValues[i][j])
       i += 1

@@ -100,14 +100,14 @@ class SpatialPoolerTest(unittest.TestCase):
 
     sp._potentialPools = BinaryCorticalColumns(numpy.ones([sp._numColumns,
                                                            sp._numInputs]))
-    sp._inhibitColumns = Mock(return_value = numpy.array(range(5)))
+    sp._inhibitColumns = Mock(return_value = numpy.array(list(range(5))))
 
     inputVector = numpy.array([1, 0, 1, 0, 1, 0, 0, 1, 1])
     activeArray = numpy.zeros(5)
-    for i in xrange(20):
+    for i in range(20):
       sp.compute(inputVector, True, activeArray)
 
-    for i in xrange(sp._numColumns):
+    for i in range(sp._numColumns):
       perm = sp._permanences.getRow(i)
       self.assertEqual(list(perm), list(inputVector))
 
@@ -134,14 +134,14 @@ class SpatialPoolerTest(unittest.TestCase):
         seed=getSeed(),
         spVerbosity=0)
 
-    sp._inhibitColumns = Mock(return_value = numpy.array(range(5)))
+    sp._inhibitColumns = Mock(return_value = numpy.array(list(range(5))))
 
     inputVector = numpy.ones(sp._numInputs)
     activeArray = numpy.zeros(5)
-    for i in xrange(20):
+    for i in range(20):
       sp.compute(inputVector, True, activeArray)
 
-    for columnIndex in xrange(sp._numColumns):
+    for columnIndex in range(sp._numColumns):
       potential = sp._potentialPools[columnIndex]
       perm = sp._permanences.getRow(columnIndex)
       self.assertEqual(list(perm), list(potential))
@@ -351,7 +351,7 @@ class SpatialPoolerTest(unittest.TestCase):
     activeArray = numpy.ones(6)
     sp.stripUnlearnedColumns(activeArray)
     stripped = numpy.where(activeArray == 1)[0]
-    trueStripped = range(6)
+    trueStripped = list(range(6))
     self.assertListEqual(trueStripped, list(stripped))
 
 
@@ -740,7 +740,7 @@ class SpatialPoolerTest(unittest.TestCase):
                              [1, 1, 1, 1, 1, 1, 1, 1]]))
 
     trueAvgConnectedSpan = [7, 5, 1, 5, 0, 2, 3, 3, 8]
-    for i in xrange(sp._numColumns):
+    for i in range(sp._numColumns):
       connectedSpan = sp._avgConnectedSpanForColumn1D(i)
       self.assertEqual(trueAvgConnectedSpan[i], connectedSpan)
 
@@ -763,7 +763,7 @@ class SpatialPoolerTest(unittest.TestCase):
                              [1, 1, 1, 1, 1, 1, 1, 1]]))
 
     trueAvgConnectedSpan = [7, 5, 1, 5, 0, 2, 3, 3, 8]
-    for i in xrange(sp._numColumns):
+    for i in range(sp._numColumns):
       connectedSpan = sp._avgConnectedSpanForColumn1D(i)
       self.assertEqual(trueAvgConnectedSpan[i], connectedSpan)
 
@@ -827,12 +827,12 @@ class SpatialPoolerTest(unittest.TestCase):
       ])
 
     trueAvgConnectedSpan = [3, 3, 4.5, 3, 2.5, 2, 0]
-    for columnIndex in xrange(sp._numColumns):
+    for columnIndex in range(sp._numColumns):
       sp._connectedSynapses.replace(
         columnIndex, connected[columnIndex].reshape(-1).nonzero()[0]
       )
 
-    for i in xrange(sp._numColumns):
+    for i in range(sp._numColumns):
       connectedSpan = sp._avgConnectedSpanForColumn2D(i)
       self.assertEqual(trueAvgConnectedSpan[i], connectedSpan)
 
@@ -886,7 +886,7 @@ class SpatialPoolerTest(unittest.TestCase):
 
     trueAvgConnectedSpan = [11.0/4, 6.0/4, 14.0/4, 15.0/4, 0]
 
-    for i in xrange(sp._numColumns):
+    for i in range(sp._numColumns):
       connectedSpan = sp._avgConnectedSpanForColumnND(i)
       self.assertAlmostEqual(trueAvgConnectedSpan[i], connectedSpan)
 
@@ -926,9 +926,9 @@ class SpatialPoolerTest(unittest.TestCase):
       [0.110, 0.748, 0.055, 0.000, 0.060, 0.000, 0.218, 0.000]]
 
     sp._bumpUpWeakColumns()
-    for i in xrange(sp._numColumns):
+    for i in range(sp._numColumns):
       perm = list(sp._permanences.getRow(i))
-      for j in xrange(sp._numInputs):
+      for j in range(sp._numInputs):
         self.assertAlmostEqual(truePermanences[i][j], perm[j])
 
 
@@ -978,7 +978,7 @@ class SpatialPoolerTest(unittest.TestCase):
     sp._activeDutyCycles = numpy.array([0.6, 0.07, 0.5, 0.4, 0.3])
     sp._updateMinDutyCyclesGlobal()
     trueMinOverlapDutyCycles = sp._numColumns*[0.01*6]
-    for i in xrange(sp._numColumns):
+    for i in range(sp._numColumns):
       self.assertAlmostEqual(trueMinOverlapDutyCycles[i],
                              sp._minOverlapDutyCycles[i])
 
@@ -988,7 +988,7 @@ class SpatialPoolerTest(unittest.TestCase):
     sp._activeDutyCycles = numpy.array([0.16, 0.007, 0.15, 0.54, 0.13])
     sp._updateMinDutyCyclesGlobal()
     trueMinOverlapDutyCycles = sp._numColumns*[0.015*2.4]
-    for i in xrange(sp._numColumns):
+    for i in range(sp._numColumns):
       self.assertAlmostEqual(trueMinOverlapDutyCycles[i],
                              sp._minOverlapDutyCycles[i])
 
@@ -998,7 +998,7 @@ class SpatialPoolerTest(unittest.TestCase):
     sp._activeDutyCycles = numpy.zeros(5)
     sp._updateMinDutyCyclesGlobal()
     trueMinOverlapDutyCycles = sp._numColumns * [0]
-    for i in xrange(sp._numColumns):
+    for i in range(sp._numColumns):
       self.assertAlmostEqual(trueMinOverlapDutyCycles[i],
                              sp._minOverlapDutyCycles[i])
 
@@ -1065,9 +1065,9 @@ class SpatialPoolerTest(unittest.TestCase):
       #    -      -      -      -      -      -      -       -
 
     sp._adaptSynapses(inputVector, activeColumns)
-    for i in xrange(sp._numColumns):
+    for i in range(sp._numColumns):
       perm = list(sp._permanences.getRow(i))
-      for j in xrange(sp._numInputs):
+      for j in range(sp._numInputs):
         self.assertAlmostEqual(truePermanences[i][j], perm[j])
 
     sp._potentialPools = BinaryCorticalColumns(
@@ -1096,9 +1096,9 @@ class SpatialPoolerTest(unittest.TestCase):
         #  -    -      -      -      -       -       -     -
 
     sp._adaptSynapses(inputVector, activeColumns)
-    for i in xrange(sp._numColumns):
+    for i in range(sp._numColumns):
       perm = list(sp._permanences.getRow(i))
-      for j in xrange(sp._numInputs):
+      for j in range(sp._numInputs):
         self.assertAlmostEqual(truePermanences[i][j], perm[j])
 
 
@@ -1131,11 +1131,11 @@ class SpatialPoolerTest(unittest.TestCase):
         [0.22, 0.1001, 0.15, 0.051, 0.07],  # increment four times
         [0.101, 0.101, 0.101, 0.101, 0.101]]  #increment 9 times
 
-    maskPP = numpy.array(range(5))
-    for i in xrange(sp._numColumns):
+    maskPP = numpy.array(list(range(5)))
+    for i in range(sp._numColumns):
       perm = sp._permanences.getRow(i)
       sp._raisePermanenceToThreshold(perm, maskPP)
-      for j in xrange(sp._numInputs):
+      for j in range(sp._numInputs):
         self.assertAlmostEqual(truePermanences[i][j], perm[j])
 
 
@@ -1172,7 +1172,7 @@ class SpatialPoolerTest(unittest.TestCase):
       [1, 1, 0, 0, 1]]
 
     trueConnectedCounts = [2, 2, 2, 2, 3]
-    for columnIndex in xrange(sp._numColumns):
+    for columnIndex in range(sp._numColumns):
       sp._updatePermanencesForColumn(permanences[columnIndex], columnIndex)
       self.assertListEqual(
         trueConnectedSynapses[columnIndex],
@@ -1242,7 +1242,7 @@ class SpatialPoolerTest(unittest.TestCase):
                              [0, 0, 0, 0, 1, 0, 0, 0, 0, 1]]))
     sp._connectedCounts = numpy.array([2.0, 2.0, 2.0, 2.0, 2.0])
     inputVector = numpy.zeros(sp._numInputs, dtype='float32')
-    inputVector[range(0, 10, 2)] = 1
+    inputVector[list(range(0, 10, 2))] = 1
     overlaps = sp._calculateOverlap(inputVector)
     overlapsPct = sp._calculateOverlapPct(overlaps)
     trueOverlaps = list(numpy.array([1, 1, 1, 1, 1], dtype=realDType))
@@ -1387,10 +1387,10 @@ class SpatialPoolerTest(unittest.TestCase):
 
     density = 0.5
     sp._numColumns = 10
-    overlaps = numpy.array(range(10), dtype=realDType)
+    overlaps = numpy.array(list(range(10)), dtype=realDType)
     active = list(sp._inhibitColumnsGlobal(overlaps, density))
     trueActive = numpy.zeros(sp._numColumns)
-    trueActive = range(5, 10)
+    trueActive = list(range(5, 10))
     self.assertListEqual(trueActive, sorted(active))
 
 
@@ -1493,7 +1493,7 @@ class SpatialPoolerTest(unittest.TestCase):
 
     # Check that the two spatial poolers have the same attributes
     self.assertSetEqual(set(sp1.__dict__.keys()), set(sp2.__dict__.keys()))
-    for k, v1 in sp1.__dict__.iteritems():
+    for k, v1 in sp1.__dict__.items():
       v2 = getattr(sp2, k)
       if k in ephemeral:
         continue
@@ -1507,7 +1507,7 @@ class SpatialPoolerTest(unittest.TestCase):
       elif isinstance(v1, float):
         self.assertAlmostEqual(v1, v2)
       elif isinstance(v1, numbers.Integral):
-        self.assertEqual(long(v1), long(v2), k)
+        self.assertEqual(int(v1), int(v2), k)
       else:
         self.assertEqual(type(v1), type(v2), k)
         self.assertEqual(v1, v2, k)

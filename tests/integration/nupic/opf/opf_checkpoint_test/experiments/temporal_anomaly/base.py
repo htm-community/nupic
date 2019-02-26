@@ -107,7 +107,7 @@ config = {
       'seconds': 0,
       'weeks': 0,
       'years': 0,
-      'fields': [(u'c1', 'first'), (u'c0', 'first')],
+      'fields': [('c1', 'first'), ('c0', 'first')],
       },
 
     'predictAheadTime': None,
@@ -131,22 +131,22 @@ config = {
             #
             # (value generated from DS_ENCODER_SCHEMA)
             'encoders': {
-                u'c0_timeOfDay':     {   'fieldname': u'c0',
-    'name': u'c0_timeOfDay',
+                'c0_timeOfDay':     {   'fieldname': 'c0',
+    'name': 'c0_timeOfDay',
     'timeOfDay': (21, 1),
     'type': 'DateEncoder'},
-  u'c0_dayOfWeek':     {   'dayOfWeek': (21, 1),
-    'fieldname': u'c0',
-    'name': u'c0_dayOfWeek',
+  'c0_dayOfWeek':     {   'dayOfWeek': (21, 1),
+    'fieldname': 'c0',
+    'name': 'c0_dayOfWeek',
     'type': 'DateEncoder'},
-  u'c0_weekend':     {   'fieldname': u'c0',
-    'name': u'c0_weekend',
+  'c0_weekend':     {   'fieldname': 'c0',
+    'name': 'c0_weekend',
     'type': 'DateEncoder',
     'weekend': 21},
-  u'c1':     {   'clipInput': True,
-    'fieldname': u'c1',
+  'c1':     {   'clipInput': True,
+    'fieldname': 'c1',
     'n': 100,
-    'name': u'c1',
+    'name': 'c1',
     'type': 'AdaptiveScalarEncoder',
     'w': 21},
             },
@@ -352,15 +352,15 @@ control = {
   # Input stream specification per py/nupicengine/cluster/database/StreamDef.json.
   #
   'dataset' : {   'aggregation': config['aggregationInfo'],
-        u'info': u'82b42f21-7f86-47b3-bab4-3738703bf612',
-        u'streams': [   {   u'columns': [u'c0', u'c1'],
-                            u'info': u'82b42f21-7f86-47b3-bab4-3738703bf612',
-                            u'source': 'file://%s' % (dataPath),
-                            u'first_record': config['firstRecord'],
-                            u'last_record': config['lastRecord'],
-                            u'types': [u'datetime', u'float']}],
-        u'timeField': u'c0',
-        u'version': 1},
+        'info': '82b42f21-7f86-47b3-bab4-3738703bf612',
+        'streams': [   {   'columns': ['c0', 'c1'],
+                            'info': '82b42f21-7f86-47b3-bab4-3738703bf612',
+                            'source': 'file://%s' % (dataPath),
+                            'first_record': config['firstRecord'],
+                            'last_record': config['lastRecord'],
+                            'types': ['datetime', 'float']}],
+        'timeField': 'c0',
+        'version': 1},
 
   # Iteration count: maximum number of iterations.  Each iteration corresponds
   # to one record from the (possibly aggregated) dataset.  The task is
@@ -373,12 +373,12 @@ control = {
 
 
   # A dictionary containing all the supplementary parameters for inference
-  "inferenceArgs":{u'predictedField': u'c1', u'predictionSteps': [1]},
+  "inferenceArgs":{'predictedField': 'c1', 'predictionSteps': [1]},
 
   # Metrics: A list of MetricSpecs that instantiate the metrics that are
   # computed for this experiment
   'metrics':[
-    MetricSpec(field=u'c1', metric='multiStep', inferenceElement='multiStepBestPredictions', params={'window': 1000, 'steps': [1], 'errorMetric': 'altMAPE'}),
+    MetricSpec(field='c1', metric='multiStep', inferenceElement='multiStepBestPredictions', params={'window': 1000, 'steps': [1], 'errorMetric': 'altMAPE'}),
   ],
 
   # Logged Metrics: A sequence of regular expressions that specify which of

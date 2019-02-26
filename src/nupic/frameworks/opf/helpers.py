@@ -31,7 +31,7 @@ TODO: Rename as helpers.py once we're ready to replace the legacy
 import imp
 import os
 
-import exp_description_api
+from . import exp_description_api
 
 
 def loadExperiment(path):

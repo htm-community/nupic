@@ -123,7 +123,7 @@ class HsState(object):
       # Fast Swarm, first and only sprint has one swarm for each field
       # in fixedFields
       if self._hsObj._fixedFields is not None:
-        print self._hsObj._fixedFields
+        print(self._hsObj._fixedFields)
         encoderSet = []
         for field in self._hsObj._fixedFields:
             if field =='_classifierInput':
@@ -201,7 +201,7 @@ class HsState(object):
         #  for easier reference when viewing the state as presented by
         #  log messages and prints of the hsState data structure (by
         #  permutations_runner).
-        activeSwarms = swarms.keys(),
+        activeSwarms = list(swarms.keys()),
 
         # All the swarms that have been created so far.
         swarms = swarms,
@@ -313,7 +313,7 @@ class HsState(object):
     # -----------------------------------------------------------------------
     # Collect all the single field scores
     fieldScores = []
-    for swarmId, info in self._state['swarms'].iteritems():
+    for swarmId, info in self._state['swarms'].items():
       encodersUsed = swarmId.split('.')
       if len(encodersUsed) != 1:
         continue
@@ -337,7 +337,7 @@ class HsState(object):
       assert(len(fieldScores)==1)
       (baseErrScore, baseField) = fieldScores[0]
 
-      for swarmId, info in self._state['swarms'].iteritems():
+      for swarmId, info in self._state['swarms'].items():
         encodersUsed = swarmId.split('.')
         if len(encodersUsed) != 2:
           continue
@@ -397,7 +397,7 @@ class HsState(object):
     retval:   list of active swarm Ids in the given sprint
     """
     swarmIds = []
-    for swarmId, info in self._state['swarms'].iteritems():
+    for swarmId, info in self._state['swarms'].items():
       if info['sprintIdx'] == sprintIdx:
         swarmIds.append(swarmId)
 
@@ -414,7 +414,7 @@ class HsState(object):
     retval:   list of active swarm Ids in the given sprint
     """
     swarmIds = []
-    for swarmId, info in self._state['swarms'].iteritems():
+    for swarmId, info in self._state['swarms'].items():
       if sprintIdx is not None and info['sprintIdx'] != sprintIdx:
         continue
       if info['status'] == 'active':
@@ -433,7 +433,7 @@ class HsState(object):
     retval:   list of active swarm Ids in the given sprint
     """
     swarmIds = []
-    for swarmId, info in self._state['swarms'].iteritems():
+    for swarmId, info in self._state['swarms'].items():
       if info['sprintIdx'] == sprintIdx and info['status'] != 'killed':
         swarmIds.append(swarmId)
 
@@ -447,7 +447,7 @@ class HsState(object):
     retval:   list of active swarm Ids
     """
     swarmIds = []
-    for swarmId, info in self._state['swarms'].iteritems():
+    for swarmId, info in self._state['swarms'].items():
       if info['status'] == 'completed':
         swarmIds.append(swarmId)
 
@@ -461,7 +461,7 @@ class HsState(object):
     retval:   list of active swarm Ids
     """
     swarmIds = []
-    for swarmId, info in self._state['swarms'].iteritems():
+    for swarmId, info in self._state['swarms'].items():
       if info['status'] == 'completing':
         swarmIds.append(swarmId)
 
@@ -565,7 +565,7 @@ class HsState(object):
     statusCounts = dict(active=0, completing=0, completed=0, killed=0)
     bestModelIds = []
     bestErrScores = []
-    for info in self._state['swarms'].itervalues():
+    for info in self._state['swarms'].values():
       if info['sprintIdx'] != sprintIdx:
         continue
       statusCounts[info['status']] += 1
@@ -743,7 +743,7 @@ class HsState(object):
 
     # Mark the bad swarms as killed
     if len(toKill) > 0:
-      print "ParseMe: Killing encoders:" + str(toKill)
+      print("ParseMe: Killing encoders:" + str(toKill))
 
     for swarm in toKill:
       self.setSwarmState(swarm[0], "killed")

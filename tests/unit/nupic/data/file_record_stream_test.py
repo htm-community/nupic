@@ -66,7 +66,7 @@ class TestFileRecordStream(unittest.TestCase):
     fieldNames = ['name', 'timestamp', 'integer', 'real', 'reset', 'sid',
                   'categoryField']
 
-    print 'Creating temp file:', filename
+    print('Creating temp file:', filename)
 
     with FileRecordStream(streamID=filename, write=True, fields=fields) as s:
 
@@ -81,9 +81,9 @@ class TestFileRecordStream(unittest.TestCase):
       self.assertEqual(fields, s.getFields())
       self.assertEqual(0, s.getNextRecordIdx())
 
-      print 'Writing records ...'
+      print('Writing records ...')
       for r in records:
-        print list(r)
+        print(list(r))
         s.appendRecord(list(r))
 
       self.assertEqual(3, s.getDataRowCount())
@@ -94,9 +94,9 @@ class TestFileRecordStream(unittest.TestCase):
         ['rec_6', datetime(day=6, month=3, year=2010), 11, 11.5, 0, 'seq-1', 15]
       )
 
-      print 'Adding batch of records...'
+      print('Adding batch of records...')
       for rec in recordsBatch:
-        print rec
+        print(rec)
       s.appendRecords(recordsBatch)
       self.assertEqual(6, s.getDataRowCount())
 
@@ -110,7 +110,7 @@ class TestFileRecordStream(unittest.TestCase):
       self.assertEqual(0, s.getNextRecordIdx())
 
       readStats = s.getStats()
-      print 'Got stats:', readStats
+      print('Got stats:', readStats)
       expectedStats = {
                        'max': [None, None, 12, 11.5, 1, None, 15],
                        'min': [None, None, 2, 6.5, 0, None, 10]
@@ -118,10 +118,10 @@ class TestFileRecordStream(unittest.TestCase):
       self.assertEqual(expectedStats, readStats)
 
       readRecords = []
-      print 'Reading records ...'
+      print('Reading records ...')
       while True:
         r = s.getNextRecord()
-        print r
+        print(r)
         if r is None:
           break
 
@@ -155,7 +155,7 @@ class TestFileRecordStream(unittest.TestCase):
     fieldNames = ['name', 'timestamp', 'integer', 'real', 'reset', 'sid',
                   'categories']
 
-    print 'Creating temp file:', filename
+    print('Creating temp file:', filename)
 
     with FileRecordStream(streamID=filename, write=True, fields=fields) as s:
 
@@ -173,9 +173,9 @@ class TestFileRecordStream(unittest.TestCase):
       self.assertEqual(fields, s.getFields())
       self.assertEqual(0, s.getNextRecordIdx())
 
-      print 'Writing records ...'
+      print('Writing records ...')
       for r in records:
-        print r
+        print(r)
         s.appendRecord(r)
 
       self.assertEqual(3, s.getDataRowCount())
@@ -188,9 +188,9 @@ class TestFileRecordStream(unittest.TestCase):
         ['rec_6', datetime(day=6, month=3, year=2010), 11, 11.5, 0, 'seq-1',
          [4, 5, 6]])
 
-      print 'Adding batch of records...'
+      print('Adding batch of records...')
       for rec in recordsBatch:
-        print rec
+        print(rec)
       s.appendRecords(recordsBatch)
       self.assertEqual(6, s.getDataRowCount())
 
@@ -204,7 +204,7 @@ class TestFileRecordStream(unittest.TestCase):
       self.assertEqual(0, s.getNextRecordIdx())
 
       readStats = s.getStats()
-      print 'Got stats:', readStats
+      print('Got stats:', readStats)
       expectedStats = {
                        'max': [None, None, 11, 11.5, 1, None, None],
                        'min': [None, None, 2, 6.5, 0, None, None]
@@ -212,10 +212,10 @@ class TestFileRecordStream(unittest.TestCase):
       self.assertEqual(expectedStats, readStats)
 
       readRecords = []
-      print 'Reading records ...'
+      print('Reading records ...')
       while True:
         r = s.getNextRecord()
-        print r
+        print(r)
         if r is None:
           break
 
@@ -258,7 +258,7 @@ class TestFileRecordStream(unittest.TestCase):
 
     filename = _getTempFileName()
 
-    print 'Creating tempfile:', filename
+    print('Creating tempfile:', filename)
 
     # Write bad dataset with records going backwards in time
     fields = [FieldMetaInfo('timestamp', FieldMetaType.datetime,
@@ -288,14 +288,14 @@ class TestFileRecordStream(unittest.TestCase):
 
   def testMissingValues(self):
 
-    print "Beginning Missing Data test..."
+    print("Beginning Missing Data test...")
     filename = _getTempFileName()
 
     # Some values missing of each type
     # read dataset from disk, retrieve values
     # string should return empty string, numeric types sentinelValue
 
-    print 'Creating tempfile:', filename
+    print('Creating tempfile:', filename)
 
     # write dataset to disk with float, int, and string fields
     fields = [FieldMetaInfo('timestamp', FieldMetaType.datetime,
@@ -334,8 +334,8 @@ class TestFileRecordStream(unittest.TestCase):
       r = s.getNextRecord()
       if r is None:
         break
-      print 'Reading record ...'
-      print r
+      print('Reading record ...')
+      print(r)
       recordsRead.append(r)
 
     # sort the records by date, so we know for sure which is which

@@ -148,7 +148,7 @@ class Connections(Serializable):
     # Save member variables
     self.numCells = numCells
 
-    self._cells = [CellData() for _ in xrange(numCells)]
+    self._cells = [CellData() for _ in range(numCells)]
     self._synapsesForPresynapticCell = defaultdict(set)
     self._segmentForFlatIdx = []
 
@@ -158,8 +158,8 @@ class Connections(Serializable):
 
     # Whenever creating a new Synapse or Segment, give it a unique ordinal.
     # These can be used to sort synapses or segments by age.
-    self._nextSynapseOrdinal = long(0)
-    self._nextSegmentOrdinal = long(0)
+    self._nextSynapseOrdinal = int(0)
+    self._nextSegmentOrdinal = int(0)
 
 
   def segmentsForCell(self, cell):
@@ -442,7 +442,7 @@ class Connections(Serializable):
     """
     protoCells = proto.init('cells', self.numCells)
 
-    for i in xrange(self.numCells):
+    for i in range(self.numCells):
       segments = self._cells[i]._segments
       protoSegments = protoCells[i].init('segments', len(segments))
 
@@ -512,14 +512,14 @@ class Connections(Serializable):
     :param other: (:class:`Connections`) Connections instance to compare to
     """
     #pylint: disable=W0212
-    for i in xrange(self.numCells):
+    for i in range(self.numCells):
       segments = self._cells[i]._segments
       otherSegments = other._cells[i]._segments
 
       if len(segments) != len(otherSegments):
         return False
 
-      for j in xrange(len(segments)):
+      for j in range(len(segments)):
         segment = segments[j]
         otherSegment = otherSegments[j]
         synapses = segment._synapses
@@ -542,7 +542,7 @@ class Connections(Serializable):
         len(self._synapsesForPresynapticCell)):
       return False
 
-    for i in self._synapsesForPresynapticCell.keys():
+    for i in list(self._synapsesForPresynapticCell.keys()):
       synapses = self._synapsesForPresynapticCell[i]
       otherSynapses = other._synapsesForPresynapticCell[i]
       if len(synapses) != len(otherSynapses):

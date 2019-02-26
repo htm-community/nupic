@@ -19,6 +19,8 @@
 # http://numenta.org/licenses/
 # ----------------------------------------------------------------------
 
+from __future__ import print_function
+
 import copy
 import json
 import os
@@ -27,7 +29,7 @@ import tempfile
 import logging
 import re
 import traceback
-import StringIO
+import io
 from collections import namedtuple
 import pprint
 import shutil
@@ -140,7 +142,7 @@ def _appendReportKeys(keys, prefix, results):
   results:      dictionary of results at this level.
   """
 
-  allKeys = results.keys()
+  allKeys = list(results.keys())
   allKeys.sort()
   for key in allKeys:
     if hasattr(results[key], 'keys'):
@@ -285,7 +287,7 @@ def _quoteAndEscape(string):
   Returns:  a quoted string with characters that are represented in python via
             escape sequences converted to those escape sequences
   """
-  assert type(string) in types.StringTypes
+  assert type(string) in str
   return pprint.pformat(string)
 
 
@@ -306,9 +308,9 @@ def _handleModelRunnerException(jobID, modelID, jobsDAO, experimentDir, logger,
   retval:               (completionReason, completionMsg)
   """
 
-  msg = StringIO.StringIO()
-  print >>msg, "Exception occurred while running model %s: %r (%s)" % (
-    modelID, e, type(e))
+  msg = io.StringIO()
+  print("Exception occurred while running model %s: %r (%s)" % (
+    modelID, e, type(e)), file=msg)
   traceback.print_exc(None, msg)
 
   completionReason = jobsDAO.CMPL_REASON_ERROR
@@ -388,11 +390,11 @@ def runModelGivenBaseAndParams(modelID, jobID, baseDescription, params,
     paramsFile = open(paramsFilePath, 'wb')
     paramsFile.write(_paramsFileHead())
 
-    items = params.items()
+    items = list(params.items())
     items.sort()
     for (key,value) in items:
       quotedKey = _quoteAndEscape(key)
-      if isinstance(value, basestring):
+      if isinstance(value, str):
 
         paramsFile.write("  %s : '%s',\n" % (quotedKey , value))
       else:
@@ -436,7 +438,7 @@ def runModelGivenBaseAndParams(modelID, jobID, baseDescription, params,
 
     except InvalidConnectionException:
       raise
-    except Exception, e:
+    except Exception as e:
 
       (completionReason, completionMsg) = _handleModelRunnerException(jobID,
                                      modelID, jobsDAO, experimentDir, logger, e)
@@ -484,7 +486,7 @@ def runDummyModel(modelID, jobID, params, predictedField, reportKeys,
     sys.exit(1)
   except InvalidConnectionException:
     raise
-  except Exception, e:
+  except Exception as e:
     (completionReason, completionMsg) = _handleModelRunnerException(jobID,
                                    modelID, jobsDAO, "NA",
                                    logger, e)
@@ -528,7 +530,7 @@ class PeriodicActivityMgr(object):
       act =   self.Activity(repeating=req.repeating,
                             period=req.period,
                             cb=req.cb,
-                            iteratorHolder=[iter(xrange(req.period))])
+                            iteratorHolder=[iter(range(req.period))])
       self.__activities.append(act)
     return
 
@@ -549,7 +551,7 @@ class PeriodicActivityMgr(object):
       except StopIteration:
         act.cb()
         if act.repeating:
-          act.iteratorHolder[0] = iter(xrange(act.period))
+          act.iteratorHolder[0] = iter(range(act.period))
         else:
           act.iteratorHolder[0] = None
 
@@ -594,14 +596,14 @@ def rCopy(d, f=identityConversion, discardNoneKeys=True, deepCopy=True):
     d = copy.deepcopy(d)
 
   newDict = {}
-  toCopy = [(k, v, newDict, ()) for k, v in d.iteritems()]
+  toCopy = [(k, v, newDict, ()) for k, v in d.items()]
   while len(toCopy) > 0:
     k, v, d, prevKeys = toCopy.pop()
     prevKeys = prevKeys + (k,)
     if isinstance(v, dict):
       d[k] = dict()
       toCopy[0:0] = [(innerK, innerV, d[k], prevKeys)
-                     for innerK, innerV in v.iteritems()]
+                     for innerK, innerV in v.items()]
     else:
       #print k, v, prevKeys
       newV = f(v, prevKeys)
@@ -622,7 +624,7 @@ def rApply(d, f):
   remainingDicts = [(d, ())]
   while len(remainingDicts) > 0:
     current, prevKeys = remainingDicts.pop()
-    for k, v in current.iteritems():
+    for k, v in current.items():
       keys = prevKeys + (k,)
       if isinstance(v, dict):
         remainingDicts.insert(0, (v, keys))
@@ -651,7 +653,7 @@ def clippedObj(obj, maxElementSize=64):
   # Printing a dict?
   if isinstance(obj, dict):
     objOut = dict()
-    for key,val in obj.iteritems():
+    for key,val in obj.items():
       objOut[key] = clippedObj(val)
 
   # Printing a list?
@@ -694,7 +696,7 @@ def validate(value, **kwds):
           ValidationError when value fails json validation
   """
 
-  assert len(kwds.keys()) >= 1
+  assert len(list(kwds.keys())) >= 1
   assert 'schemaPath' in kwds or 'schemaDict' in kwds
 
   schemaDict = None
@@ -740,7 +742,7 @@ def sortedJSONDumpS(obj):
   itemStrs = []
 
   if isinstance(obj, dict):
-    items = obj.items()
+    items = list(obj.items())
     items.sort()
     for key, value in items:
       itemStrs.append('%s: %s' % (json.dumps(key), sortedJSONDumpS(value)))

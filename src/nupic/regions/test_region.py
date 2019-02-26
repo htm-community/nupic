@@ -22,6 +22,8 @@
 # This is a PyRegion-based python test regions for exploring/testing CLA Network
 # mechanisms
 
+from future.utils import with_metaclass
+
 from abc import ABCMeta, abstractmethod
 
 
@@ -32,11 +34,10 @@ from nupic.serializable import Serializable
 
 
 
-class RegionIdentityPolicyBase(object):
+class RegionIdentityPolicyBase(with_metaclass(ABCMeta, object)):
   """ A base class that must be subclassed by users in order to define the
   TestRegion instance's specialization. See also setIdentityPolicyInstance().
   """
-  __metaclass__ = ABCMeta
 
   @abstractmethod
   def initialize(self, testRegionObj):
@@ -508,8 +509,8 @@ def _debugOut(msg):
   global g_debug
   if g_debug:
     callerTraceback = whois_callers_caller()
-    print "TEST_REGION (f=%s;line=%s): %s" % \
-                          (callerTraceback.function, callerTraceback.lineno, msg,)
+    print("TEST_REGION (f=%s;line=%s): %s" % \
+                          (callerTraceback.function, callerTraceback.lineno, msg,))
     sys.stdout.flush()
 
   return

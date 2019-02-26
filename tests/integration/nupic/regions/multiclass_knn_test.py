@@ -121,7 +121,7 @@ class MulticlassKNNTest(unittest.TestCase):
                     [0.5, 0.5, 0.0],
                     [0.0, 0.5, 0.5])
     dataSource.rewind()
-    for i in xrange(8):
+    for i in range(8):
       net.run(1)
       inferredCats = classifier.getOutputData("categoriesOut")
       self.assertSequenceEqual(expectedCats[i], inferredCats.tolist(),

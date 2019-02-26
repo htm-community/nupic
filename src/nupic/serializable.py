@@ -19,11 +19,13 @@
 # http://numenta.org/licenses/
 # ----------------------------------------------------------------------
 
+from future.utils import with_metaclass
+
 from abc import ABCMeta, abstractmethod
 
 
 
-class Serializable(object):
+class Serializable(with_metaclass(ABCMeta, object)):
   """
   Serializable base class establishing
   :meth:`~nupic.serializable.Serializable.read` and
@@ -31,8 +33,6 @@ class Serializable(object):
   :meth:`.readFromFile` and :meth:`.writeToFile` concrete methods to support
   serialization with Cap'n Proto.
   """
-
-  __metaclass__ = ABCMeta
 
 
   @classmethod

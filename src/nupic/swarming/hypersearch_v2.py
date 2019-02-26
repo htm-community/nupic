@@ -19,6 +19,9 @@
 # http://numenta.org/licenses/
 # ----------------------------------------------------------------------
 
+from __future__ import print_function
+from past.builtins import execfile
+
 import sys
 import os
 import time
@@ -26,7 +29,7 @@ import logging
 import json
 import hashlib
 import itertools
-import StringIO
+import io
 import shutil
 import tempfile
 import copy
@@ -466,7 +469,7 @@ class ResultsDB(object):
     if swarmId is not None:
       entryIdxs = self._swarmIdToIndexes.get(swarmId, [])
     else:
-      entryIdxs = range(len(self._allResults))
+      entryIdxs = list(range(len(self._allResults)))
     if len(entryIdxs) == 0:
       return ([], [], [], [], [])
 
@@ -538,7 +541,7 @@ class ResultsDB(object):
               matured: list of matured booleans
     """
 
-    entryIdxs = range(len(self._allResults))
+    entryIdxs = list(range(len(self._allResults)))
     if len(entryIdxs) == 0:
       return ([], [], [], [], [])
 
@@ -709,7 +712,7 @@ class ResultsDB(object):
     (allParticles, _, resultErrs, _, _) = self.getParticleInfos(swarmId,
                                               genIdx=None, matured=True)
 
-    for particleState, resultErr in itertools.izip(allParticles, resultErrs):
+    for particleState, resultErr in zip(allParticles, resultErrs):
       # Consider this generation?
       if maxGenIdx is not None:
         if particleState['genIdx'] > maxGenIdx:
@@ -1054,14 +1057,14 @@ class HypersearchV2(object):
 
       # If at DEBUG log level, print out permutations info to the log
       if self.logger.getEffectiveLevel() <= logging.DEBUG:
-        msg = StringIO.StringIO()
-        print >> msg, "Permutations file specifications: "
+        msg = io.StringIO()
+        print("Permutations file specifications: ", file=msg)
         info = dict()
         for key in ['_predictedField', '_permutations',
                     '_flattenedPermutations', '_encoderNames',
                     '_reportKeys', '_optimizeKey', '_maximize']:
           info[key] = getattr(self, key)
-        print >> msg, pprint.pformat(info)
+        print(pprint.pformat(info), file=msg)
         self.logger.debug(msg.getvalue())
         msg.close()
 
@@ -1119,7 +1122,7 @@ class HypersearchV2(object):
     # Honor any overrides provided in the stream definition
     aggFunctionsDict = {}
     if 'aggregation' in modelDescription['streamDef']:
-      for key in aggregationPeriod.keys():
+      for key in list(aggregationPeriod.keys()):
         if key in modelDescription['streamDef']['aggregation']:
           aggregationPeriod[key] = modelDescription['streamDef']['aggregation'][key]
       if 'fields' in modelDescription['streamDef']['aggregation']:
@@ -1128,13 +1131,13 @@ class HypersearchV2(object):
 
     # Do we have any aggregation at all?
     hasAggregation = False
-    for v in aggregationPeriod.values():
+    for v in list(aggregationPeriod.values()):
       if v != 0:
         hasAggregation = True
         break
 
     # Convert the aggFunctionsDict to a list
-    aggFunctionList = aggFunctionsDict.items()
+    aggFunctionList = list(aggFunctionsDict.items())
     aggregationInfo = dict(aggregationPeriod)
     aggregationInfo['fields'] = aggFunctionList
 
@@ -1315,8 +1318,8 @@ class HypersearchV2(object):
       # If it does not have a separate encoder for the predicted field that
       #  goes to the classifier, it is a legacy multi-step network
       classifierOnlyEncoder = None
-      for encoder in modelDescription["modelParams"]["sensorParams"]\
-                    ["encoders"].values():
+      for encoder in list(modelDescription["modelParams"]["sensorParams"]\
+                    ["encoders"].values()):
         if encoder.get("classifierOnly", False) \
              and encoder["fieldname"] == vars.get('predictedField', None):
           classifierOnlyEncoder = encoder
@@ -1375,7 +1378,7 @@ class HypersearchV2(object):
 
         # Store the flattened representations of the variables within the
         # encoder.
-        for encKey, encValue in value.kwArgs.iteritems():
+        for encKey, encValue in value.kwArgs.items():
           if isinstance(encValue, PermuteVariable):
             self._flattenedPermutations['%s:%s' % (flatKey, encKey)] = encValue
       elif isinstance(value, PermuteVariable):
@@ -1920,7 +1923,7 @@ class HypersearchV2(object):
       # Sort the swarms in priority order, trying the ones with the least
       #  number of models first
       swarmSizes = numpy.array([self._resultsDB.numModels(x) for x in swarmIds])
-      swarmSizeAndIdList = zip(swarmSizes, swarmIds)
+      swarmSizeAndIdList = list(zip(swarmSizes, swarmIds))
       swarmSizeAndIdList.sort()
       for (_, swarmId) in swarmSizeAndIdList:
 
@@ -2032,7 +2035,7 @@ class HypersearchV2(object):
     """
     # Send an update status periodically to the JobTracker so that it doesn't
     # think this worker is dead.
-    print >> sys.stderr, "reporter:status:In hypersearchV2: _okToExit"
+    print("reporter:status:In hypersearchV2: _okToExit", file=sys.stderr)
 
     # Any immature models still running?
     if not self._jobCancelled:
@@ -2177,7 +2180,7 @@ class HypersearchV2(object):
     self._checkForOrphanedModels()
 
     modelResults = []
-    for _ in xrange(numModels):
+    for _ in range(numModels):
       candidateParticle = None
 
       # If we've reached the max # of model to evaluate, we're done.
@@ -2201,7 +2204,7 @@ class HypersearchV2(object):
         else:
           # Send an update status periodically to the JobTracker so that it doesn't
           # think this worker is dead.
-          print >> sys.stderr, "reporter:status:In hypersearchV2: speculativeWait"
+          print("reporter:status:In hypersearchV2: speculativeWait", file=sys.stderr)
           time.sleep(self._speculativeWaitSecondsMax * random.random())
           return (False, [])
       useEncoders = candidateSwarm.split('.')
@@ -2342,7 +2345,7 @@ class HypersearchV2(object):
     if results is None:
       metricResult = None
     else:
-      metricResult = results[1].values()[0]
+      metricResult = list(results[1].values())[0]
 
     # Update our database.
     errScore = self._resultsDB.update(modelID=modelID,
@@ -2463,5 +2466,5 @@ class HypersearchV2(object):
                             cpuTime = time.clock() - cpuTimeStart)
 
 
-    except InvalidConnectionException, e:
+    except InvalidConnectionException as e:
       self.logger.warn("%s", e)

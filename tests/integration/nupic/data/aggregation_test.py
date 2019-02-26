@@ -47,11 +47,11 @@ def _aggregate(input, options, output, timeFieldName):
   while True:
     inRecord = input.getNextRecord()
     
-    print "Feeding in: ", inRecord
+    print("Feeding in: ", inRecord)
 
     (outRecord, aggBookmark) = aggregator.next(record = inRecord, 
                                             curInputBookmark = None)
-    print "Record out: ", outRecord
+    print("Record out: ", outRecord)
     
     if outRecord is not None:
       output.appendRecord(outRecord, None)
@@ -127,7 +127,7 @@ class DataOutputMyFile(object):
 
   def appendRecord(self, record, inputRef):
     if self._file == None:
-      print 'No File'
+      print('No File')
     self._file.appendRecord(record)
 
   def close(self):
@@ -536,7 +536,7 @@ class AggregationTests(HelperTestCaseBase):
       instance is constructed for every sub-test.
     """
     # Insert newline before each sub-test's output
-    print
+    print()
     return
 
 
@@ -586,8 +586,8 @@ class AggregationTests(HelperTestCaseBase):
       for i in range(1,len(outputRecords)):
         diffs.append(outputRecords[i][timeFieldIdx] - \
                      outputRecords[i-1][timeFieldIdx])
-      positiveTimeFlow = map((lambda x: x < datetime.timedelta(seconds=0)), 
-                            diffs)
+      positiveTimeFlow = list(map((lambda x: x < datetime.timedelta(seconds=0)), 
+                            diffs))
       #Make sure that old records are in the aggregated output and at the same
       #time make sure that they are in consecutive order after being inserted
       self.assertEquals(sum(positiveTimeFlow), 1)
@@ -634,8 +634,8 @@ class AggregationTests(HelperTestCaseBase):
       dataOutput.close()
 
       for r in FileRecordStream(outputFile):
-        print r
-      print '-' * 30
+        print(r)
+      print('-' * 30)
 
     return
 
@@ -643,7 +643,7 @@ class AggregationTests(HelperTestCaseBase):
   def test_GenerateDataset(self):
     dataset = 'extra/gym/gym.csv'
 
-    print "Using input dataset: ", dataset
+    print("Using input dataset: ", dataset)
 
     filename = resource_filename("nupic.datafiles", dataset)
 
@@ -669,42 +669,42 @@ class AggregationTests(HelperTestCaseBase):
     outputFile = handle.name
     handle.close()
 
-    print "Expected outputFile path: ", outputFile
+    print("Expected outputFile path: ", outputFile)
 
-    print "Files in the destination folder before the test:"
-    print os.listdir(os.path.abspath(os.path.dirname(
+    print("Files in the destination folder before the test:")
+    print(os.listdir(os.path.abspath(os.path.dirname(
       resource_filename("nupic.datafiles", dataset)))
-    )
+    ))
 
     if os.path.isfile(outputFile):
-      print "Removing existing outputFile: ", outputFile
+      print("Removing existing outputFile: ", outputFile)
       os.remove(outputFile)
 
     self.assertFalse(os.path.exists(outputFile),
                      msg="Shouldn't exist, but does: " + str(outputFile))
 
     result = generateDataset(aggregationOptions, dataset, outputFile)
-    print "generateDataset() returned: ", result
+    print("generateDataset() returned: ", result)
 
     f1 = os.path.abspath(os.path.normpath(result))
-    print "normalized generateDataset() result path: ", f1
+    print("normalized generateDataset() result path: ", f1)
     f2 = os.path.normpath(outputFile)
-    print "normalized outputFile path: ", f2
+    print("normalized outputFile path: ", f2)
     self.assertEqual(f1, f2)
 
-    print "Checking for presence of outputFile: ", outputFile
+    print("Checking for presence of outputFile: ", outputFile)
     self.assertTrue(
       os.path.isfile(outputFile),
       msg="Missing outputFile: %r; normalized generateDataset() result: %r" % (
         outputFile, f1))
 
-    print "Files in the destination folder after the test:"
-    print os.listdir(os.path.abspath(os.path.dirname(
+    print("Files in the destination folder after the test:")
+    print(os.listdir(os.path.abspath(os.path.dirname(
       resource_filename("nupic.datafiles", dataset)
-    )))
+    ))))
 
-    print result
-    print '-' * 30
+    print(result)
+    print('-' * 30)
 
     return
 
@@ -713,7 +713,7 @@ class AggregationTests(HelperTestCaseBase):
     # Cleanup previous files if exist
     import glob
     for f in glob.glob('gap.*'):
-      print 'Removing', f
+      print('Removing', f)
       os.remove(f)
 
     #class TestParser(BaseParser):
@@ -795,8 +795,8 @@ class AggregationTests(HelperTestCaseBase):
       msg="result = '%s'; outputFile = '%s'" % (result, outputFile))
     self.assertTrue(os.path.isfile(outputFile),
                     msg="outputFile missing or is not file: %r" % (outputFile))
-    print outputFile
-    print '-' * 30
+    print(outputFile)
+    print('-' * 30)
 
     s = ''
     for r in FileRecordStream(outputFile):
@@ -861,7 +861,7 @@ class AggregationTests(HelperTestCaseBase):
 
     result = []
     with FileRecordStream(outputFile) as f:
-      print f.getFields()
+      print(f.getFields())
       for r in f:
         result.append(r)
 
@@ -921,7 +921,7 @@ class AggregationTests(HelperTestCaseBase):
 
     result = []
     with FileRecordStream(outputFile) as f:
-      print f.getFields()
+      print(f.getFields())
       for r in f:
         result.append(r)
 

@@ -445,7 +445,7 @@ class SDRClassifierRegion(PyRegion):
         #                   4 : [0.2, 0.4, 0.3, 0.5]}
         #   becomes: [0.1, 0.3, 0.2, 0.7, 0.2, 0.4, 0.3, 0.5]
         stepProbabilities = clResults[step]
-        for categoryIndex in xrange(self.maxCategoryCount):
+        for categoryIndex in range(self.maxCategoryCount):
           flatIndex = categoryIndex + stepIndex * self.maxCategoryCount
           if categoryIndex < len(stepProbabilities):
             outputs['probabilities'][flatIndex] = \

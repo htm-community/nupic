@@ -131,7 +131,7 @@ class CoordinateEncoder(Encoder):
 
     @return (numpy.array) List of coordinates
     """
-    ranges = (xrange(n-radius, n+radius+1) for n in coordinate.tolist())
+    ranges = (range(n-radius, n+radius+1) for n in coordinate.tolist())
     return numpy.array(list(itertools.product(*ranges)))
 
 

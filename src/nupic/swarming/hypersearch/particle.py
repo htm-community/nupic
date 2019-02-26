@@ -19,8 +19,10 @@
 # http://numenta.org/licenses/
 # ----------------------------------------------------------------------
 
+from __future__ import print_function
+
 import logging
-import StringIO
+import io
 import copy
 import pprint
 import random
@@ -141,7 +143,7 @@ class Particle(object):
       self.permuteVars = copy.deepcopy(flattenedPermuteVars)
 
       # Remove fields we don't want.
-      varNames = self.permuteVars.keys()
+      varNames = list(self.permuteVars.keys())
       for varName in varNames:
         # Remove encoders we're not using
         if ':' in varName:  # if an encoder
@@ -160,7 +162,7 @@ class Particle(object):
           resultsPerChoice = self._resultsDB.getResultsPerChoice(
             swarmId=self.swarmId, maxGenIdx=maxGenIdx, varName=varName)
           self.permuteVars[varName].setResultsPerChoice(
-            resultsPerChoice.values())
+            list(resultsPerChoice.values()))
 
     # Method #1
     # Create from scratch, optionally pushing away from others that already
@@ -185,7 +187,7 @@ class Particle(object):
 
       # Push away from other particles?
       if newFarFrom is not None:
-        for varName in self.permuteVars.iterkeys():
+        for varName in self.permuteVars.keys():
           otherPositions = []
           for particleState in newFarFrom:
             otherPositions.append(
@@ -259,7 +261,7 @@ class Particle(object):
     """Get the particle state as a dict. This is enough information to
     instantiate this particle on another worker."""
     varStates = dict()
-    for varName, var in self.permuteVars.iteritems():
+    for varName, var in self.permuteVars.items():
       varStates[varName] = var.getState()
 
     return dict(id=self.particleId,
@@ -286,7 +288,7 @@ class Particle(object):
     # Replace with the position and velocity of each variable from
     #  saved state
     varStates = particleState['varStates']
-    for varName in varStates.keys():
+    for varName in list(varStates.keys()):
       varState = copy.deepcopy(varStates[varName])
       if newBest:
         varState['bestResult'] = bestResult
@@ -375,7 +377,7 @@ class Particle(object):
     retval:     dict() of flattened permutation choices
     """
     result = dict()
-    for (varName, value) in self.permuteVars.iteritems():
+    for (varName, value) in self.permuteVars.items():
       result[varName] = value.getPosition()
 
     return result
@@ -390,7 +392,7 @@ class Particle(object):
                   values are their positions
     """
     result = dict()
-    for (varName, value) in pState['varStates'].iteritems():
+    for (varName, value) in pState['varStates'].items():
       result[varName] = value['position']
 
     return result
@@ -404,7 +406,7 @@ class Particle(object):
     --------------------------------------------------------------
     retval:               None
     """
-    for (varName, var) in self.permuteVars.iteritems():
+    for (varName, var) in self.permuteVars.items():
       var.agitate()
 
     self.newPosition()
@@ -440,7 +442,7 @@ class Particle(object):
         globalBestPosition = Particle.getPositionFromState(particleState)
 
     # Update each variable
-    for (varName, var) in self.permuteVars.iteritems():
+    for (varName, var) in self.permuteVars.items():
       if whichVars is not None and varName not in whichVars:
         continue
       if globalBestPosition is None:
@@ -453,12 +455,12 @@ class Particle(object):
 
     # Log the new position
     if self.logger.getEffectiveLevel() <= logging.DEBUG:
-      msg = StringIO.StringIO()
-      print >> msg, "New particle position: \n%s" % (pprint.pformat(position,
-                                                                    indent=4))
-      print >> msg, "Particle variables:"
-      for (varName, var) in self.permuteVars.iteritems():
-        print >> msg, "  %s: %s" % (varName, str(var))
+      msg = io.StringIO()
+      print("New particle position: \n%s" % (pprint.pformat(position,
+                                                                    indent=4)), file=msg)
+      print("Particle variables:", file=msg)
+      for (varName, var) in self.permuteVars.items():
+        print("  %s: %s" % (varName, str(var)), file=msg)
       self.logger.debug(msg.getvalue())
       msg.close()
 

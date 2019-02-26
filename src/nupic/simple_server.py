@@ -65,7 +65,7 @@ class ModelHandler(object):
     [model1, model2, model3, ...] list of model names
     """
     global g_models
-    return json.dumps({"models": g_models.keys()})
+    return json.dumps({"models": list(g_models.keys())})
 
 
   def POST(self, name):
@@ -87,7 +87,7 @@ class ModelHandler(object):
     modelParams = data["modelParams"]
     predictedFieldName = data["predictedFieldName"]
 
-    if name in g_models.keys():
+    if name in list(g_models.keys()):
       raise web.badrequest("Model with name <%s> already exists" % name)
 
     model = ModelFactory.create(modelParams)
@@ -124,7 +124,7 @@ class ModelRunner(object):
     data["timestamp"] = datetime.datetime.strptime(
         data["timestamp"], "%m/%d/%y %H:%M")
 
-    if name not in g_models.keys():
+    if name not in list(g_models.keys()):
       raise web.notfound("Model with name <%s> does not exist." % name)
 
     modelResult = g_models[name].run(data)

@@ -44,21 +44,21 @@ def createFirstOrderModel(numCategories=5, alpha=0.5):
 def generateFirstOrderData(model, numIterations=10000, seqLength=5,
                            resets=True, suffix='train'):
   
-  print "Creating %d iteration file with seqLength %d" % (numIterations, seqLength)
-  print "Filename", 
+  print("Creating %d iteration file with seqLength %d" % (numIterations, seqLength))
+  print("Filename", end=' ') 
   categoryList, initProbability, transitionTable = model
   initProbability = initProbability.cumsum()
   transitionTable = transitionTable.cumsum(axis=1)
   
   outputFile = 'fo_%d_%d_%s.csv' % (numIterations, seqLength, suffix)
-  print "Filename", outputFile
+  print("Filename", outputFile)
   fields = [('reset', 'int', 'R'), ('name', 'string', '')]
   o = File(outputFile, fields)
   
   seqIdx = 0
   rand = numpy.random.rand()
   catIdx = numpy.searchsorted(initProbability, rand)
-  for i in xrange(numIterations):
+  for i in range(numIterations):
     rand = numpy.random.rand()
     if seqIdx == 0 and resets:
       catIdx = numpy.searchsorted(initProbability, rand)

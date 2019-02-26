@@ -388,7 +388,7 @@ def _generateFile(filename, numRecords, categoryList, initProb,
   """
   
   # Create the file
-  print "Creating %s..." % (filename)
+  print("Creating %s..." % (filename))
   fields = [('reset', 'int', 'R'), ('name', 'string', '')]
   outFile = FileRecordStream(filename, write=True, fields=fields)
   
@@ -397,11 +397,11 @@ def _generateFile(filename, numRecords, categoryList, initProb,
   initCumProb = initProb.cumsum()
   
   firstOrderCumProb = dict()
-  for (key,value) in firstOrderProb.iteritems():
+  for (key,value) in firstOrderProb.items():
     firstOrderCumProb[key] = value.cumsum()
     
   secondOrderCumProb = dict()
-  for (key,value) in secondOrderProb.iteritems():
+  for (key,value) in secondOrderProb.items():
     secondOrderCumProb[key] = value.cumsum()
     
 
@@ -410,7 +410,7 @@ def _generateFile(filename, numRecords, categoryList, initProb,
   elementsInSeq = []
   numElementsSinceReset = 0
   maxCatIdx = len(categoryList) - 1
-  for i in xrange(numRecords):
+  for i in range(numRecords):
 
     # Generate a reset?
     if numElementsSinceReset == 0:
@@ -465,7 +465,7 @@ def generate(model, filenameTrain, filenameTest, filenameCategory,
   
   # =====================================================================
   # Create our categories and category file. 
-  print "Creating %s..." % (filenameCategory)
+  print("Creating %s..." % (filenameCategory))
   categoryList = ['cat%d' % i for i in range(1, numCategories+1)]
   categoryFile = open(filenameCategory, 'w')
   for category in categoryList:

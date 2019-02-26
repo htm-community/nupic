@@ -22,7 +22,7 @@
 import unittest
 
 import nupic.algorithms.temporal_memory
-from extensive_tm_test_base import ExtensiveTemporalMemoryTest
+from .extensive_tm_test_base import ExtensiveTemporalMemoryTest
 
 
 

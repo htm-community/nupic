@@ -21,7 +21,9 @@
 
 """Module defining the OPF Model base class."""
 
-import cPickle as pickle
+from future.utils import with_metaclass
+
+import pickle as pickle
 import json
 import os
 import shutil
@@ -34,7 +36,7 @@ from nupic.serializable import Serializable
 # Capnp reader traveral limit (see capnp::ReaderOptions)
 _TRAVERSAL_LIMIT_IN_WORDS = 1 << 63
 
-class Model(Serializable):
+class Model(with_metaclass(ABCMeta, Serializable)):
   """ This is the base class that all OPF Model implementations should
   subclass.
 
@@ -44,8 +46,6 @@ class Model(Serializable):
   :param inferenceType: (:class:`~nupic.frameworks.opf.opf_utils.InferenceType`)
          A value that specifies the type of inference.
   """
-
-  __metaclass__ = ABCMeta
 
   def __init__(self, inferenceType=None, proto=None):
     """

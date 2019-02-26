@@ -21,7 +21,7 @@
 
 """Tests for the C++ implementation of the temporal memory."""
 
-import unittest2 as unittest
+import unittest
 
 from nupic.algorithms.backtracking_tm_cpp import BacktrackingTMCPP
 from tests.unit.nupic.algorithms import backtracking_tm_test

@@ -24,7 +24,7 @@
 import os
 import pprint
 import sys
-import unittest2 as unittest
+import unittest
 from pkg_resources import resource_filename
 
 
@@ -279,8 +279,8 @@ def _executeExternalCmdAndReapOutputs(args):
 def _debugOut(msg):
   if g_debug:
     callerTraceback = whoisCallersCaller()
-    print "OPF TestDescriptionTemplate (f=%s;line=%s): %s" % \
-            (callerTraceback.function, callerTraceback.lineno, msg,)
+    print("OPF TestDescriptionTemplate (f=%s;line=%s): %s" % \
+            (callerTraceback.function, callerTraceback.lineno, msg,))
     sys.stdout.flush()
 
 

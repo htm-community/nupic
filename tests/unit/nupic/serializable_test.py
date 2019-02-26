@@ -181,7 +181,7 @@ class SerializableTest(unittest.TestCase):
       Function used by `addTypeEqualityFunc` comparing sequences
     """
     self.assertEquals(len(l1), len(l2), msg)
-    for i in xrange(len(l1)):
+    for i in range(len(l1)):
       first = l1[i]
       second = l2[i]
       if type(first).__name__ in SERIALIZABLE_SUBCLASSES:
@@ -197,7 +197,7 @@ class SerializableTest(unittest.TestCase):
     self.assertIsInstance(d2, dict, 'Second argument is not a dictionary')
     self.assertEquals(len(d1), len(d2), msg + str(d1) + ' != ' + str(d2))
 
-    for k, _ in d1.items():
+    for k, _ in list(d1.items()):
       if k not in d2:
         raise AssertionError(repr(k))
       first = d1[k]
@@ -276,7 +276,7 @@ class SerializableTest(unittest.TestCase):
 
       # Make sure all serializable classes are accounted for
       self.assertIn(klass.__name__, SERIALIZABLE_SUBCLASSES)
-      print klass.__name__
+      print(klass.__name__)
       testParams = SERIALIZABLE_SUBCLASSES[klass.__name__]
 
       # Skip test class

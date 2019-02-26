@@ -801,7 +801,7 @@ class TemporalMemoryTest(unittest.TestCase):
   def testAddSegmentToCellWithFewestSegments(self):
     grewOnCell1 = False
     grewOnCell2 = False
-    for seed in xrange(100):
+    for seed in range(100):
       tm = TemporalMemory(
         columnDimensions=[32],
         cellsPerColumn=4,

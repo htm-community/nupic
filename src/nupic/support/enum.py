@@ -75,7 +75,7 @@ def Enum(*args, **kwargs):
     return cls.__labels[label]
 
 
-  for arg in list(args)+kwargs.keys():
+  for arg in list(args)+list(kwargs.keys()):
     if type(arg) is not str:
       raise TypeError("Enum arg {0} must be a string".format(arg))
 
@@ -84,10 +84,10 @@ def Enum(*args, **kwargs):
                        "'{0}' is not a valid identifier".format(arg))
 
   #kwargs.update(zip(args, range(len(args))))
-  kwargs.update(zip(args, args))
+  kwargs.update(list(zip(args, args)))
   newType = type("Enum", (object,), kwargs)
 
-  newType.__labels = dict( (v,k) for k,v in kwargs.iteritems())
+  newType.__labels = dict( (v,k) for k,v in kwargs.items())
   newType.__values = set(newType.__labels.keys())
   newType.getLabel = functools.partial(getLabel, newType)
   newType.validate = functools.partial(validate, newType)

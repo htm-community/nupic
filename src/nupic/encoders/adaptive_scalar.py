@@ -133,16 +133,16 @@ class AdaptiveScalarEncoder(ScalarEncoder):
       if minOverWindow < self.minval:
         #initialBump = abs(self.minval-minOverWindow)*(1-(min(self.recordNum, 200.0)/200.0))*2      #decrement minval more aggressively in the beginning
         if self.verbosity >= 2:
-          print "Input %s=%.2f smaller than minval %.2f. Adjusting minval to %.2f"\
-                          % (self.name, input, self.minval, minOverWindow)
+          print("Input %s=%.2f smaller than minval %.2f. Adjusting minval to %.2f"\
+                          % (self.name, input, self.minval, minOverWindow))
         self.minval = minOverWindow       #-initialBump
         self._setEncoderParams()
 
       if maxOverWindow > self.maxval:
         #initialBump = abs(self.maxval-maxOverWindow)*(1-(min(self.recordNum, 200.0)/200.0))*2     #decrement maxval more aggressively in the beginning
         if self.verbosity >= 2:
-          print "Input %s=%.2f greater than maxval %.2f. Adjusting maxval to %.2f" \
-                          % (self.name, input, self.maxval, maxOverWindow)
+          print("Input %s=%.2f greater than maxval %.2f. Adjusting maxval to %.2f" \
+                          % (self.name, input, self.maxval, maxOverWindow))
         self.maxval = maxOverWindow       #+initialBump
         self._setEncoderParams()
 

@@ -127,7 +127,7 @@ class SpatialPoolerTest(unittest.TestCase):
 
     expectedConnectedCounts = [2, 2, 2, 2, 3]
 
-    for i in xrange(5):
+    for i in range(5):
       permanences = np.array(permanencesList[i], dtype=realDType)
       expectedPermanences = np.array(expectedPermanencesList[i],
                                      dtype=realDType)

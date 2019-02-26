@@ -21,8 +21,8 @@
 
 from mock import Mock, patch, ANY, call
 import numpy
-import cPickle as pickle
-import unittest2 as unittest
+import pickle as pickle
+import unittest
 
 from nupic.bindings.math import GetNTAReal
 from nupic.bindings.algorithms import SpatialPooler

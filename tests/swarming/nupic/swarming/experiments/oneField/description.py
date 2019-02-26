@@ -95,10 +95,10 @@ config = {
     # Intermediate variables used to compute fields in modelParams and also
     # referenced from the control section.
     'aggregationInfo': {   'days': 0,
-        'fields': [   (u'timestamp', 'first'),
-                      (u'gym', 'first'),
-                      (u'consumption', 'mean'),
-                      (u'address', 'first')],
+        'fields': [   ('timestamp', 'first'),
+                      ('gym', 'first'),
+                      ('consumption', 'mean'),
+                      ('address', 'first')],
         'hours': 0,
         'microseconds': 0,
         'milliseconds': 0,
@@ -130,11 +130,11 @@ config = {
             # (value generated from DS_ENCODER_SCHEMA)
             'encoders': {
                 'consumption': {   'clipInput': True,
-                                   'fieldname': u'consumption',
+                                   'fieldname': 'consumption',
                                    'maxval': 200,
                                    'minval': 0,
                                    'n': 1500,
-                                   'name': u'consumption',
+                                   'name': 'consumption',
                                    'type': 'ScalarEncoder',
                                    'w': 21
                 },
@@ -342,11 +342,11 @@ control = {
 
   # Input stream specification per py/nupicengine/cluster/database/StreamDef.json.
   #
-  'dataset' : {   u'info': u'test_NoProviders',
-      u'streams': [   {   u'columns': [u'*'],
-                          u'info': u'test data',
-                          u'source': u'file://swarming/test_data.csv'}],
-      u'version': 1},
+  'dataset' : {   'info': 'test_NoProviders',
+      'streams': [   {   'columns': ['*'],
+                          'info': 'test data',
+                          'source': 'file://swarming/test_data.csv'}],
+      'version': 1},
 
 
   # Iteration count: maximum number of iterations.  Each iteration corresponds
@@ -361,7 +361,7 @@ control = {
   # Metrics: A list of MetricSpecs that instantiate the metrics that are
   # computed for this experiment
   'metrics':[
-    MetricSpec(field=u'consumption',
+    MetricSpec(field='consumption',
                inferenceElement=InferenceElement.prediction,
                metric='rmse'),
   ],

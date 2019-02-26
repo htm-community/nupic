@@ -129,15 +129,15 @@ config = {
             # (value generated from DS_ENCODER_SCHEMA)
             'encoders': {
               'address': {
-                'fieldname': u'address',
+                'fieldname': 'address',
                  'n': 300,
-                 'name': u'address',
+                 'name': 'address',
                  'type': 'SDRCategoryEncoder',
                  'w': 21
               },
               '_classifierInput': {
-                 'name': u'_classifierInput',
-                 'fieldname': u'consumption',
+                 'name': '_classifierInput',
+                 'fieldname': 'consumption',
                  'classifierOnly': True,
                  'clipInput': True,
                  'maxval': 200,
@@ -147,21 +147,21 @@ config = {
                  'w': 21
               },
               'gym': {
-                'fieldname': u'gym',
+                'fieldname': 'gym',
                 'n': 300,
-                'name': u'gym',
+                'name': 'gym',
                 'type': 'SDRCategoryEncoder',
                 'w': 21
               },
               'timestamp_dayOfWeek': {
                 'dayOfWeek': (7, 3),
-                'fieldname': u'timestamp',
-                'name': u'timestamp_dayOfWeek',
+                'fieldname': 'timestamp',
+                'name': 'timestamp_dayOfWeek',
                 'type': 'DateEncoder'
               },
               'timestamp_timeOfDay': {
-                'fieldname': u'timestamp',
-                'name': u'timestamp_timeOfDay',
+                'fieldname': 'timestamp',
+                'name': 'timestamp_timeOfDay',
                 'timeOfDay': (7, 8),
                 'type': 'DateEncoder'
               }
@@ -334,9 +334,9 @@ config = {
             'steps': '0',
         },
 
-        'anomalyParams': {   u'anomalyCacheRecords': None,
-    u'autoDetectThreshold': None,
-    u'autoDetectWaitRecords': None},
+        'anomalyParams': {   'anomalyCacheRecords': None,
+    'autoDetectThreshold': None,
+    'autoDetectWaitRecords': None},
 
         'trainSPNetOnlyIfRequested': False,
     },
@@ -371,11 +371,11 @@ control = {
 
   # Input stream specification per py/nupic/frameworks/opf/jsonschema/stream_def.json.
   #
-  'dataset' : {   u'info': u'testSpatialClassification',
-        u'streams': [   {   u'columns': [u'*'],
-                            u'info': u'test data',
-                            u'source': u'file://swarming/test_data.csv'}],
-        u'version': 1},
+  'dataset' : {   'info': 'testSpatialClassification',
+        'streams': [   {   'columns': ['*'],
+                            'info': 'test data',
+                            'source': 'file://swarming/test_data.csv'}],
+        'version': 1},
 
   # Iteration count: maximum number of iterations.  Each iteration corresponds
   # to one record from the (possibly aggregated) dataset.  The task is
@@ -388,12 +388,12 @@ control = {
 
 
   # A dictionary containing all the supplementary parameters for inference
-  "inferenceArgs":{u'predictedField': u'consumption', u'predictionSteps': [0]},
+  "inferenceArgs":{'predictedField': 'consumption', 'predictionSteps': [0]},
 
   # Metrics: A list of MetricSpecs that instantiate the metrics that are
   # computed for this experiment
   'metrics':[
-    MetricSpec(field=u'consumption', metric='multiStep',
+    MetricSpec(field='consumption', metric='multiStep',
                inferenceElement='multiStepBestPredictions',
                params={'window': 1000, 'steps': [0], 'errorMetric': 'avg_err'})
   ],

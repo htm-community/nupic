@@ -24,7 +24,7 @@ This files contains support code for the hypersearch library.
 Most of it is temporarily copied from nupic.support.
 """
 
-from __future__ import with_statement
+
 
 from copy import copy
 import errno
@@ -90,7 +90,7 @@ def Enum(*args, **kwargs):
     return cls.__labels[label]
 
 
-  for arg in list(args)+kwargs.keys():
+  for arg in list(args)+list(kwargs.keys()):
     if type(arg) is not str:
       raise TypeError("Enum arg {0} must be a string".format(arg))
 
@@ -99,10 +99,10 @@ def Enum(*args, **kwargs):
                        "'{0}' is not a valid identifier".format(arg))
 
   #kwargs.update(zip(args, range(len(args))))
-  kwargs.update(zip(args, args))
+  kwargs.update(list(zip(args, args)))
   newType = type("Enum", (object,), kwargs)
 
-  newType.__labels = dict( (v,k) for k,v in kwargs.iteritems())
+  newType.__labels = dict( (v,k) for k,v in kwargs.items())
   newType.__values = set(newType.__labels.keys())
   newType.getLabel = functools.partial(getLabel, newType)
   newType.validate = functools.partial(validate, newType)
@@ -129,7 +129,7 @@ def makeDirectoryFromAbsolutePath(absDirPath):
 
   try:
     os.makedirs(absDirPath)
-  except OSError, e:
+  except OSError as e:
     if e.errno != os.errno.EEXIST:
       raise
 
@@ -297,9 +297,8 @@ class ConfigurationBase(object):
     # Make a copy so we can update any current values obtained from environment
     #  variables
     result = dict(cls._properties)
-    keys = os.environ.keys()
-    replaceKeys = filter(lambda x: x.startswith(cls.envPropPrefix),
-                         keys)
+    keys = list(os.environ.keys())
+    replaceKeys = [x for x in keys if x.startswith(cls.envPropPrefix)]
     for envKey in replaceKeys:
       key = envKey[len(cls.envPropPrefix):]
       key = key.replace('_', '.')
@@ -582,7 +581,7 @@ class Configuration(ConfigurationBase):
 
     _CustomConfigurationFileWrapper.edit(properties)
 
-    for propertyName, value in properties.iteritems():
+    for propertyName, value in properties.items():
       cls.set(propertyName, value)
 
   @classmethod
@@ -663,7 +662,7 @@ class _CustomConfigurationFileWrapper(object):
     if persistent:
       try:
         os.unlink(cls.getPath())
-      except OSError, e:
+      except OSError as e:
         if e.errno != errno.ENOENT:
           _getLogger().exception("Error %s while trying to remove dynamic " \
                                  "configuration file: %s", e.errno,
@@ -706,7 +705,7 @@ class _CustomConfigurationFileWrapper(object):
     try:
       with open(configFilePath, 'r') as fp:
         contents = fp.read()
-    except IOError, e:
+    except IOError as e:
       if e.errno != errno.ENOENT:
         _getLogger().exception("Error %s reading custom configuration store "
                                "from %s, while editing properties %s.",
@@ -717,14 +716,14 @@ class _CustomConfigurationFileWrapper(object):
     try:
       elements = ElementTree.XML(contents)
       ElementTree.tostring(elements)
-    except Exception, e:
+    except Exception as e:
       # Raising error as RuntimeError with custom message since ElementTree
       # exceptions aren't clear.
       msg = "File contents of custom configuration is corrupt.  File " \
             "location: %s; Contents: '%s'. Original Error (%s): %s." % \
             (configFilePath, contents, type(e), e)
       _getLogger().exception(msg)
-      raise RuntimeError(msg), None, sys.exc_info()[2]
+      raise RuntimeError(msg).with_traceback(sys.exc_info()[2])
 
     if elements.tag != 'configuration':
       e = "Expected top-level element to be 'configuration' but got '%s'" % \
@@ -749,7 +748,7 @@ class _CustomConfigurationFileWrapper(object):
           raise RuntimeError(e)
 
     # Add unmatched remaining properties to custom config store
-    for propertyName, value in copyOfProperties.iteritems():
+    for propertyName, value in copyOfProperties.items():
       newProp = ElementTree.Element('property')
       nameTag = ElementTree.Element('name')
       nameTag.text = propertyName
@@ -765,7 +764,7 @@ class _CustomConfigurationFileWrapper(object):
       makeDirectoryFromAbsolutePath(os.path.dirname(configFilePath))
       with open(configFilePath, 'w') as fp:
         fp.write(ElementTree.tostring(elements))
-    except Exception, e:
+    except Exception as e:
       _getLogger().exception("Error while saving custom configuration "
                              "properties %s in %s.", properties,
                              configFilePath)

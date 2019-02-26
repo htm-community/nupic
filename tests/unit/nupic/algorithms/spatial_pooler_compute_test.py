@@ -21,7 +21,7 @@
 
 import numpy
 import time
-import unittest2 as unittest
+import unittest
 from nupic.bindings.math import (count_gte,
                                  GetNTAReal,
                                  SM_01_32_32 as SparseBinaryMatrix,
@@ -94,7 +94,7 @@ class SpatialPoolerComputeTest(unittest.TestCase):
       'globalInhibition': True,
       "seed": int((time.time()%10000)*10),
     }
-    print "testBasicCompute1, SP seed set to:",params['seed']
+    print("testBasicCompute1, SP seed set to:",params['seed'])
     self.basicComputeLoop('py', params, inputSize, columnDimensions)
     self.basicComputeLoop('cpp', params, inputSize, columnDimensions)
 
@@ -119,7 +119,7 @@ class SpatialPoolerComputeTest(unittest.TestCase):
       "synPermInactiveDec": 0.0,
       "seed": int((time.time()%10000)*10),
     }
-    print "testBasicCompute2, SP seed set to:",params['seed']
+    print("testBasicCompute2, SP seed set to:",params['seed'])
     self.basicComputeLoop('py', params, inputSize, columnDimensions)
     self.basicComputeLoop('cpp', params, inputSize, columnDimensions)
 

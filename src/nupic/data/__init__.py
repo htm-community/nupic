@@ -29,4 +29,4 @@ StandardSource - can read a binary file of marshaled Python objects
 
 SENTINEL_VALUE_FOR_MISSING_DATA = None
 
-from function_source import FunctionSource
+from .function_source import FunctionSource

@@ -21,7 +21,7 @@
 
 """Unit tests for nupic.data.fieldmeta."""
 
-import unittest2 as unittest
+import unittest
 
 from nupic.data.field_meta import FieldMetaInfo, FieldMetaType, FieldMetaSpecial
 

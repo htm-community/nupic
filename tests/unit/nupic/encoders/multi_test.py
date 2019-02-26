@@ -23,7 +23,7 @@
 
 import numpy
 import tempfile
-import unittest2 as unittest
+import unittest
 
 from nupic.encoders.multi import MultiEncoder
 from nupic.encoders import ScalarEncoder, AdaptiveScalarEncoder, SDRCategoryEncoder

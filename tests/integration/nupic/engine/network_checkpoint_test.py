@@ -26,7 +26,7 @@ from nupic.regions.record_sensor import RecordSensor
 from nupic.regions.sp_region import SPRegion
 from nupic.regions.tm_region import TMRegion
 
-from network_creation_common import createAndRunNetwork
+from .network_creation_common import createAndRunNetwork
 
 try:
   import capnp
@@ -60,7 +60,7 @@ class NetworkCheckpointTest(unittest.TestCase):
 
     self.assertEqual(len(results1), len(results2))
 
-    for i in xrange(len(results1)):
+    for i in range(len(results1)):
       result1 = list(results1[i].nonzero()[0])
       result2 = list(results2[i].nonzero()[0])
       self.assertEqual(result1, result2,
@@ -80,7 +80,7 @@ class NetworkCheckpointTest(unittest.TestCase):
 
     self.assertEqual(len(results1), len(results2))
 
-    for i in xrange(len(results1)):
+    for i in range(len(results1)):
       result1 = list(results1[i].nonzero()[0])
       result2 = list(results2[i].nonzero()[0])
       self.assertEqual(result1, result2,
@@ -90,7 +90,7 @@ class NetworkCheckpointTest(unittest.TestCase):
   def compareArrayResults(self, results1, results2):
     self.assertEqual(len(results1), len(results2))
 
-    for i in xrange(len(results1)):
+    for i in range(len(results1)):
       result1 = list(results1[i].nonzero()[0])
       result2 = list(results2[i].nonzero()[0])
 

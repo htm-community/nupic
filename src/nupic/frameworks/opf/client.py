@@ -65,15 +65,15 @@ class Client(object):
       self.sink.writeRecord(modelResult)
     return modelResult
 
-  def next(self):
-    record = self.datasetReader.next()
+  def __next__(self):
+    record = next(self.datasetReader)
     return self._processRecord(record)
 
   def skipNRecords(self, n):
     for i in range(n):
-      self.datasetReader.next()
+      next(self.datasetReader)
   def nextTruthPrediction(self, field):
-    record = self.datasetReader.next()
+    record = next(self.datasetReader)
     prediction=self._processRecord(record).inferences['prediction'][0]
     truth=record[field]
     return truth, prediction
@@ -83,7 +83,7 @@ class Client(object):
     result = None
     while True:
       try:
-        result = self.next()
+        result = next(self)
         #print result
       except StopIteration:
         break

@@ -21,6 +21,8 @@
 
 """Interface for different types of storages (file, hbase, rio, etc)."""
 
+from future.utils import with_metaclass
+
 from abc import ABCMeta, abstractmethod
 import datetime
 
@@ -114,7 +116,7 @@ class ModelRecordEncoder(object):
     """
 
     # Create the return dict
-    result = dict(zip(self._fieldNames, inputRow))
+    result = dict(list(zip(self._fieldNames, inputRow)))
 
     # Add in the special fields
     if self._categoryFieldIndex is not None:
@@ -211,12 +213,10 @@ class ModelRecordEncoder(object):
 
 
 
-class RecordStreamIface(object):
+class RecordStreamIface(with_metaclass(ABCMeta, object)):
   """
   This is the interface for the record input/output storage classes.
   """
-
-  __metaclass__ = ABCMeta
 
 
   def __init__(self):

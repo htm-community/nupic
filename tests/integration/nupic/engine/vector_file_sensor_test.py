@@ -32,7 +32,7 @@ Need to add tests for parameters:
 import os
 
 import pkg_resources
-import unittest2 as unittest
+import unittest
 
 from nupic.engine import Array, Dimensions, Network
 
@@ -85,9 +85,9 @@ class VectorFileSensorTest(unittest.TestCase):
     """Run all the tests in our suite, catching any exceptions that might be
     thrown.
     """
-    print 'VectorFileSensorTest parameters:'
-    print 'PYTHONPATH: %s' % os.environ.get('PYTHONPATH', 'NOT SET')
-    print 'filename: %s' % self.filename
+    print('VectorFileSensorTest parameters:')
+    print('PYTHONPATH: %s' % os.environ.get('PYTHONPATH', 'NOT SET'))
+    print('filename: %s' % self.filename)
 
     self._testRunWithoutFile()
     self._testNetLoad()

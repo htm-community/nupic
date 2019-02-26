@@ -214,7 +214,7 @@ def createAndRunNetwork(testRegionType, testOutputName,
 
     results = []
 
-    for i in xrange(_NUM_RECORDS):
+    for i in range(_NUM_RECORDS):
       if checkpointMidway and i == (_NUM_RECORDS / 2):
         network = saveAndLoadNetwork(network)
 

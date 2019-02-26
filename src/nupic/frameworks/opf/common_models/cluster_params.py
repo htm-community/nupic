@@ -110,7 +110,7 @@ def getScalarMetricWithTimeOfDayAnomalyParams(metricData,
     raise ValueError("Invalid string for tmImplementation. Try cpp or tm_cpp")
 
   with resource_stream(__name__, paramFileRelativePath) as infile:
-    paramSet = json.load(infile)
+    paramSet = json.loads(infile.read().decode())
 
   _fixupRandomEncoderParams(paramSet, minVal, maxVal, minResolution)
 
@@ -139,7 +139,7 @@ def _fixupRandomEncoderParams(params, minVal, maxVal, minResolution):
     params["modelConfig"]["modelParams"]["sensorParams"]["encoders"]
   )
 
-  for encoder in encodersDict.itervalues():
+  for encoder in encodersDict.values():
     if encoder is not None:
       if encoder["type"] == "RandomDistributedScalarEncoder":
         resolution = max(minResolution,

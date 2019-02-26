@@ -257,13 +257,13 @@ class SpatialPooler(Serializable):
     columnDimensions = numpy.array(columnDimensions, ndmin=1)
     numColumns = columnDimensions.prod()
 
-    if not isinstance(numColumns, (int, long)) or numColumns <= 0:
+    if not isinstance(numColumns, int) or numColumns <= 0:
       raise InvalidSPParamValueError("Invalid number of columns ({})"
                                      .format(repr(numColumns)))
     inputDimensions = numpy.array(inputDimensions, ndmin=1)
     numInputs = inputDimensions.prod()
 
-    if not isinstance(numInputs, (int, long)) or numInputs <= 0:
+    if not isinstance(numInputs, int) or numInputs <= 0:
       raise InvalidSPParamValueError("Invalid number of inputs ({}"
                                      .format(repr(numInputs)))
 
@@ -341,7 +341,7 @@ class SpatialPooler(Serializable):
     # Initialize a tiny random tie breaker. This is used to determine winning
     # columns where the overlaps are identical.
     self._tieBreaker = numpy.array([0.01 * self._random.getReal64() for i in
-                                      xrange(self._numColumns)],
+                                      range(self._numColumns)],
                                     dtype=realDType)
 
     # 'self._connectedSynapses' is a similar matrix to 'self._permanences'
@@ -362,7 +362,7 @@ class SpatialPooler(Serializable):
     # Initialize the set of permanence values for each column. Ensure that
     # each column is connected to enough input bits to allow it to be
     # activated.
-    for columnIndex in xrange(numColumns):
+    for columnIndex in range(numColumns):
       potential = self._mapPotential(columnIndex)
       self._potentialPools.replace(columnIndex, potential.nonzero()[0])
       perm = self._initPermanence(potential, initConnectedPct)
@@ -983,7 +983,7 @@ class SpatialPooler(Serializable):
     _updateMinDutyCyclesGlobal, here the values can be quite different for
     different columns.
     """
-    for column in xrange(self._numColumns):
+    for column in range(self._numColumns):
       neighborhood = self._getColumnNeighborhood(column)
 
       maxActiveDuty = self._activeDutyCycles[neighborhood].max()
@@ -1050,7 +1050,7 @@ class SpatialPooler(Serializable):
 
     avgConnectedSpan = numpy.average(
                           [self._avgConnectedSpanForColumnND(i)
-                          for i in xrange(self._numColumns)]
+                          for i in range(self._numColumns)]
                         )
     columnsPerInput = self._avgColumnsPerInput()
     diameter = avgConnectedSpan * columnsPerInput
@@ -1319,7 +1319,7 @@ class SpatialPooler(Serializable):
     # column's potential pool will be connected. This number is
     # given by the parameter "connectedPct"
     perm = numpy.zeros(self._numInputs, dtype=realDType)
-    for i in xrange(self._numInputs):
+    for i in range(self._numInputs):
       if (potential[i] < 1):
         continue
 
@@ -1501,7 +1501,7 @@ class SpatialPooler(Serializable):
     # The targetDensity is the average activeDutyCycles of the neighboring
     # columns of each column.
     targetDensity = numpy.zeros(self._numColumns, dtype=realDType)
-    for i in xrange(self._numColumns):
+    for i in range(self._numColumns):
       maskNeighbors = self._getColumnNeighborhood(i)
       targetDensity[i] = numpy.mean(self._activeDutyCycles[maskNeighbors])
 
@@ -1872,7 +1872,7 @@ class SpatialPooler(Serializable):
     instance._connectedCounts = numpy.zeros(numColumns, dtype=realDType)
     instance._connectedSynapses = BinaryCorticalColumns(numInputs)
     instance._connectedSynapses.resize(numColumns, numInputs)
-    for columnIndex in xrange(proto.numColumns):
+    for columnIndex in range(proto.numColumns):
       instance._updatePermanencesForColumn(
         instance._permanences[columnIndex], columnIndex, False
       )
@@ -1894,20 +1894,20 @@ class SpatialPooler(Serializable):
     """
     Useful for debugging.
     """
-    print "------------PY  SpatialPooler Parameters ------------------"
-    print "numInputs                  = ", self.getNumInputs()
-    print "numColumns                 = ", self.getNumColumns()
-    print "columnDimensions           = ", self._columnDimensions
-    print "numActiveColumnsPerInhArea = ", self.getNumActiveColumnsPerInhArea()
-    print "potentialPct               = ", self.getPotentialPct()
-    print "globalInhibition           = ", self.getGlobalInhibition()
-    print "localAreaDensity           = ", self.getLocalAreaDensity()
-    print "stimulusThreshold          = ", self.getStimulusThreshold()
-    print "synPermActiveInc           = ", self.getSynPermActiveInc()
-    print "synPermInactiveDec         = ", self.getSynPermInactiveDec()
-    print "synPermConnected           = ", self.getSynPermConnected()
-    print "minPctOverlapDutyCycle     = ", self.getMinPctOverlapDutyCycles()
-    print "dutyCyclePeriod            = ", self.getDutyCyclePeriod()
-    print "boostStrength              = ", self.getBoostStrength()
-    print "spVerbosity                = ", self.getSpVerbosity()
-    print "version                    = ", self._version
+    print("------------PY  SpatialPooler Parameters ------------------")
+    print("numInputs                  = ", self.getNumInputs())
+    print("numColumns                 = ", self.getNumColumns())
+    print("columnDimensions           = ", self._columnDimensions)
+    print("numActiveColumnsPerInhArea = ", self.getNumActiveColumnsPerInhArea())
+    print("potentialPct               = ", self.getPotentialPct())
+    print("globalInhibition           = ", self.getGlobalInhibition())
+    print("localAreaDensity           = ", self.getLocalAreaDensity())
+    print("stimulusThreshold          = ", self.getStimulusThreshold())
+    print("synPermActiveInc           = ", self.getSynPermActiveInc())
+    print("synPermInactiveDec         = ", self.getSynPermInactiveDec())
+    print("synPermConnected           = ", self.getSynPermConnected())
+    print("minPctOverlapDutyCycle     = ", self.getMinPctOverlapDutyCycles())
+    print("dutyCyclePeriod            = ", self.getDutyCyclePeriod())
+    print("boostStrength              = ", self.getBoostStrength())
+    print("spVerbosity                = ", self.getSpVerbosity())
+    print("version                    = ", self._version)

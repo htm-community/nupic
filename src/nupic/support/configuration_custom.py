@@ -25,7 +25,7 @@ stored in ``nupic-custom.xml`` in the site conf folder.
 """
 
 
-from __future__ import with_statement
+
 
 from copy import copy
 import errno
@@ -92,7 +92,7 @@ class Configuration(ConfigurationBase):
 
     _CustomConfigurationFileWrapper.edit(properties)
 
-    for propertyName, value in properties.iteritems():
+    for propertyName, value in properties.items():
       cls.set(propertyName, value)
 
 
@@ -179,7 +179,7 @@ class _CustomConfigurationFileWrapper(object):
     if persistent:
       try:
         os.unlink(cls.getPath())
-      except OSError, e:
+      except OSError as e:
         if e.errno != errno.ENOENT:
           _getLogger().exception("Error %s while trying to remove dynamic " \
             "configuration file: %s", e.errno, cls.getPath())
@@ -223,7 +223,7 @@ class _CustomConfigurationFileWrapper(object):
     try:
       with open(configFilePath, 'r') as fp:
         contents = fp.read()
-    except IOError, e:
+    except IOError as e:
       if e.errno != errno.ENOENT:
         _getLogger().exception("Error %s reading custom configuration store "
           "from %s, while editing properties %s.",
@@ -234,14 +234,14 @@ class _CustomConfigurationFileWrapper(object):
     try:
       elements = ElementTree.XML(contents)
       ElementTree.tostring(elements)
-    except Exception, e:
+    except Exception as e:
       # Raising error as RuntimeError with custom message since ElementTree
       # exceptions aren't clear.
       msg = "File contents of custom configuration is corrupt.  File " \
         "location: %s; Contents: '%s'. Original Error (%s): %s." % \
         (configFilePath, contents, type(e), e)
       _getLogger().exception(msg)
-      raise RuntimeError(msg), None, sys.exc_info()[2]
+      raise RuntimeError(msg).with_traceback(sys.exc_info()[2])
 
 
     if elements.tag != 'configuration':
@@ -267,7 +267,7 @@ class _CustomConfigurationFileWrapper(object):
           raise RuntimeError(e)
 
     # Add unmatched remaining properties to custom config store
-    for propertyName, value in copyOfProperties.iteritems():
+    for propertyName, value in copyOfProperties.items():
       newProp = ElementTree.Element('property')
       nameTag = ElementTree.Element('name')
       nameTag.text = propertyName
@@ -283,7 +283,7 @@ class _CustomConfigurationFileWrapper(object):
       makeDirectoryFromAbsolutePath(os.path.dirname(configFilePath))
       with open(configFilePath,'w') as fp:
         fp.write(ElementTree.tostring(elements))
-    except Exception, e:
+    except Exception as e:
       _getLogger().exception("Error while saving custom configuration "
         "properties %s in %s.", properties, configFilePath)
       raise
