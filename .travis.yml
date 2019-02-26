@@ -4,13 +4,29 @@ branches:
   except:
     - gh-pages
 
-language: cpp
+language: python
 
 os:
   - osx
+  - linux
 
 compiler:
   - clang
+
+python:
+  - 3.2
+  - 2.7
+
+addons:
+  apt:
+    packages:
+      - virtualenv
+      - python-virtualenv
+      - python3-virtualenv
+      - python3
+      - python2
+      - python-pip
+      - python3-pip
 
 env:
   global:
