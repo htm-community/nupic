@@ -245,8 +245,7 @@ class _CustomConfigurationFileWrapper(object):
 
 
     if elements.tag != 'configuration':
-      e = "Expected top-level element to be 'configuration' but got '%s'" % \
-        (elements.tag)
+      e = unicode("Expected top-level element to be 'configuration' but got '%s'" % (elements.tag))
       _getLogger().error(e)
       raise RuntimeError(e)
 
