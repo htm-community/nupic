@@ -155,7 +155,7 @@ def dumps(obj, **kwargs):
 
 
 def dump(obj, f, **kwargs):
-  f.write(dumps(obj, **kwargs))
+  f.write(unicode(dumps(obj, **kwargs)))
 
 
 def loads(s, **kwargs):
