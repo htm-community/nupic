@@ -57,7 +57,7 @@ class AnomalyzerTest(unittest.TestCase):
                       "2011-09-04 02:15:00.000000,4\n"
                       "2011-09-04 02:20:00.000000,5\n"
                       "2011-09-04 02:25:00.000000,6\n")
-    mockInput = MagicMock(return_value=StringIO(self.sampleInput))
+    mockInput = MagicMock(return_value=StringIO(unicode(self.sampleInput)))
     output = StringIO()
     mockOutput = MagicMock(return_value=output)
     with patch("__builtin__.open", mockInput):
@@ -83,7 +83,7 @@ class AnomalyzerTest(unittest.TestCase):
                       "2011-09-04 02:15:00.000000,4\n"
                       "2011-09-04 02:20:00.000000,5\n"
                       "2011-09-04 02:25:00.000000,6\n")
-    mockInput = MagicMock(return_value=StringIO(self.sampleInput))
+    mockInput = MagicMock(return_value=StringIO(unicode(self.sampleInput)))
     output = StringIO()
     mockOutput = MagicMock(return_value=output)
     with patch("__builtin__.open", mockInput):
@@ -109,7 +109,7 @@ class AnomalyzerTest(unittest.TestCase):
                       "2011-09-04 02:15:00.000000,4\n"
                       "2011-09-04 02:20:00.000000,13\n"
                       "2011-09-04 02:25:00.000000,14\n")
-    mockInput = MagicMock(return_value=StringIO(self.sampleInput))
+    mockInput = MagicMock(return_value=StringIO(unicode(self.sampleInput)))
     output = StringIO()
     mockOutput = MagicMock(return_value=output)
     with patch("__builtin__.open", mockInput):
@@ -135,7 +135,7 @@ class AnomalyzerTest(unittest.TestCase):
                       "2011-09-04 02:15:00.000000,4\n"
                       "2011-09-04 02:20:00.000000,5\n"
                       "2011-09-04 02:25:00.000000,6\n")
-    mockInput = MagicMock(return_value=StringIO(self.sampleInput))
+    mockInput = MagicMock(return_value=StringIO(unicode(self.sampleInput)))
     output = StringIO()
     mockOutput = MagicMock(return_value=output)
     with patch("__builtin__.open", mockInput):
@@ -161,7 +161,7 @@ class AnomalyzerTest(unittest.TestCase):
                       "2011-09-04 02:15:00.000000,12\n"
                       "2011-09-04 02:20:00.000000,13\n"
                       "2011-09-04 02:25:00.000000,14\n")
-    mockInput = MagicMock(return_value=StringIO(self.sampleInput))
+    mockInput = MagicMock(return_value=StringIO(unicode(self.sampleInput)))
     output = StringIO()
     mockOutput = MagicMock(return_value=output)
     with patch("__builtin__.open", mockInput):
@@ -187,7 +187,7 @@ class AnomalyzerTest(unittest.TestCase):
                       "2011-09-04 02:15:00.000000,4\n"
                       "2011-09-04 02:20:00.000000,5\n"
                       "2011-09-04 02:25:00.000000,6\n")
-    mockInput = MagicMock(return_value=StringIO(self.sampleInput))
+    mockInput = MagicMock(return_value=StringIO(unicode(self.sampleInput)))
     output = StringIO()
     mockOutput = MagicMock(return_value=output)
     with patch("__builtin__.open", mockInput):
@@ -219,7 +219,7 @@ class AnomalyzerTest(unittest.TestCase):
                       "2011-09-04 02:45:00.000000,4\n"
                       "2011-09-04 02:50:00.000000,5\n"
                       "2011-09-04 02:55:00.000000,6\n")
-    mockInput = MagicMock(return_value=StringIO(self.sampleInput))
+    mockInput = MagicMock(return_value=StringIO(unicode(self.sampleInput)))
     output = StringIO()
     mockOutput = MagicMock(return_value=output)
     with patch("__builtin__.open", mockInput):
@@ -251,7 +251,7 @@ class AnomalyzerTest(unittest.TestCase):
                       "2011-09-04 02:45:00.000000,4\n"
                       "2011-09-04 02:50:00.000000,5\n"
                       "2011-09-04 02:55:00.000000,6\n")
-    mockInput = MagicMock(return_value=StringIO(self.sampleInput))
+    mockInput = MagicMock(return_value=StringIO(unicode(self.sampleInput)))
     output = StringIO()
     mockOutput = MagicMock(return_value=output)
     with patch("__builtin__.open", mockInput):
@@ -279,7 +279,7 @@ class AnomalyzerTest(unittest.TestCase):
                       "2011-09-04 02:25:00.000000,4\n"
                       "2011-09-04 02:30:00.000000,5\n"
                       "2011-09-04 02:35:00.000000,6\n")
-    mockInput = MagicMock(return_value=StringIO(self.sampleInput))
+    mockInput = MagicMock(return_value=StringIO(unicode(self.sampleInput)))
     output = StringIO()
     mockOutput = MagicMock(return_value=output)
     with patch("__builtin__.open", mockInput):
@@ -306,7 +306,7 @@ class AnomalyzerTest(unittest.TestCase):
                       "2011-09-04 02:20:00.000000,4\n"
                       "2011-09-04 02:25:00.000000,5\n"
                       "2011-09-04 02:30:00.000000,6\n")
-    mockInput = MagicMock(return_value=StringIO(self.sampleInput))
+    mockInput = MagicMock(return_value=StringIO(unicode(self.sampleInput)))
     output = StringIO()
     mockOutput = MagicMock(return_value=output)
     with patch("__builtin__.open", mockInput):
@@ -323,7 +323,7 @@ class AnomalyzerTest(unittest.TestCase):
 
 
   def testSample(self):
-    mockInput = MagicMock(return_value=StringIO(self.sampleInput))
+    mockInput = MagicMock(return_value=StringIO(unicode(self.sampleInput)))
     output = StringIO()
     mockOutput = MagicMock(return_value=output)
     with patch("__builtin__.open", mockInput):
