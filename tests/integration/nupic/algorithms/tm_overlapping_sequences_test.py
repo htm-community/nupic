@@ -39,6 +39,8 @@ and 10 elements long.
 
 """
 
+from __future__ import print_function
+
 import numpy
 import pprint
 import random

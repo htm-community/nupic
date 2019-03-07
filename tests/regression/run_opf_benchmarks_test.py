@@ -26,6 +26,8 @@ prediction metrics. Limiting the number of permutations can cause the test to
 fail if it results in lower accuracy.
 """
 
+from __future__ import print_function
+
 import sys
 import os
 import time
