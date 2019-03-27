@@ -755,3 +755,7 @@ class FileRecordStream(RecordStreamIface):
 
     return record
 
+  def next(self):
+      """python2 compatibility for iterator()"""
+      return self.__next__()
+

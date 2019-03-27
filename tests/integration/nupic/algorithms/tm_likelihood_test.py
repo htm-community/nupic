@@ -45,6 +45,8 @@ Seq1: a-b-b-c-d
 There should be four segments a-b
 """
 
+from __future__ import print_function
+
 import numpy
 import unittest
 

@@ -104,7 +104,7 @@ class TestObjectJson(TestCaseBase):
     self.assertDictEqual(d, {'a': 1, 'b': {'c': 2}})
 
   def testLoad(self):
-    f = io.StringIO('{"a": 1, "b": {"c": 2}}')
+    f = io.StringIO(unicode('{"a": 1, "b": {"c": 2}}'))
     d = json.load(f)
     self.assertDictEqual(d, {'a': 1, 'b': {'c': 2}})
 

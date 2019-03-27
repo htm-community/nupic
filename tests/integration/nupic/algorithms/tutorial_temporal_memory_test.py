@@ -19,6 +19,8 @@
 # http://numenta.org/licenses/
 # ----------------------------------------------------------------------
 
+from future.utils import with_metaclass
+
 import nupic.bindings.algorithms
 import pprint
 import unittest
@@ -29,7 +31,7 @@ from nupic.data.generators.pattern_machine import ConsecutivePatternMachine
 from nupic.support.unittesthelpers.abstract_temporal_memory_test import AbstractTemporalMemoryTest
 
 
-class TutorialTemporalMemoryTest(AbstractTemporalMemoryTest, metaclass=ABCMeta):
+class TutorialTemporalMemoryTest(with_metaclass(ABCMeta, AbstractTemporalMemoryTest)):
   VERBOSITY = 1
 
   def getPatternMachine(self):
