@@ -2,6 +2,8 @@
 
 ## nupic.py (NuPIC Community Fork)
 
+[![Build Status](https://travis-ci.com/htm-community/nupic.py.svg?branch=master)](https://travis-ci.com/htm-community/nupic.py)
+
 This is a __community fork__ of the The Numenta Platform for Intelligent Computing (**NuPIC**), a machine intelligence platform that implements the [HTM learning algorithms](https://numenta.com/resources/papers-videos-and-more/). HTM is a detailed computational theory of the neocortex. At the core of HTM are time-based continuous learning algorithms that store and recall spatial and temporal patterns. NuPIC is suited to a variety of problems, particularly anomaly detection and prediction of streaming data sources. For questions or discussion, see [our forum](https://discourse.numenta.org/c/nupic/community-fork).
 
 ## Installing nupic.py
@@ -46,7 +48,3 @@ To install from local source code, run from the repository root:
 Use the optional `-e` argument for a developer install.
 
 If you want to build the dependent `nupic.bindings` from source, you should build and install from [`nupic.core`](https://github.com/numenta/nupic.core) prior to installing nupic (since a PyPI release will be installed if `nupic.bindings` isn't yet installed).
-
-### Build
-
-TODO
